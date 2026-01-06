@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.candyperfumeboy.novamterram.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "novamterram.refmap.json",
+  "mixins": [
+    "OcelotModelMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "creativetab.novamterram": "Novam Terram",
+
+  "item.novamterram.opal": "Opal",
+  "item.novamterram.raw_opal": "Raw Opal",
+  "item.novamterram.lignite_coal": "Lignite",
+  "item.novamterram.bear_claw": "Bear Claw",
+
+  "block.novamterram.opal_block": "Block of Opal",
+  "block.novamterram.opal_ore": "Opal Ore",
+
+  "block.novamterram.lignite_block": "Block of Lignite",
+  "block.novamterram.lignite_ore": "Lignite Ore",
+  "block.novamterram.lignite_nether_ore": "Nether Lignite Ore",
+  "block.novamterram.lignite_end_ore": "End Lignite Ore",
+  "block.novamterram.deepslate_lignite_ore": "Deepslate Lignite Ore",
+
+  "block.novamterram.blue_spruce_log": "Blue Spruce Log",
+  "block.novamterram.blue_spruce_wood": "Blue Spruce Wood",
+  "block.novamterram.stripped_blue_spruce_log": "Stripped Blue Spruce Log",
+  "block.novamterram.stripped_blue_spruce_wood": "Stripped Blue Spruce Wood",
+  "block.novamterram.blue_spruce_planks": "Blue Spruce Planks",
+  "block.novamterram.blue_spruce_leaves": "Blue Spruce Leaves",
+  "block.novamterram.blue_spruce_sapling": "Blue Spruce Sapling",
+  "block.novamterram.blue_spruce_stairs": "Blue Spruce Stairs",
+  "block.novamterram.blue_spruce_slab": "Blue Spruce Slab",
+  "block.novamterram.blue_spruce_pressure_plate": "Blue Spruce Pressure Plate",
+  "block.novamterram.blue_spruce_button": "Blue Spruce Button",
+  "block.novamterram.blue_spruce_fence": "Blue Spruce Fence",
+  "block.novamterram.blue_spruce_fence_gate": "Blue Spruce Fence Gate",
+  "block.novamterram.blue_spruce_door": "Blue Spruce Door",
+  "block.novamterram.blue_spruce_trap_door": "Blue Spruce Trapdoor",
+
+  "item.novamterram.blue_spruce_sign": "Blue Spruce Sign",
+  "item.novamterram.blue_spruce_hanging_sign": "Blue Spruce Hanging Sign",
+  "item.novamterram.blue_spruce_boat": "Blue Spruce Boat",
+  "item.novamterram.blue_spruce_chest_boat": "Blue Spruce Chest Boat",
+
+  "block.novamterram.blue_podzol": "Blue Podzol",
+
+  "block.novamterram.olivine_sand": "Olivine Sand",
+  "block.novamterram.olivine_sandstone": "Olivine Sandstone",
+  "block.novamterram.cut_olivine_sandstone": "Cut Olivine Sandstone",
+  "block.novamterram.chiseled_olivine_sandstone": "Chiseled Olivine Sandstone",
+  "block.novamterram.olivine_sandstone_stairs": "Olivine Sandstone Stairs",
+  "block.novamterram.olivine_sandstone_slab": "Olivine Sandstone Slab",
+  "block.novamterram.olivine_sandstone_pressure_plate": "Olivine Sandstone Pressure Plate",
+  "block.novamterram.olivine_sandstone_button": "Olivine Sandstone Button",
+  "block.novamterram.olivine_sandstone_wall": "Olivine Sandstone Wall",
+  "block.novamterram.olivine_sandstone_fence": "Olivine Sandstone Fence",
+  "block.novamterram.olivine_sandstone_fence_gate": "Olivine Sandstone Fence Gate",
+  "block.novamterram.olivine_sandstone_door": "Olivine Sandstone Door",
+  "block.novamterram.olivine_sandstone_trap_door": "Olivine Sandstone Trapdoor",
+
+  "item.novamterram.spectacled_bear_spawn_egg": "Spectacled Bear Spawn Egg",
+  "entity.novamterram.spectacled_bear": "Spectacled Bear",
+  "item.novamterram.silver_fox_spawn_egg": "Silver Fox Spawn Egg",
+  "entity.novamterram.silver_fox": "Silver Fox",
+
+  "entity.novamterram.blue_spruce_boat": "Blue Spruce Boat",
+  "entity.novamterram.blue_spruce_chest_boat": "Blue Spruce Chest Boat"
+}

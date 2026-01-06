@@ -1,0 +1,17 @@
+{
+  "values": [
+    "novamterram:lignite_block",
+    "novamterram:opal_block",
+    "novamterram:opal_ore",
+    "novamterram:deepslate_lignite_ore",
+    "novamterram:lignite_ore",
+    "novamterram:lignite_end_ore",
+    "novamterram:lignite_nether_ore",
+    "novamterram:cut_olivine_sandstone",
+    "novamterram:olivine_sandstone",
+    "novamterram:chiseled_olivine_sandstone",
+    "novamterram:olivine_sandstone_stairs",
+    "novamterram:olivine_sandstone_slab",
+    "novamterram:olivine_sandstone_wall"
+  ]
+}

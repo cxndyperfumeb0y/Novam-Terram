@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "olivine_sandstone",
+  "key": {
+    "#": {
+      "item": "novamterram:olivine_sandstone"
+    }
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "result": {
+    "count": 4,
+    "id": "novamterram:olivine_sandstone_stairs"
+  }
+}

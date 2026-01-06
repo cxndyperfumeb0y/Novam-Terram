@@ -1,0 +1,15 @@
+{
+  "structures": [
+    {
+      "structure": "novamterram:blue_spruce_village",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 32,
+    "separation": 8,
+    "salt": 55667788,
+    "spread_type": "linear"
+  }
+}

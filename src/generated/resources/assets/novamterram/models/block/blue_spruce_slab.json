@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "novamterram:block/blue_spruce_planks",
+    "side": "novamterram:block/blue_spruce_planks",
+    "top": "novamterram:block/blue_spruce_planks"
+  }
+}

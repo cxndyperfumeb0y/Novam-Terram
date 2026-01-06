@@ -1,0 +1,9 @@
+// 1.21.1	2026-01-06T00:23:10.0267145	Tags for minecraft:item mod id novamterram
+0e624275fb857823f650ee7ba0ffd46faaca525d data/minecraft/tags/item/boats.json
+0854be2fc010af721feb86df71d10b5dacbe9690 data/minecraft/tags/item/chest_boats.json
+767e0bd3808d57255d66b2a3deb5541a52151794 data/minecraft/tags/item/hanging_signs.json
+a1f7248881341186ecf6c2dc5602a3030d330d10 data/minecraft/tags/item/leaves.json
+8edb2564cb39d8982186fd6df4808bc3b76bbc0b data/minecraft/tags/item/logs_that_burn.json
+ecd9de71e7b59bae9e116480cad4fb4723ab0d01 data/minecraft/tags/item/planks.json
+dbc1b21f4afa9e3dbdfd6e510473b11070900512 data/minecraft/tags/item/saplings.json
+9d0b1d924f14a97042ad4ad306092ecc43b6f3fb data/minecraft/tags/item/signs.json

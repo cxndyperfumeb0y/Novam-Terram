@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "novamterram:block/blue_spruce_slab"
+    },
+    "type=double": {
+      "model": "novamterram:block/blue_spruce_planks"
+    },
+    "type=top": {
+      "model": "novamterram:block/blue_spruce_slab_top"
+    }
+  }
+}

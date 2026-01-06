@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_nether",
+  "features": "novamterram:nether_lignite_ore_placed",
+  "step": "underground_ores"
+}

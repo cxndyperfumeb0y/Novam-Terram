@@ -1,0 +1,87 @@
+{
+  "name": "novamterram:blue_spruce/houses",
+  "fallback": "minecraft:village/taiga/terminators",
+  "elements": [
+    {
+      "weight": 4,
+      "element": {
+        "location": "minecraft:village/taiga/houses/taiga_small_house_1",
+        "processors": "novamterram:blue_spruce_village",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 4,
+      "element": {
+        "location": "minecraft:village/taiga/houses/taiga_small_house_2",
+        "processors": "novamterram:blue_spruce_village",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 4,
+      "element": {
+        "location": "minecraft:village/taiga/houses/taiga_small_house_3",
+        "processors": "novamterram:blue_spruce_village",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 4,
+      "element": {
+        "location": "minecraft:village/taiga/houses/taiga_small_house_4",
+        "processors": "novamterram:blue_spruce_village",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 4,
+      "element": {
+        "location": "minecraft:village/taiga/houses/taiga_small_house_5",
+        "processors": "novamterram:blue_spruce_village",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "location": "minecraft:village/taiga/houses/taiga_library_1",
+        "processors": "novamterram:blue_spruce_village",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "location": "minecraft:village/taiga/houses/taiga_shepherd_house_1",
+        "processors": "novamterram:blue_spruce_village",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "location": "minecraft:village/taiga/houses/taiga_butcher_shop_1",
+        "processors": "novamterram:blue_spruce_village",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "minecraft:village/taiga/houses/taiga_fletcher_house_1",
+        "processors": "novamterram:blue_spruce_village",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

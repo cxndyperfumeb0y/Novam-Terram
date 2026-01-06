@@ -1,0 +1,42 @@
+{
+  "type": "minecraft:jigsaw",
+  "biomes": "novamterram:blue_spruce_taiga",
+  "step": "surface_structures",
+  "start_pool": "novamterram:blue_spruce/town_centers",
+  "size": 7,
+  "max_distance_from_center": 80,
+  "start_height": {
+    "absolute": 1
+  },
+  "project_start_to_heightmap": "WORLD_SURFACE_WG",
+  "use_expansion_hack": true,
+  "spawn_overrides": {},
+  "terrain_adaptation": "beard_thin",
+  "pool_aliases": [
+    {
+      "type": "minecraft:direct",
+      "alias": "minecraft:village/taiga/town_centers",
+      "target": "novamterram:blue_spruce/town_centers"
+    },
+    {
+      "type": "minecraft:direct",
+      "alias": "minecraft:village/taiga/streets",
+      "target": "novamterram:blue_spruce/streets"
+    },
+    {
+      "type": "minecraft:direct",
+      "alias": "minecraft:village/taiga/houses",
+      "target": "novamterram:blue_spruce/houses"
+    },
+    {
+      "type": "minecraft:direct",
+      "alias": "minecraft:village/taiga/decor",
+      "target": "novamterram:blue_spruce/decor"
+    },
+    {
+      "type": "minecraft:direct",
+      "alias": "minecraft:village/taiga/terminators",
+      "target": "novamterram:blue_spruce/terminators"
+    }
+  ]
+}

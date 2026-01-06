@@ -1,0 +1,16 @@
+{
+  "type": "novamterram:add_item",
+  "conditions": [
+    {
+      "condition": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "type": "#minecraft:is_bear"
+      }
+    }
+  ],
+  "item": {
+    "count": 1,
+    "id": "novamterram:bear_claw"
+  }
+}

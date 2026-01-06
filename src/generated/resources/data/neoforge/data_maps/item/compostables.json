@@ -1,0 +1,10 @@
+{
+  "values": {
+    "novamterram:blue_spruce_leaves": {
+      "chance": 0.3
+    },
+    "novamterram:blue_spruce_sapling": {
+      "chance": 0.3
+    }
+  }
+}

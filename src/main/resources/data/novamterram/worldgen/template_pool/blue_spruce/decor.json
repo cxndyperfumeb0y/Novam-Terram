@@ -1,0 +1,33 @@
+{
+  "name": "novamterram:blue_spruce/decor",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 2,
+      "element": {
+        "location": "minecraft:village/taiga/decor/lamp_post_01",
+        "processors": "novamterram:blue_spruce_village",
+        "projection": "terrain_matching",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "minecraft:village/taiga/decor/taiga_animal_pen_1",
+        "processors": "novamterram:blue_spruce_village",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "minecraft:village/taiga/decor/log_pile_1",
+        "processors": "novamterram:blue_spruce_village",
+        "projection": "terrain_matching",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}
