@@ -2,6 +2,12 @@
   "values": [
     "novamterram:deepslate_lignite_ore",
     "novamterram:lignite_end_ore",
-    "novamterram:lignite_nether_ore"
+    "novamterram:lignite_nether_ore",
+    "novamterram:opal_ore",
+    "novamterram:opal_block",
+    "novamterram:iolite_ore",
+    "novamterram:iolite_block",
+    "novamterram:kyanite_ore",
+    "novamterram:kyanite_block"
   ]
 }

@@ -1,5 +1,9 @@
 {
   "values": [
-    "novamterram:blue_spruce_planks"
+    "novamterram:blue_spruce_planks",
+    "novamterram:teak_planks",
+    "novamterram:balsa_planks",
+    "novamterram:mahogany_planks",
+    "novamterram:aspen_planks"
   ]
 }

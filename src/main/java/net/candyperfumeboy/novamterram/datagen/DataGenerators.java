@@ -16,38 +16,45 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(modid = NovamTerram.MOD_ID)
+@EventBusSubscriber(modid = NovamTerram.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
 
     @SubscribeEvent
-    public static void gatherData(GatherDataEvent event){
+    public static void gatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
         PackOutput packOutput = generator.getPackOutput();
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-        generator.addProvider(event.includeServer(), new LootTableProvider(packOutput, Collections.emptySet(),
-                List.of(new LootTableProvider.SubProviderEntry(NTBlockLootTableProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
+        // --- SERVER DATA ---
+        if (event.includeServer()) {
+            // 1. Worldgen Registry (Datapack) - Run this early so biomes exist for tags
+            generator.addProvider(true, new NTDatapackProvider(packOutput, lookupProvider));
 
-        generator.addProvider(event.includeServer(), new NTRecipeProvider(packOutput, lookupProvider));
+            // 2. Loot Tables
+            generator.addProvider(true, new LootTableProvider(packOutput, Collections.emptySet(),
+                    List.of(new LootTableProvider.SubProviderEntry(NTBlockLootTableProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
 
+            // 3. Recipes & Data Maps
+            generator.addProvider(true, new NTRecipeProvider(packOutput, lookupProvider));
+            generator.addProvider(true, new NTDataMapProvider(packOutput, lookupProvider));
 
-        BlockTagsProvider blockTagsProvider = new NTBlockTagProvider(packOutput, lookupProvider, existingFileHelper);
-        generator.addProvider(event.includeServer(), blockTagsProvider);
-        generator.addProvider(event.includeServer(), new NTItemTagProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
+            // 4. Tags (Items depend on Blocks)
+            NTBlockTagProvider blockTags = new NTBlockTagProvider(packOutput, lookupProvider, existingFileHelper);
+            generator.addProvider(true, blockTags);
+            generator.addProvider(true, new NTItemTagProvider(packOutput, lookupProvider, blockTags.contentsGetter(), existingFileHelper));
 
-        generator.addProvider(event.includeClient(), new NTItemModelProvider(packOutput, existingFileHelper));
+            // Biome Tags
+            generator.addProvider(true, new NTBiomeTagsProvider(packOutput, lookupProvider, existingFileHelper));
+        }
 
-        generator.addProvider(event.includeClient(), new NTBlockStateProvider(packOutput, existingFileHelper));
+        // --- CLIENT ASSETS ---
+        if (event.includeClient()) {
+            generator.addProvider(true, new NTItemModelProvider(packOutput, existingFileHelper));
+            generator.addProvider(true, new NTBlockStateProvider(packOutput, existingFileHelper));
 
-        generator.addProvider(event.includeServer(), new NTDataMapProvider(packOutput, lookupProvider));
-
-        generator.addProvider(event.includeServer(), new NTDatapackProvider(packOutput, lookupProvider));
-
-
-
+            // Helpful Tip: Add a LanguageProvider here if you haven't yet!
+            // generator.addProvider(true, new NTLanguageProvider(packOutput, "en_us"));
+        }
     }
-
 }
-
-

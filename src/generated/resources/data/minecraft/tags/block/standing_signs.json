@@ -1,5 +1,9 @@
 {
   "values": [
-    "novamterram:blue_spruce_sign"
+    "novamterram:blue_spruce_sign",
+    "novamterram:teak_sign",
+    "novamterram:balsa_sign",
+    "novamterram:mahogany_sign",
+    "novamterram:aspen_sign"
   ]
 }

@@ -1,5 +1,13 @@
 {
   "values": [
-    "novamterram:blue_spruce_sapling"
+    "novamterram:orange_autumnal_pine_sapling",
+    "novamterram:yellow_autumnal_pine_sapling",
+    "novamterram:paulownia_sapling",
+    "novamterram:myrtle_sapling",
+    "novamterram:blue_spruce_sapling",
+    "novamterram:teak_sapling",
+    "novamterram:balsa_sapling",
+    "novamterram:mahogany_sapling",
+    "novamterram:aspen_sapling"
   ]
 }

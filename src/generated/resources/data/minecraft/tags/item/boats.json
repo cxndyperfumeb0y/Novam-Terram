@@ -1,5 +1,9 @@
 {
   "values": [
-    "novamterram:blue_spruce_boat"
+    "novamterram:blue_spruce_boat",
+    "novamterram:teak_boat",
+    "novamterram:balsa_boat",
+    "novamterram:mahogany_boat",
+    "novamterram:aspen_boat"
   ]
 }

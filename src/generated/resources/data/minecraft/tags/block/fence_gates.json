@@ -1,6 +1,10 @@
 {
   "values": [
     "novamterram:olivine_sandstone_gate",
-    "novamterram:blue_spruce_gate"
+    "novamterram:blue_spruce_fence_gate",
+    "novamterram:teak_fence_gate",
+    "novamterram:balsa_fence_gate",
+    "novamterram:mahogany_fence_gate",
+    "novamterram:aspen_fence_gate"
   ]
 }

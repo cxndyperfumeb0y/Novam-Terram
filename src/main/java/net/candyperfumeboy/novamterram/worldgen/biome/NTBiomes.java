@@ -1,65 +1,43 @@
 package net.candyperfumeboy.novamterram.worldgen.biome;
 
 import net.candyperfumeboy.novamterram.NovamTerram;
-import net.candyperfumeboy.novamterram.worldgen.NTPlacedFeatures;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BiomeDefaultFeatures;
-import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.Musics;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.level.biome.*;
-import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.biome.Biome;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.intellij.lang.annotations.Identifier;
 
+public class NTBiomes {
 
-import net.minecraft.world.level.biome.Biome;
+        public static final DeferredRegister<Biome> BIOMES =
+                DeferredRegister.create(Registries.BIOME, NovamTerram.MOD_ID);
 
-import java.util.HashMap;
+        // 2. Define Resource Keys
+        public static final ResourceKey<Biome> BLUE_GROVE = registerKey("blue_grove");
+        public static final ResourceKey<Biome> AEGEAN = registerKey("aegean");
+        public static final ResourceKey<Biome> MAQUIS = registerKey("maquis");
+        public static final ResourceKey<Biome> HEATH = registerKey("heath");
+        public static final ResourceKey<Biome> ANDEAN_HILLS = registerKey("andean_hills");
+        public static final ResourceKey<Biome> RAINFOREST = registerKey("rainforest");
+        public static final ResourceKey<Biome> CYPRESS_FEN = registerKey("cypress_fen");
+        public static final ResourceKey<Biome> MIRROR_MIRE = registerKey("mirror_mire");
+        public static final ResourceKey<Biome> RED_PEAKS = registerKey("red_peaks");
+        public static final ResourceKey<Biome> AUTUMNAL_TAIGA = registerKey("autumnal_taiga");
+        public static final ResourceKey<Biome> ROYAL_FOREST = registerKey("royal_forest");
+        public static final ResourceKey<Biome> MYRTLE_FIELDS = registerKey("myrtle_fields");
+        public static final ResourceKey<Biome> SAFFRON_GROVE = registerKey("saffron_grove");
+        public static final ResourceKey<Biome> AMBER_SANDS = registerKey("amber_sands");
+        public static final ResourceKey<Biome> FUNGAL_REACH = registerKey("fungal_reach");
+        public static final ResourceKey<Biome> CALDERA_GROTTO = registerKey("caldera_grotto");
 
-public class NTBiomes{
-    // 1. Create the Deferred Register for Biomes
-    public static final DeferredRegister<Biome> BIOMES =
-            DeferredRegister.create(Registries.BIOME, NovamTerram.MOD_ID);
+        // Helper method to create keys
+        private static ResourceKey<Biome> registerKey(String name) {
+            return ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(NovamTerram.MOD_ID, name));
+        }
 
-    // 2. Define the ResourceKey for Blue Spruce Taiga
-    public static final ResourceKey<Biome> BLUE_SPRUCE_TAIGA = ResourceKey.create(
-            Registries.BIOME,
-            ResourceLocation.fromNamespaceAndPath(NovamTerram.MOD_ID, "blue_spruce_taiga")
-    );
-
-    // 3. Define the ResourceKey for Green Desert
-    public static final ResourceKey<Biome> OLIVINE_BEACH = ResourceKey.create(
-            Registries.BIOME,
-            ResourceLocation.fromNamespaceAndPath(NovamTerram.MOD_ID, "olivine_beach")
-    );
-    // 3. Define the ResourceKey for Green Desert
-    public static final ResourceKey<Biome> AEGEAN_ARCHIPELAGO = ResourceKey.create(
-            Registries.BIOME,
-            ResourceLocation.fromNamespaceAndPath(NovamTerram.MOD_ID, "aegean_archipelago")
-    );
-
-    // 3. Define the ResourceKey for Green Desert
-    public static final ResourceKey<Biome> HEATH = ResourceKey.create(
-            Registries.BIOME,
-            ResourceLocation.fromNamespaceAndPath(NovamTerram.MOD_ID, "heath")
-    );
-
-
-    // 3. Define the ResourceKey for Green Desert
-    public static final ResourceKey<Biome> ANDES = ResourceKey.create(
-            Registries.BIOME,
-            ResourceLocation.fromNamespaceAndPath(NovamTerram.MOD_ID, "andes")
-    );
-
-    // 4. Register method to be called in your Main Mod Class constructor
-    public static void register(IEventBus eventBus) {
-        BIOMES.register(eventBus);
+        // 3. Register method to be called in your Main Mod Class constructor
+        public static void register(IEventBus eventBus) {
+            BIOMES.register(eventBus);
+        }
     }
-}

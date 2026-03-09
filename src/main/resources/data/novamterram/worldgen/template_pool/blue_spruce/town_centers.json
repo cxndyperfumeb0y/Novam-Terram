@@ -19,6 +19,15 @@
         "projection": "rigid",
         "element_type": "minecraft:single_pool_element"
       }
+    },
+    {
+      "weight": 50,
+      "element": {
+        "location": "minecraft:village/taiga/town_centers/taiga_meeting_point_3",
+        "processors": "novamterram:blue_spruce_village",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
     }
   ]
 }
