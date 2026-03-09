@@ -3,6 +3,22 @@
     "novamterram:blue_spruce_log",
     "novamterram:blue_spruce_wood",
     "novamterram:stripped_blue_spruce_log",
-    "novamterram:stripped_blue_spruce_wood"
+    "novamterram:stripped_blue_spruce_wood",
+    "novamterram:teak_log",
+    "novamterram:teak_wood",
+    "novamterram:stripped_teak_log",
+    "novamterram:stripped_teak_wood",
+    "novamterram:balsa_log",
+    "novamterram:balsa_wood",
+    "novamterram:stripped_balsa_log",
+    "novamterram:stripped_balsa_wood",
+    "novamterram:mahogany_log",
+    "novamterram:mahogany_wood",
+    "novamterram:stripped_mahogany_log",
+    "novamterram:stripped_mahogany_wood",
+    "novamterram:aspen_log",
+    "novamterram:aspen_wood",
+    "novamterram:stripped_aspen_log",
+    "novamterram:stripped_aspen_wood"
   ]
 }

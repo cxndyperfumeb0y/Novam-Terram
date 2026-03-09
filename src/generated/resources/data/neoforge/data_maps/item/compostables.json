@@ -1,9 +1,132 @@
 {
   "values": {
+    "novamterram:aspen_leaves": {
+      "chance": 0.3
+    },
+    "novamterram:aspen_sapling": {
+      "chance": 0.3
+    },
+    "novamterram:aster": {
+      "chance": 0.65
+    },
+    "novamterram:aster_petals": {
+      "chance": 0.3
+    },
+    "novamterram:balsa_leaves": {
+      "chance": 0.3
+    },
+    "novamterram:balsa_sapling": {
+      "chance": 0.3
+    },
+    "novamterram:bleeding_heart": {
+      "chance": 0.65
+    },
     "novamterram:blue_spruce_leaves": {
       "chance": 0.3
     },
     "novamterram:blue_spruce_sapling": {
+      "chance": 0.3
+    },
+    "novamterram:bluebell": {
+      "chance": 0.65
+    },
+    "novamterram:bromeliad": {
+      "chance": 0.65
+    },
+    "novamterram:heather": {
+      "chance": 0.65
+    },
+    "novamterram:heather_petals": {
+      "chance": 0.3
+    },
+    "novamterram:iris": {
+      "chance": 0.65
+    },
+    "novamterram:lavender": {
+      "chance": 0.65
+    },
+    "novamterram:lavender_petals": {
+      "chance": 0.3
+    },
+    "novamterram:mahogany_leaves": {
+      "chance": 0.3
+    },
+    "novamterram:mahogany_sapling": {
+      "chance": 0.3
+    },
+    "novamterram:myrtle_leaf_carpet": {
+      "chance": 0.3
+    },
+    "novamterram:olive": {
+      "chance": 0.65
+    },
+    "novamterram:olive_hanging": {
+      "chance": 0.5
+    },
+    "novamterram:olive_leaves": {
+      "chance": 0.3
+    },
+    "novamterram:orange_autumnal_leaf_carpet": {
+      "chance": 0.3
+    },
+    "novamterram:orange_autumnal_leaves": {
+      "chance": 0.3
+    },
+    "novamterram:orange_autumnal_pine_sapling": {
+      "chance": 0.3
+    },
+    "novamterram:paulownia_leaf_carpet": {
+      "chance": 0.3
+    },
+    "novamterram:paulownia_leaves": {
+      "chance": 0.3
+    },
+    "novamterram:paulownia_sapling": {
+      "chance": 0.3
+    },
+    "novamterram:purple_bluebell": {
+      "chance": 0.65
+    },
+    "novamterram:purple_myrtle_leaves": {
+      "chance": 0.3
+    },
+    "novamterram:purple_myrtle_sapling": {
+      "chance": 0.3
+    },
+    "novamterram:red_myrtle_leaves": {
+      "chance": 0.3
+    },
+    "novamterram:red_myrtle_sapling": {
+      "chance": 0.3
+    },
+    "novamterram:silver_sage": {
+      "chance": 0.65
+    },
+    "novamterram:teak_leaves": {
+      "chance": 0.3
+    },
+    "novamterram:teak_sapling": {
+      "chance": 0.3
+    },
+    "novamterram:thistle": {
+      "chance": 0.65
+    },
+    "novamterram:trillium": {
+      "chance": 0.65
+    },
+    "novamterram:white_myrtle_leaves": {
+      "chance": 0.3
+    },
+    "novamterram:white_myrtle_sapling": {
+      "chance": 0.3
+    },
+    "novamterram:yellow_autumnal_leaf_carpet": {
+      "chance": 0.3
+    },
+    "novamterram:yellow_autumnal_leaves": {
+      "chance": 0.3
+    },
+    "novamterram:yellow_autumnal_pine_sapling": {
       "chance": 0.3
     }
   }

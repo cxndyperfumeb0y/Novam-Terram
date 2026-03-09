@@ -3,7 +3,7 @@
   "fallback": "minecraft:village/taiga/terminators",
   "elements": [
     {
-      "weight": 1,
+      "weight": 2,
       "element": {
         "location": "minecraft:village/taiga/streets/corner_01",
         "processors": "novamterram:blue_spruce_village",
@@ -12,7 +12,7 @@
       }
     },
     {
-      "weight": 1,
+      "weight": 2,
       "element": {
         "location": "minecraft:village/taiga/streets/corner_02",
         "processors": "novamterram:blue_spruce_village",
@@ -21,7 +21,16 @@
       }
     },
     {
-      "weight": 1,
+      "weight": 2,
+      "element": {
+        "location": "minecraft:village/taiga/streets/corner_03",
+        "processors": "novamterram:blue_spruce_village",
+        "projection": "terrain_matching",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 4,
       "element": {
         "location": "minecraft:village/taiga/streets/straight_01",
         "processors": "novamterram:blue_spruce_village",
@@ -30,7 +39,7 @@
       }
     },
     {
-      "weight": 1,
+      "weight": 4,
       "element": {
         "location": "minecraft:village/taiga/streets/straight_02",
         "processors": "novamterram:blue_spruce_village",
@@ -39,7 +48,43 @@
       }
     },
     {
-      "weight": 1,
+      "weight": 4,
+      "element": {
+        "location": "minecraft:village/taiga/streets/straight_03",
+        "processors": "novamterram:blue_spruce_village",
+        "projection": "terrain_matching",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 4,
+      "element": {
+        "location": "minecraft:village/taiga/streets/straight_04",
+        "processors": "novamterram:blue_spruce_village",
+        "projection": "terrain_matching",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 4,
+      "element": {
+        "location": "minecraft:village/taiga/streets/straight_05",
+        "processors": "novamterram:blue_spruce_village",
+        "projection": "terrain_matching",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 4,
+      "element": {
+        "location": "minecraft:village/taiga/streets/straight_06",
+        "processors": "novamterram:blue_spruce_village",
+        "projection": "terrain_matching",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 7,
       "element": {
         "location": "minecraft:village/taiga/streets/crossroad_01",
         "processors": "novamterram:blue_spruce_village",
@@ -48,7 +93,25 @@
       }
     },
     {
-      "weight": 1,
+      "weight": 7,
+      "element": {
+        "location": "minecraft:village/taiga/streets/crossroad_02",
+        "processors": "novamterram:blue_spruce_village",
+        "projection": "terrain_matching",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 7,
+      "element": {
+        "location": "minecraft:village/taiga/streets/crossroad_03",
+        "processors": "novamterram:blue_spruce_village",
+        "projection": "terrain_matching",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 3,
       "element": {
         "location": "minecraft:village/taiga/streets/turn_01",
         "processors": "novamterram:blue_spruce_village",

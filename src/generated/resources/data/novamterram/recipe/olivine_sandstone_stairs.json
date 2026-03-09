@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "olivine_sandstone",
   "key": {
     "#": {
       "item": "novamterram:olivine_sandstone"

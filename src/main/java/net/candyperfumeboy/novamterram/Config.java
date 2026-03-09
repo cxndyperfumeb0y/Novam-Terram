@@ -1,36 +1,142 @@
 package net.candyperfumeboy.novamterram;
 
-import java.util.List;
-
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-// An example config class. This is not required, but it's a good idea to have one to keep your config organized.
-// Demonstrates how to use Neo's config APIs
 public class Config {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
-    public static final ModConfigSpec.BooleanValue LOG_DIRT_BLOCK = BUILDER
-            .comment("Whether to log the dirt block on common setup")
-            .define("logDirtBlock", true);
+    // --- BIOME SETTINGS ---
 
-    public static final ModConfigSpec.IntValue MAGIC_NUMBER = BUILDER
-            .comment("A magic number")
-            .defineInRange("magicNumber", 42, 0, Integer.MAX_VALUE);
+    // Mediterranean & Coastal
+    public static final ModConfigSpec.BooleanValue ENABLE_AEGEAN = BUILDER
+            .comment("Should the Aegean Coast biome generate?")
+            .define("biomes.enable_aegean_coast", true);
 
-    public static final ModConfigSpec.ConfigValue<String> MAGIC_NUMBER_INTRODUCTION = BUILDER
-            .comment("What you want the introduction message to be for the magic number")
-            .define("magicNumberIntroduction", "The magic number is... ");
+    public static final ModConfigSpec.BooleanValue ENABLE_MAQUIS = BUILDER
+            .comment("Should the Maquis Shrubland biome generate?")
+            .define("biomes.enable_maquis", true);
 
-    // a list of strings that are treated as resource locations for items
-    public static final ModConfigSpec.ConfigValue<List<? extends String>> ITEM_STRINGS = BUILDER
-            .comment("A list of items to log on common setup.")
-            .defineListAllowEmpty("items", List.of("minecraft:iron_ingot"), () -> "", Config::validateItemName);
+    public static final ModConfigSpec.BooleanValue ENABLE_MANGROVE_LAGOON = BUILDER
+            .comment("Should the tropical Mangrove Lagoon generate?")
+            .define("biomes.enable_mangrove_lagoon", true);
+
+    public static final ModConfigSpec.BooleanValue ENABLE_COASTAL_CHAPARRAL = BUILDER
+            .comment("Should the arid Coastal Chaparral generate?")
+            .define("biomes.enable_coastal_chaparral", true);
+
+    // Forests & Woods
+    public static final ModConfigSpec.BooleanValue ENABLE_BLUE_GROVE = BUILDER
+            .comment("Should the Blue Grove biome generate?")
+            .define("biomes.enable_blue_grove", true);
+
+    public static final ModConfigSpec.BooleanValue ENABLE_ROYAL_FOREST = BUILDER
+            .comment("Should the rare, flowering Royal Forest (Paulownia trees) generate?")
+            .define("biomes.enable_royal_forest", true);
+
+    public static final ModConfigSpec.BooleanValue ENABLE_BLUEBELL_WOODS = BUILDER
+            .comment("Should the flower-carpeted Bluebell Woods generate?")
+            .define("biomes.enable_bluebell_woods", true);
+
+    public static final ModConfigSpec.BooleanValue ENABLE_BLACK_FOREST = BUILDER
+            .comment("Should the dense, dark Black Forest generate?")
+            .define("biomes.enable_black_forest", true);
+
+    public static final ModConfigSpec.BooleanValue ENABLE_OZARK_FOREST = BUILDER
+            .comment("Should the rocky Ozark Hardwood Forest generate?")
+            .define("biomes.enable_ozark_forest", true);
+
+    // Highlands & Mountains
+    public static final ModConfigSpec.BooleanValue ENABLE_ANDEAN_HILLS = BUILDER
+            .comment("Should the Andean Hills biome generate?")
+            .define("biomes.enable_andean_hills", true);
+
+    public static final ModConfigSpec.BooleanValue ENABLE_CLOUD_FOREST = BUILDER
+            .comment("Should the misty Cloud Forest (Andean variant) generate?")
+            .define("biomes.enable_cloud_forest", true);
+
+    public static final ModConfigSpec.BooleanValue ENABLE_CEDAR_SLOPES = BUILDER
+            .comment("Should the steep Cedar Slopes generate?")
+            .define("biomes.enable_cedar_slopes", true);
+
+    public static final ModConfigSpec.BooleanValue ENABLE_HEATH = BUILDER
+            .comment("Should the Heath biome generate?")
+            .define("biomes.enable_heath", true);
+
+    // Taigas & Cold Biomes
+    public static final ModConfigSpec.BooleanValue ENABLE_AUTUMNAL_TAIGA = BUILDER
+            .comment("Should the Autumnal Taiga (Orange/Yellow Pines) generate?")
+            .define("biomes.enable_autumnal_taiga", true);
+
+    public static final ModConfigSpec.BooleanValue ENABLE_LARCH_FOREST = BUILDER
+            .comment("Should the Siberian-inspired Larch Forest generate?")
+            .define("biomes.enable_larch_forest", true);
+
+    public static final ModConfigSpec.BooleanValue ENABLE_SNOWBLOSSOM_GROVE = BUILDER
+            .comment("Should the Snowblossom Grove generate?")
+            .define("biomes.enable_snowblossom_grove", true);
+
+    // Wetlands & Rivers
+    public static final ModConfigSpec.BooleanValue ENABLE_MIRROR_MIRE = BUILDER
+            .comment("Should the Mirror Mire generate as a rare heart within Blue Groves?")
+            .define("biomes.enable_mirror_mire", true);
+
+    public static final ModConfigSpec.BooleanValue ENABLE_CYPRESS_FEN = BUILDER
+            .comment("Should the Cypress Fen biome generate?")
+            .define("biomes.enable_cypress_fen", true);
+
+    public static final ModConfigSpec.BooleanValue ENABLE_SILVER_BIRCH_WETLAND = BUILDER
+            .comment("Should the watery Silver Birch Wetland generate?")
+            .define("biomes.enable_silver_birch_wetland", true);
+
+    public static final ModConfigSpec.BooleanValue ENABLE_GALLERY_FOREST = BUILDER
+            .comment("Should the narrow Gallery Forest generate along rivers?")
+            .define("biomes.enable_gallery_forest", true);
+
+    // Exotic & Tropical
+    public static final ModConfigSpec.BooleanValue ENABLE_RAINFOREST = BUILDER
+            .comment("Should the Rainforest biome generate?")
+            .define("biomes.enable_rainforest", true);
+
+    public static final ModConfigSpec.BooleanValue ENABLE_SAFFRON_GROVE = BUILDER
+            .comment("Should the humid, orange-hazed Saffron Grove generate?")
+            .define("biomes.enable_saffron_grove", true);
+
+    public static final ModConfigSpec.BooleanValue ENABLE_MYRTLE_FIELDS = BUILDER
+            .comment("Should the flowering Myrtle Fields generate?")
+            .define("biomes.enable_myrtle_fields", true);
+
+    public static final ModConfigSpec.BooleanValue ENABLE_FUNGAL_REACH = BUILDER
+            .comment("Should the vertical, misty Fungal Reach generate?")
+            .define("biomes.enable_fungal_reach", true);
+
+    public static final ModConfigSpec.BooleanValue ENABLE_AMBER_SANDS = BUILDER
+            .comment("Should the rare, crystalline Amber Sands generate?")
+            .define("biomes.enable_amber_sands", true);
+
+    public static final ModConfigSpec.BooleanValue ENABLE_SILVER_BIRCH_VELD = BUILDER
+            .comment("Should the Silver Birch Veld generate?")
+            .define("biomes.enable_silver_birch_veld", true);
+
+    public static final ModConfigSpec.BooleanValue ENABLE_CALDERA_GROTTO = BUILDER
+            .comment("Should the Caldera Grotto generate?")
+            .define("biomes.enable_caldera_grotto", true);
+
+    // --- REGION SETTINGS ---
+    public static final ModConfigSpec.IntValue COASTAL_REGION_WEIGHT = BUILDER
+            .comment("The weight of the Novam Terram Coastal regions.")
+            .defineInRange("region.coastal_weight", 10, 0, 100);
+
+    public static final ModConfigSpec.IntValue OVERWORLD_REGION_WEIGHT = BUILDER
+            .comment("The weight of the Novam Terram Overworld regions.")
+            .defineInRange("region.overworld_weight", 10, 0, 100);
+
+    public static final ModConfigSpec.IntValue PEAK_REGION_WEIGHT = BUILDER
+            .comment("The weight of the Novam Terram Peak region.")
+            .defineInRange("region.peak_weight", 10, 0, 100);
+
+    public static final ModConfigSpec.IntValue SUB_REGION_WEIGHT = BUILDER
+            .comment("The weight of the Novam Terram Subbiome region.")
+            .defineInRange("region.sub_weight", 10, 0, 100);
 
     static final ModConfigSpec SPEC = BUILDER.build();
-
-    private static boolean validateItemName(final Object obj) {
-        return obj instanceof String itemName && BuiltInRegistries.ITEM.containsKey(ResourceLocation.parse(itemName));
-    }
 }

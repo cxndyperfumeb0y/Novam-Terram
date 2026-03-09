@@ -1,6 +1,6 @@
 {
   "type": "minecraft:jigsaw",
-  "biomes": "novamterram:blue_spruce_taiga",
+  "biomes": "novamterram:blue_grove",
   "step": "surface_structures",
   "start_pool": "novamterram:blue_spruce/town_centers",
   "size": 7,
