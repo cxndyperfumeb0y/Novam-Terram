@@ -136,7 +136,7 @@ public class NTPolarBearEvents {
         handleIceFishing(bear);
         handleCubPosition(bear);
 
-        if (bear.tickCount % 60 == 0) handleVillagerPanic(bear);
+        if (bear.tickCount % 20 == 0 && !bear.isBaby()) handleVillagerPanic(bear);
     }
 
     /* --- CORE LOGIC MODULES --- */
@@ -227,7 +227,10 @@ public class NTPolarBearEvents {
 
     private static void handleVillagerPanic(PolarBear bear) {
         List<Villager> villagers = bear.level().getEntitiesOfClass(Villager.class, bear.getBoundingBox().inflate(12.0D));
-        for (Villager v : villagers) v.getBrain().setMemory(net.minecraft.world.entity.ai.memory.MemoryModuleType.DANGER_DETECTED_RECENTLY, true);
+        // Villagers only react to memories their brain knows; "nearest hostile" makes them run from it.
+        for (Villager v : villagers) {
+            v.getBrain().setMemoryWithExpiry(net.minecraft.world.entity.ai.memory.MemoryModuleType.NEAREST_HOSTILE, bear, 40L);
+        }
     }
 
     private static void showParticles(PolarBear bear, net.minecraft.core.particles.ParticleOptions type, int count) {
@@ -246,7 +249,7 @@ public class NTPolarBearEvents {
         public EatBaitGoal(PolarBear b) { this.bear = b; this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK)); }
 
         @Override public boolean canUse() {
-            if (bear.isBaby() || bear.tickCount % 10 != 0) return false;
+            if (bear.isBaby() || bear.getRandom().nextInt(5) != 0) return false;
             // A full, calm bear ignores more fish, unless it has been provoked again.
             if (bear.getTarget() == null && isCalm(bear)) return false;
             List<ItemEntity> items = bear.level().getEntitiesOfClass(ItemEntity.class, bear.getBoundingBox().inflate(8.0D),

@@ -2,12 +2,10 @@ package net.candyperfumeboy.novamterram.entities.custom;
 
 import net.candyperfumeboy.novamterram.entities.NTEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -35,6 +33,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.CampfireBlock;
+import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
@@ -51,23 +50,18 @@ import java.util.UUID;
 public class BrownBearEntity extends AbstractNTBear implements NeutralMob {
     public static final TagKey<EntityType<?>> BEAR_PREY = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath("novamterram", "bear_prey"));
 
-    private static final EntityDataAccessor<Integer> DATA_VARIANCE = SynchedEntityData.defineId(BrownBearEntity.class, EntityDataSerializers.INT);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
 
     private int remainingPersistentAngerTime;
-    @Nullable private UUID persistentAngerTarget;
+    @Nullable
+    private UUID persistentAngerTarget;
     private int warningSoundTicks;
     // A player who ignored the warning and may now be attacked.
-    @Nullable private Player warnedPlayer;
+    @Nullable
+    private Player warnedPlayer;
 
     public BrownBearEntity(EntityType<? extends BrownBearEntity> type, Level level) {
         super(type, level);
-    }
-
-    @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_VARIANCE, 0);
     }
 
     @Override
@@ -104,7 +98,7 @@ public class BrownBearEntity extends AbstractNTBear implements NeutralMob {
         super.tick();
         if (this.warningSoundTicks > 0) this.warningSoundTicks--;
         if (!this.level().isClientSide) {
-            this.updatePersistentAnger((ServerLevel)this.level(), true);
+            this.updatePersistentAnger((ServerLevel) this.level(), true);
         }
     }
 
@@ -120,8 +114,10 @@ public class BrownBearEntity extends AbstractNTBear implements NeutralMob {
             this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         }
 
-        @Override public boolean canUse() {
-            if (bear.isBaby() || bear.level().getGameTime() < nextFishTime || bear.getRandom().nextInt(20) != 0) return false;
+        @Override
+        public boolean canUse() {
+            if (bear.isBaby() || bear.level().getGameTime() < nextFishTime || bear.getRandom().nextInt(20) != 0)
+                return false;
             this.target = bear.level().getNearestEntity(
                     bear.level().getEntitiesOfClass(LivingEntity.class, bear.getBoundingBox().inflate(10.0D),
                             e -> e.getType().is(BEAR_PREY)),
@@ -129,15 +125,24 @@ public class BrownBearEntity extends AbstractNTBear implements NeutralMob {
             return this.target != null;
         }
 
-        @Override public boolean canContinueToUse() {
+        @Override
+        public boolean canContinueToUse() {
             return target != null && target.isAlive() && chaseTicks < 200 && bear.distanceToSqr(target) < 144.0D;
         }
 
-        @Override public void start() { chaseTicks = 0; bear.setDiving(true); }
+        @Override
+        public void start() {
+            chaseTicks = 0;
+            bear.setDiving(true);
+        }
 
-        @Override public boolean requiresUpdateEveryTick() { return true; }
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
 
-        @Override public void tick() {
+        @Override
+        public void tick() {
             bear.getLookControl().setLookAt(target);
             if (chaseTicks++ % 10 == 0) bear.getNavigation().moveTo(target, 1.8D);
             if (bear.distanceToSqr(target) < 6.0D
@@ -147,7 +152,8 @@ public class BrownBearEntity extends AbstractNTBear implements NeutralMob {
             }
         }
 
-        @Override public void stop() {
+        @Override
+        public void stop() {
             bear.setDiving(false);
             bear.getNavigation().stop();
             nextFishTime = bear.level().getGameTime() + 1200; // one catch attempt per minute
@@ -163,22 +169,67 @@ public class BrownBearEntity extends AbstractNTBear implements NeutralMob {
                 .add(Attributes.ATTACK_DAMAGE, 8.0D);
     }
 
-    @Override public boolean isFood(ItemStack stack) { return stack.is(ItemTags.FISHES) || stack.is(ItemTags.FOX_FOOD); }
+    @Override
+    public boolean isFood(ItemStack stack) {
+        return stack.is(ItemTags.FISHES) || stack.is(ItemTags.FOX_FOOD);
+    }
 
     /* --- ANGER & BREEDING LOGIC --- */
-    @Override public void addAdditionalSaveData(CompoundTag c) { super.addAdditionalSaveData(c); this.addPersistentAngerSaveData(c); }
-    @Override public void readAdditionalSaveData(CompoundTag c) { super.readAdditionalSaveData(c); this.readPersistentAngerSaveData(this.level(), c); }
-    @Override public void startPersistentAngerTimer() { this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random)); }
-    @Override public void setRemainingPersistentAngerTime(int t) { this.remainingPersistentAngerTime = t; }
-    @Override public int getRemainingPersistentAngerTime() { return this.remainingPersistentAngerTime; }
-    @Override public void setPersistentAngerTarget(@Nullable UUID target) { this.persistentAngerTarget = target; }
-    @Nullable @Override public UUID getPersistentAngerTarget() { return this.persistentAngerTarget; }
-    @Nullable @Override public AgeableMob getBreedOffspring(ServerLevel l, AgeableMob p) { return NTEntities.BROWN_BEAR.get().create(l); }
+    @Override
+    public void addAdditionalSaveData(CompoundTag c) {
+        super.addAdditionalSaveData(c);
+        this.addPersistentAngerSaveData(c);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag c) {
+        super.readAdditionalSaveData(c);
+        this.readPersistentAngerSaveData(this.level(), c);
+    }
+
+    @Override
+    public void startPersistentAngerTimer() {
+        this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
+    }
+
+    @Override
+    public void setRemainingPersistentAngerTime(int t) {
+        this.remainingPersistentAngerTime = t;
+    }
+
+    @Override
+    public int getRemainingPersistentAngerTime() {
+        return this.remainingPersistentAngerTime;
+    }
+
+    @Override
+    public void setPersistentAngerTarget(@Nullable UUID target) {
+        this.persistentAngerTarget = target;
+    }
+
+    @Nullable
+    @Override
+    public UUID getPersistentAngerTarget() {
+        return this.persistentAngerTarget;
+    }
+
+    @Nullable
+    @Override
+    public AgeableMob getBreedOffspring(ServerLevel l, AgeableMob p) {
+        return NTEntities.BROWN_BEAR.get().create(l);
+    }
 
     /* --- SOUNDS --- */
-    @Override protected SoundEvent getAmbientSound() { return this.isBaby() ? SoundEvents.POLAR_BEAR_AMBIENT_BABY : SoundEvents.POLAR_BEAR_AMBIENT; }
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return this.isBaby() ? SoundEvents.POLAR_BEAR_AMBIENT_BABY : SoundEvents.POLAR_BEAR_AMBIENT;
+    }
+
     // Deeper than a polar bear, so brown bears sound different (cubs are still squeakier).
-    @Override public float getVoicePitch() { return super.getVoicePitch() * 0.85F; }
+    @Override
+    public float getVoicePitch() {
+        return super.getVoicePitch() * 0.85F;
+    }
 
     // About 1 in 4 naturally spawned pairs is a mother with a cub (the first of a group is always an adult).
     @Override
@@ -188,28 +239,63 @@ public class BrownBearEntity extends AbstractNTBear implements NeutralMob {
         return super.finalizeSpawn(level, difficulty, spawnType, data);
     }
 
-    @Override protected SoundEvent getHurtSound(DamageSource d) { return SoundEvents.POLAR_BEAR_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.POLAR_BEAR_DEATH; }
-    @Override protected void playStepSound(BlockPos p, BlockState b) { this.playSound(SoundEvents.POLAR_BEAR_STEP, 0.15F, 1.0F); }
-    protected void playWarningSound() { if (this.warningSoundTicks <= 0) { this.playSound(SoundEvents.POLAR_BEAR_WARNING, 1.0F, this.getVoicePitch()); this.warningSoundTicks = 40; } }
+    @Override
+    protected SoundEvent getHurtSound(DamageSource d) {
+        return SoundEvents.POLAR_BEAR_HURT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.POLAR_BEAR_DEATH;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos p, BlockState b) {
+        this.playSound(SoundEvents.POLAR_BEAR_STEP, 0.15F, 1.0F);
+    }
+
+    protected void playWarningSound() {
+        if (this.warningSoundTicks <= 0) {
+            this.playSound(SoundEvents.POLAR_BEAR_WARNING, 1.0F, this.getVoicePitch());
+            this.warningSoundTicks = 40;
+        }
+    }
 
     /* --- GOAL CLASSES --- */
     class BrownBearMeleeAttackGoal extends MeleeAttackGoal {
-        public BrownBearMeleeAttackGoal() { super(BrownBearEntity.this, 1.25D, true); }
-        @Override public void tick() {
+        public BrownBearMeleeAttackGoal() {
+            super(BrownBearEntity.this, 1.25D, true);
+        }
+
+        @Override
+        public void tick() {
             super.tick();
             LivingEntity enemy = this.mob.getTarget();
             if (enemy != null && this.mob.distanceToSqr(enemy) <= 4.0D) {
-                if (this.getTicksUntilNextAttack() <= 10) { BrownBearEntity.this.setStanding(true); BrownBearEntity.this.playWarningSound(); }
-            } else { BrownBearEntity.this.setStanding(false); }
+                if (this.getTicksUntilNextAttack() <= 10) {
+                    BrownBearEntity.this.setStanding(true);
+                    BrownBearEntity.this.playWarningSound();
+                }
+            } else {
+                BrownBearEntity.this.setStanding(false);
+            }
         }
-        @Override public void stop() { BrownBearEntity.this.setStanding(false); super.stop(); }
+
+        @Override
+        public void stop() {
+            BrownBearEntity.this.setStanding(false);
+            super.stop();
+        }
     }
+
     class BrownBearAttackPlayersGoal extends NearestAttackableTargetGoal<Player> {
-        public BrownBearAttackPlayersGoal() { super(BrownBearEntity.this, Player.class, 20, true, true, null); }
+        public BrownBearAttackPlayersGoal() {
+            super(BrownBearEntity.this, Player.class, 20, true, true, null);
+        }
 
         // Defensive only: attacks once WarnIntruderGoal has been ignored. Being hit is handled by HurtByTarget.
-        @Override public boolean canUse() {
+        @Override
+        public boolean canUse() {
             Player intruder = BrownBearEntity.this.warnedPlayer;
             if (intruder == null) return false;
             BrownBearEntity.this.warnedPlayer = null;
@@ -217,7 +303,10 @@ public class BrownBearEntity extends AbstractNTBear implements NeutralMob {
             return intruder.isAlive() && !intruder.isCreative() && !intruder.isSpectator();
         }
 
-        @Override protected double getFollowDistance() { return super.getFollowDistance() * 0.5D; }
+        @Override
+        protected double getFollowDistance() {
+            return super.getFollowDistance() * 0.5D;
+        }
     }
 
     private boolean hasCubNearby() {
@@ -225,38 +314,49 @@ public class BrownBearEntity extends AbstractNTBear implements NeutralMob {
                 this.getBoundingBox().inflate(8.0D, 4.0D, 8.0D), BrownBearEntity::isBaby).isEmpty();
     }
 
-    /** Stands up and growls first. Backing away ends it; staying about 3 seconds or coming very close does not. */
+    /**
+     * Stands up and growls first. Backing away ends it; staying about 3 seconds or coming very close does not.
+     */
     class WarnIntruderGoal extends Goal {
         private Player intruder;
         private int ticks;
         private boolean done;
 
-        public WarnIntruderGoal() { this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK)); }
+        public WarnIntruderGoal() {
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        }
 
-        @Override public boolean canUse() {
+        @Override
+        public boolean canUse() {
             BrownBearEntity bear = BrownBearEntity.this;
-            if (bear.isBaby() || bear.getTarget() != null || bear.tickCount % 10 != 0
+            if (bear.isBaby() || bear.getTarget() != null || bear.getRandom().nextInt(5) != 0
                     || bear.level().getDifficulty() == Difficulty.PEACEFUL) return false;
             intruder = bear.level().getNearestPlayer(bear.getX(), bear.getY(), bear.getZ(), 12.0D,
                     EntitySelector.NO_CREATIVE_OR_SPECTATOR);
             return intruder != null && bear.hasLineOfSight(intruder) && bear.hasCubNearby();
         }
 
-        @Override public boolean canContinueToUse() {
+        @Override
+        public boolean canContinueToUse() {
             return !done && intruder.isAlive() && BrownBearEntity.this.getTarget() == null
                     && BrownBearEntity.this.distanceToSqr(intruder) < 144.0D;
         }
 
-        @Override public boolean requiresUpdateEveryTick() { return true; }
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
 
-        @Override public void start() {
+        @Override
+        public void start() {
             ticks = 0;
             done = false;
             BrownBearEntity.this.setSleepyTime(false);
             BrownBearEntity.this.getNavigation().stop();
         }
 
-        @Override public void tick() {
+        @Override
+        public void tick() {
             BrownBearEntity bear = BrownBearEntity.this;
             bear.setStanding(true);
             bear.getLookControl().setLookAt(intruder, 30.0F, 30.0F);
@@ -269,7 +369,8 @@ public class BrownBearEntity extends AbstractNTBear implements NeutralMob {
             }
         }
 
-        @Override public void stop() {
+        @Override
+        public void stop() {
             BrownBearEntity.this.setStanding(false);
             intruder = null;
         }
@@ -288,9 +389,12 @@ public class BrownBearEntity extends AbstractNTBear implements NeutralMob {
                 && this.level().getBiome(pos).value().getPrecipitationAt(pos) == Biome.Precipitation.SNOW;
     }
 
-    /** Light hibernation: dozes where it is while snow falls, or late at night. */
+    /**
+     * Light hibernation: dozes where it is while snow falls, or late at night.
+     */
     static class HibernateGoal extends Goal {
         private final BrownBearEntity bear;
+
         public HibernateGoal(BrownBearEntity bear) {
             this.bear = bear;
             this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
@@ -306,19 +410,49 @@ public class BrownBearEntity extends AbstractNTBear implements NeutralMob {
                     && !bear.isDisturbed();
         }
 
-        @Override public boolean canUse() {
-            return bear.tickCount % 20 == 0 && bear.onGround() && sleepWeather() && calm();
+        @Override
+        public boolean canUse() {
+            return bear.getRandom().nextInt(10) == 0 && bear.onGround() && sleepWeather() && calm();
         }
-        @Override public boolean canContinueToUse() { return sleepWeather() && calm(); }
-        @Override public void start() { bear.getNavigation().stop(); bear.setSleepyTime(true); }
-        @Override public void tick() { if (bear.tickCount % 100 == 0) bear.heal(1.0F); }
-        @Override public void stop() { bear.setSleepyTime(false); }
+
+        @Override
+        public boolean canContinueToUse() {
+            return sleepWeather() && calm();
+        }
+
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        } // so the healing timer is reliable
+
+        @Override
+        public void start() {
+            bear.getNavigation().stop();
+            bear.setSleepyTime(true);
+        }
+
+        @Override
+        public void tick() {
+            if (bear.tickCount % 100 == 0) bear.heal(1.0F);
+        }
+
+        @Override
+        public void stop() {
+            bear.setSleepyTime(false);
+        }
     }
 
-    /** Takes one piece of food from a campfire, or from a chest left under the open sky. */
+    /**
+     * Takes one piece of food from a campfire, or from a chest left under the open sky.
+     */
     static class RaidCampGoal extends MoveToBlockGoal {
         private final BrownBearEntity bear;
-        public RaidCampGoal(BrownBearEntity bear, double speed, int range) { super(bear, speed, range, 3); this.bear = bear; }
+        private boolean taken;
+
+        public RaidCampGoal(BrownBearEntity bear, double speed, int range) {
+            super(bear, speed, range, 3);
+            this.bear = bear;
+        }
 
         private static boolean isCampFood(ItemStack stack) {
             // Plain meat, fish, fruit and bread only. Golden apples and renamed items are never taken.
@@ -327,25 +461,40 @@ public class BrownBearEntity extends AbstractNTBear implements NeutralMob {
                     || stack.is(Items.GLOW_BERRIES) || stack.is(Items.APPLE) || stack.is(Items.BREAD));
         }
 
-        @Override public boolean canUse() {
+        @Override
+        public boolean canUse() {
             return !bear.isBaby() && bear.getTarget() == null
                     && bear.level().getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_MOBGRIEFING)
                     && super.canUse();
         }
 
-        @Override protected boolean isValidTarget(LevelReader level, BlockPos pos) {
+        @Override
+        public void start() {
+            super.start();
+            this.taken = false;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return !this.taken && super.canContinueToUse();
+        }
+
+        @Override
+        protected boolean isValidTarget(LevelReader level, BlockPos pos) {
             BlockState state = level.getBlockState(pos);
             if (state.getBlock() instanceof CampfireBlock) {
                 return level.getBlockEntity(pos) instanceof CampfireBlockEntity fire
                         && fire.getItems().stream().anyMatch(RaidCampGoal::isCampFood);
             }
-            return findInChest(level, pos) >= 0;
+            // check the block first: looking up a block entity at every position is much slower
+            return state.getBlock() instanceof ChestBlock && findInChest(level, pos) >= 0;
         }
 
         // Slot with food, or -1. Unopened loot chests are left alone so their loot is not rolled early.
         private static int findInChest(LevelReader level, BlockPos pos) {
             BlockEntity entity = level.getBlockEntity(pos);
-            if (!(entity instanceof ChestBlockEntity chest) || chest.getLootTable() != null || !level.canSeeSky(pos.above())) return -1;
+            if (!(entity instanceof ChestBlockEntity chest) || chest.getLootTable() != null || !level.canSeeSky(pos.above()))
+                return -1;
             for (int slot = 0; slot < chest.getContainerSize(); slot++) {
                 if (isCampFood(chest.getItem(slot))) return slot;
             }
@@ -353,12 +502,20 @@ public class BrownBearEntity extends AbstractNTBear implements NeutralMob {
         }
 
         // Stop beside the block instead of climbing on top of a fire.
-        @Override protected BlockPos getMoveToTarget() { return this.blockPos; }
-        @Override public double acceptedDistance() { return 2.5D; }
+        @Override
+        protected BlockPos getMoveToTarget() {
+            return this.blockPos;
+        }
 
-        @Override public void tick() {
+        @Override
+        public double acceptedDistance() {
+            return 2.5D;
+        }
+
+        @Override
+        public void tick() {
             super.tick();
-            if (!this.isReachedTarget() || !isValidTarget(bear.level(), this.blockPos)) return;
+            if (this.taken || !this.isReachedTarget() || !isValidTarget(bear.level(), this.blockPos)) return;
 
             if (bear.level().getBlockEntity(this.blockPos) instanceof CampfireBlockEntity fire) {
                 for (int slot = 0; slot < fire.getItems().size(); slot++) {
@@ -377,27 +534,69 @@ public class BrownBearEntity extends AbstractNTBear implements NeutralMob {
             }
             bear.heal(4.0F);
             bear.playSound(SoundEvents.PANDA_EAT, 1.0F, 0.8F);
+            this.taken = true; // one item per visit
             this.nextStartTick = 6000; // leaves the camp alone for about five minutes
         }
     }
 
     class BrownBearHurtByTargetGoal extends HurtByTargetGoal {
-        public BrownBearHurtByTargetGoal() { super(BrownBearEntity.this); }
-        @Override public void start() { super.start(); if (BrownBearEntity.this.isBaby()) { this.alertOthers(); this.stop(); } }
+        public BrownBearHurtByTargetGoal() {
+            super(BrownBearEntity.this);
+        }
+
+        @Override
+        public void start() {
+            super.start();
+            if (BrownBearEntity.this.isBaby()) {
+                this.alertOthers();
+                this.stop();
+            }
+        }
     }
+
     class BrownBearPanicGoal extends PanicGoal {
-        public BrownBearPanicGoal() { super(BrownBearEntity.this, 2.0D); }
-        @Override public boolean canUse() { return (BrownBearEntity.this.isBaby() || BrownBearEntity.this.isOnFire()) && super.canUse(); }
+        public BrownBearPanicGoal() {
+            super(BrownBearEntity.this, 2.0D);
+        }
+
+        @Override
+        public boolean canUse() {
+            return (BrownBearEntity.this.isBaby() || BrownBearEntity.this.isOnFire()) && super.canUse();
+        }
     }
+
     static class EatHoneyGoal extends MoveToBlockGoal {
         private final BrownBearEntity bear;
-        public EatHoneyGoal(BrownBearEntity b, double s, int r) { super(b, s, r, 4); this.bear = b; }
-        @Override protected boolean isValidTarget(LevelReader l, BlockPos p) { BlockState s = l.getBlockState(p); return s.is(BlockTags.BEEHIVES) && s.hasProperty(BeehiveBlock.HONEY_LEVEL) && s.getValue(BeehiveBlock.HONEY_LEVEL) > 0; }
-        @Override public boolean canUse() { return this.bear.level().getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_MOBGRIEFING) && super.canUse(); }
+
+        public EatHoneyGoal(BrownBearEntity b, double s, int r) {
+            super(b, s, r, 4);
+            this.bear = b;
+        }
+
+        @Override
+        protected boolean isValidTarget(LevelReader l, BlockPos p) {
+            BlockState s = l.getBlockState(p);
+            return s.is(BlockTags.BEEHIVES) && s.hasProperty(BeehiveBlock.HONEY_LEVEL) && s.getValue(BeehiveBlock.HONEY_LEVEL) > 0;
+        }
+
+        @Override
+        public boolean canUse() {
+            return this.bear.level().getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_MOBGRIEFING) && super.canUse();
+        }
+
         // Nests hang above the ground, so the bear only has to get close and reach up.
-        @Override protected BlockPos getMoveToTarget() { return this.blockPos; }
-        @Override public double acceptedDistance() { return 3.0D; }
-        @Override public void tick() {
+        @Override
+        protected BlockPos getMoveToTarget() {
+            return this.blockPos;
+        }
+
+        @Override
+        public double acceptedDistance() {
+            return 3.0D;
+        }
+
+        @Override
+        public void tick() {
             super.tick();
             BlockState s = bear.level().getBlockState(this.blockPos);
             if (this.isReachedTarget() && isValidTarget(bear.level(), this.blockPos)) {
@@ -407,13 +606,33 @@ public class BrownBearEntity extends AbstractNTBear implements NeutralMob {
             }
         }
     }
+
     static class HarvestBerriesGoal extends MoveToBlockGoal {
         private final BrownBearEntity bear;
-        public HarvestBerriesGoal(BrownBearEntity b, double s, int r) { super(b, s, r); this.bear = b; }
-        @Override public double acceptedDistance() { return 2.0D; }
-        @Override protected boolean isValidTarget(LevelReader l, BlockPos p) { BlockState s = l.getBlockState(p); return s.is(Blocks.SWEET_BERRY_BUSH) && s.getValue(SweetBerryBushBlock.AGE) >= 2; }
-        @Override public boolean canUse() { return this.bear.level().getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_MOBGRIEFING) && super.canUse(); }
-        @Override public void tick() {
+
+        public HarvestBerriesGoal(BrownBearEntity b, double s, int r) {
+            super(b, s, r);
+            this.bear = b;
+        }
+
+        @Override
+        public double acceptedDistance() {
+            return 2.0D;
+        }
+
+        @Override
+        protected boolean isValidTarget(LevelReader l, BlockPos p) {
+            BlockState s = l.getBlockState(p);
+            return s.is(Blocks.SWEET_BERRY_BUSH) && s.getValue(SweetBerryBushBlock.AGE) >= 2;
+        }
+
+        @Override
+        public boolean canUse() {
+            return this.bear.level().getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_MOBGRIEFING) && super.canUse();
+        }
+
+        @Override
+        public void tick() {
             super.tick();
             BlockState s = bear.level().getBlockState(this.blockPos);
             if (this.isReachedTarget() && s.is(Blocks.SWEET_BERRY_BUSH) && s.getValue(SweetBerryBushBlock.AGE) >= 2) {
@@ -423,30 +642,74 @@ public class BrownBearEntity extends AbstractNTBear implements NeutralMob {
             }
         }
     }
+
     static class CaveRestingGoal extends MoveToBlockGoal {
         private final BrownBearEntity bear;
-        public CaveRestingGoal(BrownBearEntity b, double s, int r) { super(b, s, r); this.bear = b; }
-        private boolean restTime() { return bear.level().isNight() || bear.level().isRaining(); }
-        @Override protected boolean isValidTarget(LevelReader l, BlockPos p) { return l.isEmptyBlock(p.above()) && !l.canSeeSky(p.above()); }
+
+        public CaveRestingGoal(BrownBearEntity b, double s, int r) {
+            super(b, s, r);
+            this.bear = b;
+        }
+
+        private boolean restTime() {
+            return bear.level().isNight() || bear.level().isRaining();
+        }
+
+        @Override
+        protected boolean isValidTarget(LevelReader l, BlockPos p) {
+            return l.getBlockState(p).isFaceSturdy(l, p, Direction.UP) && l.isEmptyBlock(p.above()) && l.isEmptyBlock(p.above(2))
+                    && !l.canSeeSky(p.above());
+        }
+
         // Check the time first so the block search only runs when it is needed.
-        @Override public boolean canUse() { return restTime() && !bear.isDisturbed() && super.canUse(); }
-        @Override public boolean canContinueToUse() { return restTime() && !bear.isDisturbed() && bear.hurtTime == 0 && super.canContinueToUse(); }
-        @Override public void tick() { super.tick(); if (this.isReachedTarget()) bear.setSleepyTime(true); }
-        @Override public void stop() { super.stop(); bear.setSleepyTime(false); }
+        @Override
+        public boolean canUse() {
+            return restTime() && !bear.isDisturbed() && super.canUse();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return restTime() && !bear.isDisturbed() && bear.hurtTime == 0 && super.canContinueToUse();
+        }
+
+        @Override
+        public void tick() {
+            super.tick();
+            if (this.isReachedTarget()) bear.setSleepyTime(true);
+        }
+
+        @Override
+        public void stop() {
+            super.stop();
+            bear.setSleepyTime(false);
+        }
     }
+
     static class BabyScavengerGoal extends Goal {
         private final BrownBearEntity baby;
         private ItemEntity food;
-        public BabyScavengerGoal(BrownBearEntity b) { this.baby = b; this.setFlags(EnumSet.of(Flag.MOVE)); }
-        @Override public boolean canUse() {
+
+        public BabyScavengerGoal(BrownBearEntity b) {
+            this.baby = b;
+            this.setFlags(EnumSet.of(Flag.MOVE));
+        }
+
+        @Override
+        public boolean canUse() {
             if (!baby.isBaby() || baby.isPassenger() || baby.getRandom().nextInt(10) != 0) return false;
             List<ItemEntity> items = baby.level().getEntitiesOfClass(ItemEntity.class, baby.getBoundingBox().inflate(6.0D), i -> i.getItem().is(ItemTags.FOX_FOOD));
             food = items.isEmpty() ? null : items.get(0);
             return food != null;
         }
-        @Override public boolean canContinueToUse() { return food != null && food.isAlive() && baby.isBaby() && baby.distanceToSqr(food) < 100.0D; }
-        @Override public void tick() {
-            baby.getNavigation().moveTo(food, 1.2D);
+
+        @Override
+        public boolean canContinueToUse() {
+            return food != null && food.isAlive() && baby.isBaby() && baby.distanceToSqr(food) < 100.0D;
+        }
+
+        @Override
+        public void tick() {
+            if (baby.getNavigation().isDone()) baby.getNavigation().moveTo(food, 1.2D);
             if (baby.distanceToSqr(food) < 2.5D) {
                 food.getItem().shrink(1);
                 if (food.getItem().isEmpty()) food.discard();

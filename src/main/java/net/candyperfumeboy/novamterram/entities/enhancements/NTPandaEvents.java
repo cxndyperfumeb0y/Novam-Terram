@@ -167,6 +167,7 @@ public class NTPandaEvents {
         }
 
         // Scaring Ocelots
+        if (panda.tickCount % 10 != 0) return;
         panda.level().getEntitiesOfClass(Ocelot.class, panda.getBoundingBox().inflate(5.0D)).forEach(o -> {
             Vec3 escapeVec = o.position().subtract(panda.position()).normalize().scale(1.5D);
             o.setDeltaMovement(escapeVec.x, 0.2D, escapeVec.z);

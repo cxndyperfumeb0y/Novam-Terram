@@ -34,13 +34,9 @@ public class BearDen extends Feature<NoneFeatureConfiguration> {
                     BlockPos relativePos = pos.offset(x, y, -z);
 
                     // The Floor
-                    if (y == 0) {
-                        level.setBlock(relativePos.below(), Blocks.ANDESITE.defaultBlockState(), 2);
-                    }
-                    // The Air Pocket
-                    else {
-                        level.setBlock(relativePos, Blocks.AIR.defaultBlockState(), 2);
-                    }
+                    // Solid floor under the room (the bottom layer), then clear the room itself
+                    if (y == 0) level.setBlock(relativePos.below(), Blocks.ANDESITE.defaultBlockState(), 2);
+                    level.setBlock(relativePos, Blocks.AIR.defaultBlockState(), 2);
                 }
             }
         }
@@ -48,7 +44,7 @@ public class BearDen extends Feature<NoneFeatureConfiguration> {
         // 3. Guarantee the Spectacled Bear
         SpectacledBearEntity bear = NTEntities.SPECTACLED_BEAR.get().create(level.getLevel());
         if (bear != null) {
-            bear.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() - 1.0, random.nextFloat() * 360.0F, 0.0F);
+            bear.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() - 0.5, random.nextFloat() * 360.0F, 0.0F);
             bear.setPersistenceRequired();
 
             bear.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), net.minecraft.world.entity.MobSpawnType.CHUNK_GENERATION, null);

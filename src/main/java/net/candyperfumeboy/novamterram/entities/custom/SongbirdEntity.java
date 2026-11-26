@@ -11,6 +11,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.entity.player.Player;
@@ -19,7 +20,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -70,14 +70,6 @@ public class SongbirdEntity extends Parrot {
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
     }
 
-    // --- RIDING LOGIC (IRON GOLEM PERCH) ---
-
-    @Override
-    public Vec3 getPassengerRidingPosition(Entity entity) {
-        // Keeps the bird centered on the Golem's head
-        return super.getPassengerRidingPosition(entity).add(0, 0.45, 0);
-    }
-
     // --- BREEDING & TAMING ---
 
     @Override
@@ -85,28 +77,44 @@ public class SongbirdEntity extends Parrot {
         return FOOD_ITEMS.test(stack);
     }
 
+    // Vanilla parrots cannot breed or be babies, so both are switched back on here
+    @Override
+    public boolean isBaby() {
+        return this.getAge() < 0;
+    }
+
+    @Override
+    public boolean canMate(Animal other) {
+        return other != this && other instanceof SongbirdEntity bird && this.isInLove() && bird.isInLove();
+    }
+
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {
         SongbirdEntity baby = NTEntities.SONGBIRD.get().create(level);
         if (baby != null && parent instanceof SongbirdEntity parentBird) {
-            baby.setVariant(parentBird.getVariant());
+            baby.setVariant(this.random.nextBoolean() ? this.getVariant() : parentBird.getVariant());
+            if (this.isTame()) {
+                baby.setOwnerUUID(this.getOwnerUUID());
+                baby.setTame(true, true);
+            }
         }
         return baby;
     }
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        ItemStack itemstack = player.getItemInHand(hand);
+        ItemStack stack = player.getItemInHand(hand);
+        boolean food = this.isFood(stack);
 
-        if (!this.isTame() && FOOD_ITEMS.test(itemstack)) {
-            if (!player.getAbilities().instabuild) itemstack.shrink(1);
+        if (!this.isTame() && food) {
+            if (!player.getAbilities().instabuild) stack.shrink(1);
             if (!this.level().isClientSide) {
                 if (this.random.nextInt(10) == 0) {
                     this.tame(player);
-                    this.level().broadcastEntityEvent(this, (byte)7);
+                    this.level().broadcastEntityEvent(this, (byte) 7);
                 } else {
-                    this.level().broadcastEntityEvent(this, (byte)6);
+                    this.level().broadcastEntityEvent(this, (byte) 6);
                 }
             }
             return InteractionResult.sidedSuccess(this.level().isClientSide);
@@ -114,7 +122,15 @@ public class SongbirdEntity extends Parrot {
 
         if (this.isTame() && this.isOwnedBy(player)) {
             if (!this.level().isClientSide) {
-                this.setOrderedToSit(!this.isOrderedToSit());
+                if (food && this.getHealth() < this.getMaxHealth()) {
+                    this.heal(2.0F);
+                    if (!player.getAbilities().instabuild) stack.shrink(1);
+                } else if (food && this.getAge() == 0 && this.canFallInLove()) {
+                    this.setInLove(player);
+                    if (!player.getAbilities().instabuild) stack.shrink(1);
+                } else {
+                    this.setOrderedToSit(!this.isOrderedToSit());
+                }
             }
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
@@ -127,14 +143,14 @@ public class SongbirdEntity extends Parrot {
         super.aiStep();
         if (this.level().isClientSide) return;
 
-        // 1. Skittishness (Unless owner/holding food)
-        Player nearbyPlayer = this.level().getNearestPlayer(this, 5.0D);
-        if (nearbyPlayer != null && !this.isOwnedBy(nearbyPlayer)) {
-            if (!FOOD_ITEMS.test(nearbyPlayer.getMainHandItem()) && this.distanceToSqr(nearbyPlayer) < 9.0D) {
-                if (this.isPassenger()) this.stopRiding();
-                this.setOrderedToSit(false);
-                this.setInSittingPose(false);
-                this.setDeltaMovement(this.getDeltaMovement().add(0, 0.4, 0));
+        // 1. Wild birds flutter away from anyone who gets close without food
+        if (!this.isTame() && this.tickCount % 10 == 0 && (this.onGround() || this.isPassenger())) {
+            Player near = this.level().getNearestPlayer(this, 3.0D);
+            if (near != null && !near.isSpectator()
+                    && !this.isFood(near.getMainHandItem()) && !this.isFood(near.getOffhandItem())) {
+                this.stopRiding();
+                Vec3 away = this.position().subtract(near.position()).multiply(1, 0, 1).normalize().scale(0.3);
+                this.setDeltaMovement(away.x, 0.4, away.z);
             }
         }
 
@@ -144,11 +160,10 @@ public class SongbirdEntity extends Parrot {
                     this.getSoundSource(), 1.0F, 1.7F);
         }
 
-        // 3. Dismount if Golem is in danger
-        if (this.isPassenger() && this.getVehicle() instanceof IronGolem golem) {
-            if (golem.getTarget() != null || this.random.nextInt(1000) == 0) {
-                this.stopRiding();
-            }
+        // 3. Dismount if Golem is in danger, or now and then
+        if (this.getVehicle() instanceof IronGolem golem
+                && (golem.getTarget() != null || this.random.nextInt(1000) == 0)) {
+            this.stopRiding();
         }
     }
 
@@ -158,32 +173,53 @@ public class SongbirdEntity extends Parrot {
     static class PerchOnGolemGoal extends Goal {
         private final SongbirdEntity bird;
         private IronGolem golem;
+        private int timeLeft;
 
         public PerchOnGolemGoal(SongbirdEntity bird) {
             this.bird = bird;
             this.setFlags(EnumSet.of(Goal.Flag.MOVE));
         }
 
+        private boolean canPerchOn(IronGolem target) {
+            return target.isAlive() && !target.isVehicle() && target.getTarget() == null;
+        }
+
         @Override
         public boolean canUse() {
             if (this.bird.isPassenger() || this.bird.isOrderedToSit()) return false;
-            if (this.bird.getRandom().nextInt(200) != 0) return false;
+            if (this.bird.getRandom().nextInt(100) != 0) return false;
 
-            List<IronGolem> list = this.bird.level().getEntitiesOfClass(IronGolem.class, this.bird.getBoundingBox().inflate(10.0D));
-            if (!list.isEmpty()) {
-                this.golem = list.get(0);
-                return true;
-            }
-            return false;
+            List<IronGolem> list = this.bird.level().getEntitiesOfClass(IronGolem.class,
+                    this.bird.getBoundingBox().inflate(10.0D), this::canPerchOn);
+            if (list.isEmpty()) return false;
+            this.golem = list.get(0);
+            return true;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return this.timeLeft > 0 && !this.bird.isPassenger() && !this.bird.isOrderedToSit()
+                    && canPerchOn(this.golem);
+        }
+
+        @Override
+        public void start() {
+            this.timeLeft = this.adjustedTickDelay(200);
+        }
+
+        @Override
+        public void stop() {
+            this.bird.getNavigation().stop();
         }
 
         @Override
         public void tick() {
-            if (this.golem != null && this.golem.isAlive()) {
-                this.bird.getNavigation().moveTo(this.golem, 1.2D);
-                if (this.bird.distanceToSqr(this.golem) < 3.0D) {
-                    this.bird.startRiding(this.golem, true);
-                }
+            this.timeLeft--;
+            // Aim for the top of the golem, not its feet
+            this.bird.getNavigation().moveTo(this.golem.getX(), this.golem.getY() + this.golem.getBbHeight(),
+                    this.golem.getZ(), 1.2D);
+            if (this.bird.getBoundingBox().inflate(1.0D).intersects(this.golem.getBoundingBox())) {
+                this.bird.startRiding(this.golem, true);
             }
         }
     }
@@ -193,7 +229,8 @@ public class SongbirdEntity extends Parrot {
         private final SongbirdEntity bird;
 
         public SongbirdLeafPerchGoal(SongbirdEntity bird, double speed) {
-            super(bird, speed, 16);
+            // The last number lets it look up and down for leaves, not just at its own height
+            super(bird, speed, 12, 6);
             this.bird = bird;
         }
 
@@ -204,49 +241,84 @@ public class SongbirdEntity extends Parrot {
 
         @Override
         public boolean canUse() {
-            return !this.bird.isOrderedToSit() && super.canUse();
+            return !this.bird.isOrderedToSit() && !this.bird.isPassenger() && super.canUse();
         }
     }
 
-    /** Goal: Follow Faun entities (Requested feature). */
+    /** Goal: Follow Faun entities. */
     static class FollowFaunGoal extends Goal {
         private final SongbirdEntity bird;
         private LivingEntity faun;
         private final double speed;
         private final float minDist;
         private final float maxDist;
+        private int repathDelay;
 
         public FollowFaunGoal(SongbirdEntity bird, double speed, float min, float max) {
             this.bird = bird;
             this.speed = speed;
             this.minDist = min;
             this.maxDist = max;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
         }
 
         @Override
         public boolean canUse() {
             if (this.bird.isOrderedToSit() || this.bird.isPassenger()) return false;
-            List<? extends LivingEntity> list = this.bird.level().getEntitiesOfClass(FaunEntity.class, this.bird.getBoundingBox().inflate(12.0D));
-            if (!list.isEmpty()) {
-                this.faun = list.get(0);
-                return this.bird.distanceToSqr(this.faun) > (minDist * minDist);
-            }
-            return false;
+            if (this.bird.getRandom().nextInt(10) != 0) return false;
+
+            List<FaunEntity> list = this.bird.level().getEntitiesOfClass(FaunEntity.class,
+                    this.bird.getBoundingBox().inflate(12.0D));
+            if (list.isEmpty()) return false;
+            this.faun = list.get(0);
+            return this.bird.distanceToSqr(this.faun) > maxDist * maxDist;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return !this.bird.isOrderedToSit() && !this.bird.isPassenger() && this.faun.isAlive()
+                    && this.bird.distanceToSqr(this.faun) > minDist * minDist
+                    && this.bird.distanceToSqr(this.faun) < 256.0D;
+        }
+
+        @Override
+        public void start() {
+            this.repathDelay = 0;
+        }
+
+        @Override
+        public void stop() {
+            this.bird.getNavigation().stop();
         }
 
         @Override
         public void tick() {
-            if (this.faun != null && this.bird.distanceToSqr(this.faun) > (maxDist * maxDist)) {
-                this.bird.getNavigation().moveTo(this.faun, this.speed);
-            }
+            if (--this.repathDelay > 0) return;
+            this.repathDelay = this.adjustedTickDelay(10);
+            this.bird.getNavigation().moveTo(this.faun, this.speed);
         }
     }
 
+    /** Goal: get under cover when it rains. */
     static class SongbirdShelterGoal extends MoveToBlockGoal {
-        public SongbirdShelterGoal(SongbirdEntity bird) { super(bird, 1.2D, 16); }
+        private final SongbirdEntity bird;
+
+        public SongbirdShelterGoal(SongbirdEntity bird) {
+            super(bird, 1.2D, 12, 4);
+            this.bird = bird;
+        }
+
         @Override
-        protected boolean isValidTarget(LevelReader level, BlockPos pos) { return !level.canSeeSky(pos.above()); }
+        protected boolean isValidTarget(LevelReader level, BlockPos pos) {
+            // Something to stand on, open space above it, and a roof over that space
+            return !level.getBlockState(pos).isAir() && level.isEmptyBlock(pos.above())
+                    && !level.canSeeSky(pos.above());
+        }
+
         @Override
-        public boolean canUse() { return this.mob.level().isRaining() && super.canUse(); }
+        public boolean canUse() {
+            return this.bird.level().isRaining() && !this.bird.isOrderedToSit() && !this.bird.isPassenger()
+                    && super.canUse();
+        }
     }
 }

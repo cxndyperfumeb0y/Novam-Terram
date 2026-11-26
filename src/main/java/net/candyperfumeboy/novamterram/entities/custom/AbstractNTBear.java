@@ -7,9 +7,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
@@ -31,8 +29,6 @@ public abstract class AbstractNTBear extends Animal {
     private float clientSideStandAnimation;
 
     // Logic Timers
-    protected int honeyCooldown = 0;
-    protected int honeyDrunkTimer = 0;
 
     protected AbstractNTBear(EntityType<? extends Animal> type, Level level) {
         super(type, level);
@@ -83,17 +79,15 @@ public abstract class AbstractNTBear extends Animal {
             float oldAnimation = this.clientSideStandAnimation;
             this.clientSideStandAnimationO = oldAnimation;
             this.clientSideStandAnimation = Mth.clamp(this.clientSideStandAnimation + (this.isStanding() ? 1.0F : -1.0F), 0.0F, 6.0F);
-            if (oldAnimation != this.clientSideStandAnimation) this.refreshDimensions();
         }
 
-        if (!this.level().isClientSide) {
-            if (this.tickCount % 20 == 0) {
-                if (this.honeyCooldown > 0) this.honeyCooldown--;
-                if (this.honeyDrunkTimer > 0) this.honeyDrunkTimer--;
-                this.setDancing(this.isMusicNearby());
-            }
+        // Only bears that can dance look for music, every two seconds.
+        if (!this.level().isClientSide && this.canDance() && this.tickCount % 40 == 0) {
+            this.setDancing(this.isMusicNearby());
         }
     }
+
+    protected boolean canDance() { return false; }
 
     // True while a jukebox within 3 blocks is actually playing (a finished or stopped disc does not count).
     private boolean isMusicNearby() {
@@ -106,15 +100,6 @@ public abstract class AbstractNTBear extends Animal {
             }
         }
         return false;
-    }
-
-    @Override
-    public EntityDimensions getDefaultDimensions(Pose pose) {
-        if (pose == Pose.STANDING) {
-            float f = this.clientSideStandAnimation / 6.0F;
-            return super.getDefaultDimensions(pose).scale(1.0F, 1.0F + f);
-        }
-        return super.getDefaultDimensions(pose);
     }
 
     public float getStandingAnimationScale(float partialTicks) {
@@ -138,21 +123,13 @@ public abstract class AbstractNTBear extends Animal {
     @Override
     public void addAdditionalSaveData(CompoundTag c) {
         super.addAdditionalSaveData(c);
-        c.putBoolean("IsSleepy", this.isSleepyTime());
         c.putInt("TrustLevel", this.getTrustLevel());
-        c.putInt("HoneyCooldown", this.honeyCooldown);
-        c.putInt("HoneyDrunkTimer", this.honeyDrunkTimer);
-        c.putBoolean("IsDiving", this.isDiving());
-        c.putBoolean("IsClimbing", this.isClimbing());
     }
 
+    // Sleeping, diving and climbing are temporary, so they are not saved.
     @Override
     public void readAdditionalSaveData(CompoundTag c) {
         super.readAdditionalSaveData(c);
-        // Sleeping, diving and climbing are temporary, so they are not restored after a reload.
         this.setTrustLevel(c.getInt("TrustLevel"));
-        this.honeyCooldown = c.getInt("HoneyCooldown");
-        this.honeyDrunkTimer = c.getInt("HoneyDrunkTimer");
-
     }
 }

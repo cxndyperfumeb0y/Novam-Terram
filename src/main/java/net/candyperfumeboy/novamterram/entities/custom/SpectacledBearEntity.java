@@ -75,6 +75,9 @@ public class SpectacledBearEntity extends AbstractNTBear implements NeutralMob {
     }
 
     @Override
+    protected boolean canDance() { return true; }
+
+    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Goat.class, 10.0F, 1.2D, 1.5D));
@@ -524,7 +527,7 @@ public class SpectacledBearEntity extends AbstractNTBear implements NeutralMob {
     static class BearDanceGoal extends Goal {
         private final SpectacledBearEntity bear;
         public BearDanceGoal(SpectacledBearEntity bear) { this.bear = bear; this.setFlags(EnumSet.of(Flag.MOVE)); }
-        @Override public boolean canUse() { return bear.isDancing(); }
+        @Override public boolean canUse() { return bear.isDancing() && bear.getControllingPassenger() == null; }
         @Override public void start() { bear.getNavigation().stop(); }
         @Override public void tick() { bear.setStanding(true); }
         @Override public void stop() { bear.setStanding(false); }
@@ -614,9 +617,12 @@ public class SpectacledBearEntity extends AbstractNTBear implements NeutralMob {
     static class LedgeRestingGoal extends MoveToBlockGoal {
         private final SpectacledBearEntity bear;
         public LedgeRestingGoal(SpectacledBearEntity b, double s, int r) { super(b, s, r); this.bear = b; }
-        @Override protected boolean isValidTarget(LevelReader l, BlockPos p) { return p.getY() > 90 && l.isEmptyBlock(p.above()); }
-        @Override public boolean canUse() { return !bear.level().isDay() && super.canUse(); }
-        @Override public boolean canContinueToUse() { return !bear.level().isDay() && super.canContinueToUse(); }
+        @Override protected boolean isValidTarget(LevelReader l, BlockPos p) {
+            return p.getY() > 90 && l.getBlockState(p).isFaceSturdy(l, p, Direction.UP)
+                    && l.isEmptyBlock(p.above()) && l.isEmptyBlock(p.above(2));
+        }
+        @Override public boolean canUse() { return !bear.level().isDay() && bear.getControllingPassenger() == null && super.canUse(); }
+        @Override public boolean canContinueToUse() { return !bear.level().isDay() && bear.getControllingPassenger() == null && super.canContinueToUse(); }
         @Override public void tick() { super.tick(); if (this.isReachedTarget()) bear.setSleepyTime(true); }
         @Override public void stop() { super.stop(); bear.setSleepyTime(false); }
     }
@@ -634,7 +640,7 @@ public class SpectacledBearEntity extends AbstractNTBear implements NeutralMob {
         }
         @Override public boolean canContinueToUse() { return food != null && food.isAlive() && baby.isBaby() && baby.distanceToSqr(food) < 100.0D; }
         @Override public void tick() {
-            baby.getNavigation().moveTo(food, 1.2D);
+            if (baby.getNavigation().isDone()) baby.getNavigation().moveTo(food, 1.2D);
             if (baby.distanceToSqr(food) < 2.5D) {
                 food.getItem().shrink(1);
                 if (food.getItem().isEmpty()) food.discard();
