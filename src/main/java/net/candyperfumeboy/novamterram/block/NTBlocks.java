@@ -118,8 +118,6 @@ public class NTBlocks {
             () -> new OliveLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)
                     .randomTicks())); // Ensure randomTicks is enabled in properties
 
-
-
     public static final DeferredBlock<Block> SILVER_SAGE = registerBlock("silver_sage",
             () -> new FlowerBlock(MobEffects.ABSORPTION, 5, BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION).noCollission().instabreak()));
 
