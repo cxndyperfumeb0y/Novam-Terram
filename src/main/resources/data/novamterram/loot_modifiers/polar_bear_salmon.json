@@ -1,0 +1,13 @@
+{
+  "type": "novamterram:add_item",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:entities/polar_bear"
+    }
+  ],
+  "item": {
+    "id": "minecraft:salmon",
+    "count": 1
+  }
+}

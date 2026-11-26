@@ -29,17 +29,19 @@ public class BrownBearRenderer extends MobRenderer<BrownBearEntity, NTBearModel<
             poseStack.mulPose(Axis.XP.rotationDegrees(f));
         }
 
-        // 2. Sleeping Animation
-        if (bear.isSleepyTime()) {
-            poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
-            poseStack.translate(0.0D, -0.2D, 0.5D);
-        }
+        // 2. Sleeping is posed in NTBearModel
 
         // 3. Diving Animation
         if (bear.isDiving()) {
             poseStack.mulPose(Axis.XP.rotationDegrees(30.0F));
             poseStack.translate(0.0D, -0.1D, 0.2D);
         }
+    }
+
+    @Override
+    protected void scale(BrownBearEntity bear, PoseStack poseStack, float partialTickTime) {
+        if (bear.isBaby()) poseStack.scale(0.5F, 0.5F, 0.5F); // this model does not shrink babies by itself
+        super.scale(bear, poseStack, partialTickTime);
     }
 
     @Override

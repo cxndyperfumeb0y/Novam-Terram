@@ -69,6 +69,11 @@ public class NTBearModel<T extends AbstractNTBear> extends HierarchicalModel<T> 
         this.head.yRot = netHeadYaw * ((float)Math.PI / 180F);
 
         // 4. Standing logic (relative to the default body pose)
+        if (entity.isSleepyTime()) {
+            this.applySleepingPose(ageInTicks);
+            return;
+        }
+
         if (entity.isStanding()) {
             float scale = entity.getStandingAnimationScale(0.0F);
             // Subtract from the PI/2 default instead of setting from 0
@@ -84,6 +89,29 @@ public class NTBearModel<T extends AbstractNTBear> extends HierarchicalModel<T> 
         this.leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
         this.rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
         this.leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+    }
+
+    // Lying on its belly, chin down, legs stretched forward, breathing slowly.
+    // Model units are pixels and y points down (24 is the ground).
+    private void applySleepingPose(float ageInTicks) {
+        float breath = Mth.sin(ageInTicks * 0.06F) * 0.25F;
+        this.body.y = 17.0F - breath;
+        this.head.y = 20.0F;
+        this.head.xRot = 0.1F;
+        this.head.yRot = 0.45F;
+        float flat = -(float) (Math.PI / 2);
+        this.rightHindLeg.xRot = flat;
+        this.leftHindLeg.xRot = flat;
+        this.rightFrontLeg.xRot = flat;
+        this.leftFrontLeg.xRot = flat;
+        this.rightHindLeg.y = 16.0F;
+        this.leftHindLeg.y = 16.0F;
+        this.rightHindLeg.x = -6.5F;
+        this.leftHindLeg.x = 6.5F;
+        this.rightFrontLeg.y = 20.0F;
+        this.leftFrontLeg.y = 20.0F;
+        this.rightFrontLeg.x = -5.0F;
+        this.leftFrontLeg.x = 5.0F;
     }
 
     @Override

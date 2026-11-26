@@ -51,15 +51,7 @@ public class BearDen extends Feature<NoneFeatureConfiguration> {
             bear.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() - 1.0, random.nextFloat() * 360.0F, 0.0F);
             bear.setPersistenceRequired();
 
-            // Using our Reflection "Sledgehammer" from the Fox to make the Bear sit or sleep
-            try {
-                java.lang.reflect.Method setSittingMethod = bear.getClass().getMethod("setSitting", boolean.class);
-                setSittingMethod.setAccessible(true);
-                setSittingMethod.invoke(bear, true);
-            } catch (Exception e) {
-                // If sitting isn't available, the bear just stands guard in the cave!
-            }
-
+            bear.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), net.minecraft.world.entity.MobSpawnType.CHUNK_GENERATION, null);
             level.addFreshEntity(bear);
         }
 

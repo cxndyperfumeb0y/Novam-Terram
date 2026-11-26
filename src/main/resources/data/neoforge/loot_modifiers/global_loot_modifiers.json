@@ -1,6 +1,8 @@
 {
   "replace": false,
   "entries": [
-    "novamterram:bear_claws_from_bears"
+    "novamterram:bear_claws_from_bears",
+    "novamterram:polar_bear_leather",
+    "novamterram:polar_bear_salmon"
   ]
 }

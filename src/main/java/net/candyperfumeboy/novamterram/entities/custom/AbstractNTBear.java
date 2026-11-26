@@ -90,12 +90,22 @@ public abstract class AbstractNTBear extends Animal {
             if (this.tickCount % 20 == 0) {
                 if (this.honeyCooldown > 0) this.honeyCooldown--;
                 if (this.honeyDrunkTimer > 0) this.honeyDrunkTimer--;
-                BlockPos pos = this.blockPosition();
-                boolean isNearJukebox = this.level().getBlockState(pos.above()).is(Blocks.JUKEBOX) ||
-                        this.level().getBlockState(pos.below()).is(Blocks.JUKEBOX);
-                this.setDancing(isNearJukebox);
+                this.setDancing(this.isMusicNearby());
             }
         }
+    }
+
+    // True while a jukebox within 3 blocks is actually playing (a finished or stopped disc does not count).
+    private boolean isMusicNearby() {
+        BlockPos pos = this.blockPosition();
+        for (BlockPos check : BlockPos.betweenClosed(pos.offset(-3, -1, -3), pos.offset(3, 1, 3))) {
+            if (this.level().getBlockState(check).is(Blocks.JUKEBOX)
+                    && this.level().getBlockEntity(check) instanceof net.minecraft.world.level.block.entity.JukeboxBlockEntity jukebox
+                    && jukebox.getSongPlayer().isPlaying()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -139,11 +149,10 @@ public abstract class AbstractNTBear extends Animal {
     @Override
     public void readAdditionalSaveData(CompoundTag c) {
         super.readAdditionalSaveData(c);
-        this.setSleepyTime(c.getBoolean("IsSleepy"));
+        // Sleeping, diving and climbing are temporary, so they are not restored after a reload.
         this.setTrustLevel(c.getInt("TrustLevel"));
         this.honeyCooldown = c.getInt("HoneyCooldown");
         this.honeyDrunkTimer = c.getInt("HoneyDrunkTimer");
-        this.setDiving(c.getBoolean("IsDiving"));
-        this.setClimbing(c.getBoolean("IsClimbing"));
+
     }
 }
