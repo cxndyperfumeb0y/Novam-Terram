@@ -454,6 +454,7 @@ public class NTOcelotEvents {
 
         if (ocelot.getRandom().nextInt(3) != 0) {
             ocelot.level().broadcastEntityEvent(ocelot, EVENT_SMOKE);
+            showWary(player);
             return;
         }
 
@@ -466,9 +467,13 @@ public class NTOcelotEvents {
             ocelot.getPersistentData().putInt(NBT_TRUST, trust);
             ocelot.setPersistenceRequired(); // don't lose the progress to despawning
             meow(ocelot, SoundEvents.CAT_PURR, 0.8F, 1.0F);
-            player.displayClientMessage(Component.translatable(
-                    "entity.novamterram.ocelot.trust_gained", trust, TAME_THRESHOLD), true);
+            showWary(player);
         }
+    }
+
+    // Worded and shown the same way as the fox messages
+    private static void showWary(Player player) {
+        player.displayClientMessage(Component.translatable("entity.novamterram.ocelot.trust_gained"), true);
     }
 
     /** Returns false to let vanilla handle the click (growing babies, leads, name tags). */

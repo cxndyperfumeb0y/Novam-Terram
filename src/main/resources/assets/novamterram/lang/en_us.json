@@ -1,34 +1,27 @@
 {
   "creativetab.novam_terram_tab": "Novam Terram",
-
   "__comment": "--- GEMSTONES & GEOLOGY ---",
   "item.novamterram.opal": "Opal",
   "item.novamterram.raw_opal": "Raw Opal",
   "block.novamterram.opal_block": "Block of Opal",
   "block.novamterram.opal_ore": "Opal Ore",
-
   "item.novamterram.rhodochrosite": "Rhodochrosite",
   "item.novamterram.raw_rhodochrosite": "Raw Rhodochrosite",
   "block.novamterram.rhodochrosite_block": "Block of Rhodochrosite",
   "block.novamterram.rhodochrosite_ore": "Rhodochrosite Ore",
-
   "item.novamterram.iolite": "Iolite",
   "item.novamterram.raw_iolite": "Raw Iolite",
   "block.novamterram.iolite_block": "Block of Iolite",
   "block.novamterram.iolite_ore": "Iolite Ore",
-
   "item.novamterram.jadeite": "Jadeite",
   "item.novamterram.raw_jadeite": "Raw Jadeite",
   "block.novamterram.jadeite_block": "Block of Jadeite",
   "block.novamterram.jadeite_ore": "Jadeite Ore",
-
   "item.novamterram.kyanite": "Kyanite",
   "item.novamterram.raw_kyanite": "Raw Kyanite",
   "block.novamterram.kyanite_block": "Block of Kyanite",
   "block.novamterram.kyanite_ore": "Kyanite Ore",
-
   "item.novamterram.lignite_coal": "Lignite",
-
   "__comment": "--- WOOD TYPES: BLUE SPRUCE ---",
   "block.novamterram.blue_spruce_log": "Blue Spruce Log",
   "block.novamterram.blue_spruce_wood": "Blue Spruce Wood",
@@ -51,7 +44,6 @@
   "item.novamterram.blue_spruce_chest_boat": "Blue Spruce Chest Boat",
   "entity.novamterram.blue_spruce_boat": "Blue Spruce Boat",
   "entity.novamterram.blue_spruce_chest_boat": "Blue Spruce Chest Boat",
-
   "__comment": "--- WOOD TYPES: ASPEN ---",
   "block.novamterram.aspen_log": "Aspen Log",
   "block.novamterram.aspen_wood": "Aspen Wood",
@@ -74,7 +66,6 @@
   "item.novamterram.aspen_chest_boat": "Aspen Chest Boat",
   "entity.novamterram.aspen_boat": "Aspen Boat",
   "entity.novamterram.aspen_chest_boat": "Aspen Chest Boat",
-
   "__comment": "--- WOOD TYPES: TEAK ---",
   "block.novamterram.teak_log": "Teak Log",
   "block.novamterram.teak_wood": "Teak Wood",
@@ -97,7 +88,6 @@
   "item.novamterram.teak_chest_boat": "Teak Chest Boat",
   "entity.novamterram.teak_boat": "Teak Boat",
   "entity.novamterram.teak_chest_boat": "Teak Chest Boat",
-
   "__comment": "--- WOOD TYPES: BALSA ---",
   "block.novamterram.balsa_log": "Balsa Log",
   "block.novamterram.balsa_wood": "Balsa Wood",
@@ -120,7 +110,6 @@
   "item.novamterram.balsa_chest_boat": "Balsa Chest Boat",
   "entity.novamterram.balsa_boat": "Balsa Boat",
   "entity.novamterram.balsa_chest_boat": "Balsa Chest Boat",
-
   "__comment": "--- WOOD TYPES: MAHOGANY ---",
   "block.novamterram.mahogany_log": "Mahogany Log",
   "block.novamterram.mahogany_wood": "Mahogany Wood",
@@ -143,7 +132,6 @@
   "item.novamterram.mahogany_chest_boat": "Mahogany Chest Boat",
   "entity.novamterram.mahogany_boat": "Mahogany Boat",
   "entity.novamterram.mahogany_chest_boat": "Mahogany Chest Boat",
-
   "__comment": "--- SANDS & SANDSTONE ---",
   "block.novamterram.olivine_sand": "Olivine Sand",
   "block.novamterram.olivine_sandstone": "Olivine Sandstone",
@@ -158,7 +146,6 @@
   "block.novamterram.olivine_sandstone_fence_gate": "Olivine Sandstone Fence Gate",
   "block.novamterram.olivine_sandstone_door": "Olivine Sandstone Door",
   "block.novamterram.olivine_sandstone_trap_door": "Olivine Sandstone Trapdoor",
-
   "block.novamterram.amber_sand": "Amber Sand",
   "block.novamterram.amber_sandstone": "Amber Sandstone",
   "block.novamterram.cut_amber_sandstone": "Cut Amber Sandstone",
@@ -166,7 +153,6 @@
   "block.novamterram.amber_sandstone_stairs": "Amber Sandstone Stairs",
   "block.novamterram.amber_sandstone_slab": "Amber Sandstone Slab",
   "block.novamterram.amber_sandstone_wall": "Amber Sandstone Wall",
-
   "block.novamterram.white_sand": "White Sand",
   "block.novamterram.white_sandstone": "White Sandstone",
   "block.novamterram.cut_white_sandstone": "Cut White Sandstone",
@@ -174,7 +160,6 @@
   "block.novamterram.white_sandstone_stairs": "White Sandstone Stairs",
   "block.novamterram.white_sandstone_slab": "White Sandstone Slab",
   "block.novamterram.white_sandstone_wall": "White Sandstone Wall",
-
   "__comment": "--- NATURE & FLORA ---",
   "block.novamterram.blue_podzol": "Blue Podzol",
   "block.novamterram.petrified_cactus": "Petrified Cactus",
@@ -188,34 +173,25 @@
   "block.novamterram.heather_petals": "Heather Petals",
   "block.novamterram.trillium": "Trillium",
   "block.novamterram.thistle": "Thistle",
-
   "__comment": "--- ENTITIES & SPAWN EGGS ---",
   "item.novamterram.bear_claw": "Bear Claw",
-
   "entity.novamterram.spectacled_bear": "Spectacled Bear",
   "item.novamterram.spectacled_bear_spawn_egg": "Spectacled Bear Spawn Egg",
-
   "entity.novamterram.brown_bear": "Brown Bear",
   "item.novamterram.brown_bear_spawn_egg": "Brown Bear Spawn Egg",
-
   "entity.novamterram.silver_fox": "Silver Fox",
   "item.novamterram.silver_fox_spawn_egg": "Silver Fox Spawn Egg",
-
   "entity.novamterram.desert_fox": "Desert Fox",
   "item.novamterram.desert_fox_spawn_egg": "Desert Fox Spawn Egg",
-
   "entity.novamterram.hyena": "Hyena",
   "item.novamterram.hyena_spawn_egg": "Hyena Spawn Egg",
-
   "entity.novamterram.faun": "Faun",
   "item.novamterram.faun_spawn_egg": "Faun Spawn Egg",
-
   "entity.novamterram.songbird": "Songbird",
   "item.novamterram.songbird_spawn_egg": "Songbird Spawn Egg",
-
   "__comment": "--- BIOMES ---",
   "biome.novamterram.blue_grove": "Blue Grove",
-  "biome.novamterram.aegean": "Aegean Coast",
+  "biome.novamterram.aegean": "Aegean",
   "biome.novamterram.maquis": "Maquis",
   "biome.novamterram.heath": "Heath",
   "biome.novamterram.rainforest": "Rainforest",
@@ -231,17 +207,14 @@
   "biome.novamterram.saffron_grove": "Saffron Grove",
   "biome.novamterram.andean_hills": "Andean Hills",
   "biome.novamterram.amber_sands": "Amber Sands",
-
   "__comment": "--- MESSAGES & SUBTITLES ---",
-  "entity.novamterram.ocelot.tame_success": "The ocelot now trusts you completely!",
-  "entity.novamterram.ocelot.trust_gained": "The ocelot is becoming more comfortable with you... (%s/%s)",
+  "entity.novamterram.ocelot.tame_success": "This ocelot trusts you completely.",
+  "entity.novamterram.ocelot.trust_gained": "This ocelot seems wary of your presence...",
   "entity.novamterram.ocelot.play": "The ocelot is ready to play!",
   "entity.novamterram.ocelot.sitting": "The ocelot is now sitting.",
   "entity.novamterram.ocelot.standing": "The ocelot is now following.",
-
   "message.novamterram.fox.trust_success": "This fox trusts you completely.",
   "message.novamterram.fox.trust_fail": "This fox seems wary of your presence...",
-
   "subtitles.entity.novamterram.fox.death_silver": "Silver Fox shatters",
   "subtitles.entity.novamterram.fox.death_desert": "Desert Fox crumbles",
   "subtitles.entity.novamterram.faun.ambient": "Faun bleats",

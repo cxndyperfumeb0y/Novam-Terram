@@ -121,11 +121,13 @@ final class NTOcelotGoals {
         }
     }
 
-    /** Sprints around the owner until the play timer runs out, then sits. */
+    /** Sprints laps around the owner until the play timer runs out, then sits. */
     private static final class PlayGoal extends Goal implements NTGoal {
         private final Ocelot ocelot;
         private Player owner;
-        private int cooldown;
+        private int direction = 1;
+        private int timeOnPath;
+        private int retryDelay;
 
         PlayGoal(Ocelot ocelot) {
             this.ocelot = ocelot;
@@ -143,22 +145,40 @@ final class NTOcelotGoals {
             return owner != null && ocelot.distanceToSqr(owner) <= 256.0D;
         }
 
+        // Without this the cat pauses between laps and flickers between running and standing
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+
         @Override
         public void start() {
-            cooldown = 0;
+            direction = ocelot.getRandom().nextBoolean() ? 1 : -1;
+            timeOnPath = 0;
+            retryDelay = 0;
         }
 
         @Override
         public void tick() {
-            if (--cooldown > 0) return;
-            cooldown = adjustedTickDelay(15);
+            if (retryDelay > 0) {
+                retryDelay--;
+                return;
+            }
+            // Let it finish the current stretch (up to 2 seconds) before choosing the next
+            if (!ocelot.getNavigation().isDone() && ++timeOnPath < 40) return;
+            timeOnPath = 0;
 
-            double angle = ocelot.getRandom().nextDouble() * Math.PI * 2;
-            double radius = 1 + ocelot.getRandom().nextDouble() * 5;
+            // A quarter turn further round a circle centred on the owner
+            double angle = Math.atan2(ocelot.getZ() - owner.getZ(), ocelot.getX() - owner.getX())
+                    + direction * Math.PI / 2;
+            double radius = 3.5D + ocelot.getRandom().nextDouble() * 2.0D;
             // 1.33 is the speed vanilla ocelots treat as sprinting
-            ocelot.getNavigation().moveTo(owner.getX() + Math.cos(angle) * radius, owner.getY(),
+            boolean found = ocelot.getNavigation().moveTo(owner.getX() + Math.cos(angle) * radius, owner.getY(),
                     owner.getZ() + Math.sin(angle) * radius, 1.33D);
-            if (ocelot.getRandom().nextFloat() < 0.15F) {
+            if (!found) {
+                direction = -direction; // blocked, so try the other way shortly
+                retryDelay = 10;
+            } else if (ocelot.getRandom().nextFloat() < 0.15F) {
                 ocelot.playSound(SoundEvents.CAT_AMBIENT, 0.5F, 1.3F + ocelot.getRandom().nextFloat() * 0.3F);
             }
         }

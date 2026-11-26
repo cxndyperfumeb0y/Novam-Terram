@@ -18,7 +18,7 @@ public class Config {
 
     public static final ModConfigSpec.BooleanValue ENABLE_MANGROVE_LAGOON = BUILDER
             .comment("Should the tropical Mangrove Lagoon generate?")
-            .define("biomes.enable_mangrove_lagoon", true);
+            .define("biomes.enable_mangrove_lagoon", false);
 
     public static final ModConfigSpec.BooleanValue ENABLE_COASTAL_CHAPARRAL = BUILDER
             .comment("Should the arid Coastal Chaparral generate?")
@@ -35,11 +35,11 @@ public class Config {
 
     public static final ModConfigSpec.BooleanValue ENABLE_BLUEBELL_WOODS = BUILDER
             .comment("Should the flower-carpeted Bluebell Woods generate?")
-            .define("biomes.enable_bluebell_woods", true);
+            .define("biomes.enable_bluebell_woods", false);
 
     public static final ModConfigSpec.BooleanValue ENABLE_BLACK_FOREST = BUILDER
             .comment("Should the dense, dark Black Forest generate?")
-            .define("biomes.enable_black_forest", true);
+            .define("biomes.enable_black_forest", false);
 
     public static final ModConfigSpec.BooleanValue ENABLE_OZARK_FOREST = BUILDER
             .comment("Should the rocky Ozark Hardwood Forest generate?")
@@ -52,11 +52,11 @@ public class Config {
 
     public static final ModConfigSpec.BooleanValue ENABLE_CLOUD_FOREST = BUILDER
             .comment("Should the misty Cloud Forest (Andean variant) generate?")
-            .define("biomes.enable_cloud_forest", true);
+            .define("biomes.enable_cloud_forest", false);
 
     public static final ModConfigSpec.BooleanValue ENABLE_CEDAR_SLOPES = BUILDER
             .comment("Should the steep Cedar Slopes generate?")
-            .define("biomes.enable_cedar_slopes", true);
+            .define("biomes.enable_cedar_slopes", false);
 
     public static final ModConfigSpec.BooleanValue ENABLE_HEATH = BUILDER
             .comment("Should the Heath biome generate?")
@@ -69,11 +69,11 @@ public class Config {
 
     public static final ModConfigSpec.BooleanValue ENABLE_LARCH_FOREST = BUILDER
             .comment("Should the Siberian-inspired Larch Forest generate?")
-            .define("biomes.enable_larch_forest", true);
+            .define("biomes.enable_larch_forest", false);
 
     public static final ModConfigSpec.BooleanValue ENABLE_SNOWBLOSSOM_GROVE = BUILDER
             .comment("Should the Snowblossom Grove generate?")
-            .define("biomes.enable_snowblossom_grove", true);
+            .define("biomes.enable_snowblossom_grove", false);
 
     // Wetlands & Rivers
     public static final ModConfigSpec.BooleanValue ENABLE_MIRROR_MIRE = BUILDER
@@ -86,11 +86,11 @@ public class Config {
 
     public static final ModConfigSpec.BooleanValue ENABLE_SILVER_BIRCH_WETLAND = BUILDER
             .comment("Should the watery Silver Birch Wetland generate?")
-            .define("biomes.enable_silver_birch_wetland", true);
+            .define("biomes.enable_silver_birch_wetland", false);
 
     public static final ModConfigSpec.BooleanValue ENABLE_GALLERY_FOREST = BUILDER
             .comment("Should the narrow Gallery Forest generate along rivers?")
-            .define("biomes.enable_gallery_forest", true);
+            .define("biomes.enable_gallery_forest", false);
 
     // Exotic & Tropical
     public static final ModConfigSpec.BooleanValue ENABLE_RAINFOREST = BUILDER
@@ -107,7 +107,7 @@ public class Config {
 
     public static final ModConfigSpec.BooleanValue ENABLE_FUNGAL_REACH = BUILDER
             .comment("Should the vertical, misty Fungal Reach generate?")
-            .define("biomes.enable_fungal_reach", true);
+            .define("biomes.enable_fungal_reach", false);
 
     public static final ModConfigSpec.BooleanValue ENABLE_AMBER_SANDS = BUILDER
             .comment("Should the rare, crystalline Amber Sands generate?")
@@ -115,11 +115,11 @@ public class Config {
 
     public static final ModConfigSpec.BooleanValue ENABLE_SILVER_BIRCH_VELD = BUILDER
             .comment("Should the Silver Birch Veld generate?")
-            .define("biomes.enable_silver_birch_veld", true);
+            .define("biomes.enable_silver_birch_veld", false);
 
     public static final ModConfigSpec.BooleanValue ENABLE_CALDERA_GROTTO = BUILDER
             .comment("Should the Caldera Grotto generate?")
-            .define("biomes.enable_caldera_grotto", true);
+            .define("biomes.enable_caldera_grotto", false);
 
     // --- REGION SETTINGS ---
     public static final ModConfigSpec.IntValue COASTAL_REGION_WEIGHT = BUILDER

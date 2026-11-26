@@ -68,50 +68,73 @@ public class NTBearModel<T extends AbstractNTBear> extends HierarchicalModel<T> 
         this.head.xRot = headPitch * ((float)Math.PI / 180F);
         this.head.yRot = netHeadYaw * ((float)Math.PI / 180F);
 
-        // 4. Standing logic (relative to the default body pose)
+        // 4. Sleeping replaces everything else
         if (entity.isSleepyTime()) {
             this.applySleepingPose(ageInTicks);
             return;
         }
 
-        if (entity.isStanding()) {
-            float scale = entity.getStandingAnimationScale(0.0F);
-            // Subtract from the PI/2 default instead of setting from 0
-            this.body.xRot = (float) (Math.PI / 2) - (scale * ((float)Math.PI * 0.4F));
-
-            this.head.y = 10.0F - (scale * 13.0F);
-            this.head.z = -16.0F + (scale * 12.0F);
-            this.head.xRot += (scale * ((float)Math.PI * 0.4F));
-        }
-
         // 5. Walking (additive to the default pose)
-        this.rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-        this.leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
-        this.rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
-        this.leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+        float step = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+        float otherStep = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+        this.rightHindLeg.xRot = step;
+        this.leftHindLeg.xRot = otherStep;
+        this.rightFrontLeg.xRot = otherStep;
+        this.leftFrontLeg.xRot = step;
+
+        // 6. Rearing up. ageInTicks minus tickCount is the partial tick, which keeps it smooth.
+        float stand = entity.getStandingAnimationScale(ageInTicks - entity.tickCount);
+        if (stand > 0.0F) {
+            this.applyStandingPose(stand);
+        }
     }
 
-    // Lying on its belly, chin down, legs stretched forward, breathing slowly.
-    // Model units are pixels and y points down (24 is the ground).
+    // The torso swings up around the hips, so it stays on the hind legs, and the
+    // front legs and head move up with it. "amount" goes from 0 (on all fours) to 1.
+    private void applyStandingPose(float amount) {
+        this.body.xRot = (float) (Math.PI / 2) - amount * (float) Math.toRadians(65.0D);
+        this.body.y = Mth.lerp(amount, 9.0F, 13.5F);
+        this.body.z = Mth.lerp(amount, 12.0F, 7.0F);
+
+        this.head.y = Mth.lerp(amount, 10.0F, -10.0F);
+        this.head.z = Mth.lerp(amount, -16.0F, -8.0F);
+
+        // Front legs become arms hanging from the shoulders
+        for (ModelPart arm : new ModelPart[] {this.rightFrontLeg, this.leftFrontLeg}) {
+            arm.x = Math.signum(arm.x) * Mth.lerp(amount, 3.5F, 6.0F);
+            arm.y = Mth.lerp(amount, 14.0F, -2.0F);
+            arm.z = Mth.lerp(amount, -8.0F, -6.0F);
+            arm.xRot = Mth.lerp(amount, arm.xRot, -0.5F);
+        }
+
+        // Hind legs stay planted
+        for (ModelPart leg : new ModelPart[] {this.rightHindLeg, this.leftHindLeg}) {
+            leg.z = Mth.lerp(amount, 6.0F, 4.0F);
+            leg.xRot *= 1.0F - amount;
+        }
+    }
+
+    // Lying on its belly with its chin on its front paws, hind legs along its sides,
+    // breathing slowly. Model units are pixels and y points down (24 is the ground).
     private void applySleepingPose(float ageInTicks) {
         float breath = Mth.sin(ageInTicks * 0.06F) * 0.25F;
         this.body.y = 17.0F - breath;
-        this.head.y = 20.0F;
-        this.head.xRot = 0.1F;
-        this.head.yRot = 0.45F;
+
+        this.head.y = 13.9F - breath;
+        this.head.z = -16.0F;
+        this.head.xRot = 0.0F;
+        this.head.yRot = 0.15F;
+
         float flat = -(float) (Math.PI / 2);
-        this.rightHindLeg.xRot = flat;
-        this.leftHindLeg.xRot = flat;
-        this.rightFrontLeg.xRot = flat;
-        this.leftFrontLeg.xRot = flat;
-        this.rightHindLeg.y = 16.0F;
-        this.leftHindLeg.y = 16.0F;
-        this.rightHindLeg.x = -6.5F;
-        this.leftHindLeg.x = 6.5F;
-        this.rightFrontLeg.y = 20.0F;
-        this.leftFrontLeg.y = 20.0F;
-        this.rightFrontLeg.x = -5.0F;
-        this.leftFrontLeg.x = 5.0F;
+        this.lie(this.rightHindLeg, -8.8F, 18.0F, 9.0F, flat);
+        this.lie(this.leftHindLeg, 8.8F, 18.0F, 9.0F, flat);
+        this.lie(this.rightFrontLeg, -4.6F, 20.0F, -10.0F, flat);
+        this.lie(this.leftFrontLeg, 4.6F, 20.0F, -10.0F, flat);
+    }
+
+    private void lie(ModelPart leg, float x, float y, float z, float xRot) {
+        leg.setPos(x, y, z);
+        leg.xRot = xRot;
     }
 
     @Override

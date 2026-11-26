@@ -2,175 +2,235 @@ package net.candyperfumeboy.novamterram.entities.custom;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 
 /**
- * Hyena Model - Novam Terram 1.21.1
- * Features:
- * - Connected "Bridge" Snout (No floating gaps)
- * - Anti-Flicker Sitting Logic (Prevents Z-Fighting)
- * - Dynamic Scaling for Adults (0.85x) and Babies (0.45x)
+ * Hyena: a chunky little body, stubby legs, a big round head with big ears and eyes,
+ * and a fluffy tail.
+ * Model space: y points down (ground = 24), the head points toward -z.
  */
-public class HyenaModel<T extends HyenaEntity> extends EntityModel<T> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(
-            ResourceLocation.fromNamespaceAndPath("novamterram", "hyena"), "main");
+public class HyenaModel<T extends HyenaEntity> extends HierarchicalModel<T> {
 
-    // --- MODEL PARTS ---
     private final ModelPart root;
-    private final ModelPart bodyFront;
-    private final ModelPart bodyBack;
+    private final ModelPart body;
+    private final ModelPart chest;
+    private final ModelPart chestMane;
     private final ModelPart neck;
+    private final ModelPart neckMane;
     private final ModelPart head;
-    private final ModelPart snout;
+    private final ModelPart jaw;
+    private final ModelPart rightEar;
+    private final ModelPart leftEar;
+    private final ModelPart tail;
     private final ModelPart rightFrontLeg;
     private final ModelPart leftFrontLeg;
-    private final ModelPart rightBackLeg;
-    private final ModelPart leftBackLeg;
-    private final ModelPart tail;
+    private final ModelPart rightHindLeg;
+    private final ModelPart leftHindLeg;
 
     public HyenaModel(ModelPart root) {
         this.root = root;
-        // Navigation matches the Hierarchy in createBodyLayer
-        this.bodyFront = root.getChild("body_front");
-        this.bodyBack  = this.bodyFront.getChild("body_back");
-        this.tail      = this.bodyBack.getChild("tail");
-        this.neck      = this.bodyFront.getChild("neck");
-        this.head      = this.neck.getChild("head");
-        this.snout     = this.head.getChild("snout");
-
+        this.body = root.getChild("body");
+        this.chest = this.body.getChild("chest");
+        this.chestMane = this.chest.getChild("chest_mane");
+        this.neck = this.body.getChild("neck");
+        this.neckMane = this.neck.getChild("neck_mane");
+        this.head = this.neck.getChild("head");
+        this.jaw = this.head.getChild("jaw");
+        this.rightEar = this.head.getChild("right_ear");
+        this.leftEar = this.head.getChild("left_ear");
+        this.tail = this.body.getChild("tail");
         this.rightFrontLeg = root.getChild("right_front_leg");
-        this.leftFrontLeg  = root.getChild("left_front_leg");
-        this.rightBackLeg  = root.getChild("right_back_leg");
-        this.leftBackLeg   = root.getChild("left_back_leg");
+        this.leftFrontLeg = root.getChild("left_front_leg");
+        this.rightHindLeg = root.getChild("right_hind_leg");
+        this.leftHindLeg = root.getChild("left_hind_leg");
     }
 
     public static LayerDefinition createBodyLayer() {
-        MeshDefinition meshdefinition = new MeshDefinition();
-        PartDefinition partdefinition = meshdefinition.getRoot();
+        MeshDefinition mesh = new MeshDefinition();
+        PartDefinition root = mesh.getRoot();
 
-        // --- 1. FRONT BODY (Core Parent) ---
-        PartDefinition body_front = partdefinition.addOrReplaceChild("body_front", CubeListBuilder.create(),
-                PartPose.offset(0.0F, 11.0F, -4.0F));
+        PartDefinition body = root.addOrReplaceChild("body",
+                CubeListBuilder.create()
+                        .texOffs(0, 17).addBox(-3.5F, -3.0F, -5.0F, 7.0F, 7.0F, 9.0F),
+                PartPose.offset(0.0F, 13.0F, 6.0F));
 
-        body_front.addOrReplaceChild("mane_ridge", CubeListBuilder.create()
-                        .texOffs(36, 22).addBox(-0.5F, -1.5F, -1.0F, 1.0F, 2.0F, 16.0F),
-                PartPose.offsetAndRotation(0.0F, -4.0F, 1.0F, -0.0873F, 0.0F, 0.0F));
+        PartDefinition chest = body.addOrReplaceChild("chest",
+                CubeListBuilder.create()
+                        .texOffs(0, 0).addBox(-4.0F, -4.0F, -4.0F, 8.0F, 8.0F, 9.0F),
+                PartPose.offset(0.0F, 0.2F, -7.0F));
 
-        body_front.addOrReplaceChild("main_chest", CubeListBuilder.create()
-                        .texOffs(0, 0).addBox(-4.0F, -5.0F, 5.0F, 8.0F, 9.0F, 13.0F),
-                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.1309F, 0.0F, 0.0F));
+        chest.addOrReplaceChild("chest_mane",
+                CubeListBuilder.create()
+                        .texOffs(42, 33).addBox(-1.0F, -1.0F, -4.0F, 2.0F, 1.0F, 9.0F),
+                PartPose.offset(0.0F, -3.8F, 0.0F));
 
-        // --- 2. BACK BODY & TAIL ---
-        PartDefinition body_back = body_front.addOrReplaceChild("body_back", CubeListBuilder.create()
-                        .texOffs(0, 22).addBox(-3.5F, -5.0F, -13.0F, 7.0F, 8.0F, 11.0F),
-                PartPose.offset(0.0F, 1.0F, 9.0F));
+        PartDefinition neck = body.addOrReplaceChild("neck",
+                CubeListBuilder.create()
+                        .texOffs(22, 33).addBox(-2.5F, -3.0F, -4.0F, 5.0F, 6.0F, 5.0F),
+                PartPose.offsetAndRotation(0.0F, -1.0F, -11.0F, -0.4F, 0.0F, 0.0F));
 
-        body_back.addOrReplaceChild("tail", CubeListBuilder.create()
-                        .texOffs(42, 0).addBox(-1.5F, -4.0F, -2.0F, 3.0F, 3.0F, 7.0F),
-                PartPose.offsetAndRotation(0.0F, 3.0F, 8.0F, 0.3491F, 0.0436F, 0.0F));
+        neck.addOrReplaceChild("neck_mane",
+                CubeListBuilder.create()
+                        .texOffs(52, 44).addBox(-1.0F, -1.0F, -3.0F, 2.0F, 1.0F, 4.0F),
+                PartPose.offset(0.0F, -2.8F, 0.0F));
 
-        // --- 3. NECK & HEAD ---
-        PartDefinition neck = body_front.addOrReplaceChild("neck", CubeListBuilder.create(),
-                PartPose.offset(0.0F, 0.0F, 0.0F));
+        PartDefinition head = neck.addOrReplaceChild("head",
+                CubeListBuilder.create()
+                        .texOffs(32, 17).addBox(-4.0F, -3.5F, -4.0F, 8.0F, 7.0F, 6.0F)
+                        .texOffs(0, 53).addBox(-2.0F, 0.0F, -8.0F, 4.0F, 3.0F, 4.0F),
+                PartPose.offsetAndRotation(0.0F, -1.0F, -4.0F, 0.4F, 0.0F, 0.0F));
 
-        neck.addOrReplaceChild("neck_base", CubeListBuilder.create()
-                        .texOffs(0, 41).addBox(-2.5F, -5.0F, -6.0F, 5.0F, 6.0F, 5.0F),
-                PartPose.offsetAndRotation(0.0F, -3.0F, 1.0F, 0.6109F, 0.0F, 0.0F));
+        head.addOrReplaceChild("jaw",
+                CubeListBuilder.create()
+                        .texOffs(16, 53).addBox(-1.5F, 0.0F, -3.5F, 3.0F, 1.0F, 4.0F),
+                PartPose.offset(0.0F, 2.9F, -4.0F));
 
-        PartDefinition head = neck.addOrReplaceChild("head", CubeListBuilder.create()
-                        .texOffs(36, 40).addBox(-3.5F, -3.5F, -4.0F, 7.0F, 7.0F, 8.0F),
-                PartPose.offset(0.0F, -4.0F, -5.0F));
+        head.addOrReplaceChild("right_ear",
+                CubeListBuilder.create()
+                        .texOffs(30, 53).addBox(-2.0F, -3.0F, -0.5F, 4.0F, 3.0F, 1.0F)
+                        .texOffs(58, 0).addBox(-1.0F, -4.0F, -0.5F, 2.0F, 1.0F, 1.0F),
+                PartPose.offsetAndRotation(-3.0F, -3.3F, -1.0F, 0.0F, 0.0F, -0.3F));
 
-        // SNOUT: Z-8 with 6 depth ensures it overlaps 2 units into the head (No gaps)
-        head.addOrReplaceChild("snout", CubeListBuilder.create()
-                        .texOffs(42, 10).addBox(-2.0F, -1.0F, -8.0F, 4.0F, 3.0F, 6.0F),
-                PartPose.offset(0.0F, 0.0F, 0.0F));
+        head.addOrReplaceChild("left_ear",
+                CubeListBuilder.create()
+                        .texOffs(40, 53).addBox(-2.0F, -3.0F, -0.5F, 4.0F, 3.0F, 1.0F)
+                        .texOffs(50, 53).addBox(-1.0F, -4.0F, -0.5F, 2.0F, 1.0F, 1.0F),
+                PartPose.offsetAndRotation(3.0F, -3.3F, -1.0F, 0.0F, 0.0F, 0.3F));
 
-        head.addOrReplaceChild("ear_right", CubeListBuilder.create()
-                        .texOffs(50, 17).addBox(-1.0F, -3.0F, -1.0F, 3.0F, 4.0F, 1.0F),
-                PartPose.offsetAndRotation(2.5F, -4.0F, 1.0F, 0.0F, 0.0F, -0.2618F));
+        body.addOrReplaceChild("tail",
+                CubeListBuilder.create()
+                        .texOffs(0, 33).addBox(-1.5F, -1.5F, 0.0F, 3.0F, 3.0F, 8.0F),
+                PartPose.offsetAndRotation(0.0F, -1.0F, 3.5F, -0.8F, 0.0F, 0.0F));
 
-        head.addOrReplaceChild("ear_left", CubeListBuilder.create()
-                        .texOffs(42, 17).addBox(-2.0F, -3.0F, -1.0F, 3.0F, 4.0F, 1.0F),
-                PartPose.offsetAndRotation(-2.5F, -4.0F, 1.0F, 0.0F, 0.0F, 0.2618F));
+        root.addOrReplaceChild("right_front_leg",
+                CubeListBuilder.create()
+                        .texOffs(34, 0).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 12.0F, 3.0F),
+                PartPose.offset(-2.7F, 12.0F, -3.0F));
 
-        // --- 4. LEGS ---
-        partdefinition.addOrReplaceChild("right_front_leg", CubeListBuilder.create()
-                .texOffs(20, 41).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 12.0F, 3.0F), PartPose.offset(-3.5F, 12.0F, -2.0F));
-        partdefinition.addOrReplaceChild("left_front_leg", CubeListBuilder.create()
-                .texOffs(0, 52).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 12.0F, 3.0F), PartPose.offset(3.5F, 12.0F, -2.0F));
-        partdefinition.addOrReplaceChild("right_back_leg", CubeListBuilder.create()
-                .texOffs(32, 55).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 10.0F, 3.0F), PartPose.offset(-3.0F, 14.0F, 9.0F));
-        partdefinition.addOrReplaceChild("left_back_leg", CubeListBuilder.create()
-                .texOffs(44, 55).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 10.0F, 3.0F), PartPose.offset(3.0F, 14.0F, 9.0F));
+        root.addOrReplaceChild("left_front_leg",
+                CubeListBuilder.create()
+                        .texOffs(46, 0).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 12.0F, 3.0F),
+                PartPose.offset(2.7F, 12.0F, -3.0F));
 
-        return LayerDefinition.create(meshdefinition, 128, 128);
+        root.addOrReplaceChild("right_hind_leg",
+                CubeListBuilder.create()
+                        .texOffs(0, 44).addBox(-1.5F, -1.0F, -2.0F, 3.0F, 5.0F, 4.0F)
+                        .texOffs(28, 44).addBox(-1.5F, 4.0F, -1.5F, 3.0F, 6.0F, 3.0F),
+                PartPose.offset(-2.6F, 14.0F, 7.0F));
+
+        root.addOrReplaceChild("left_hind_leg",
+                CubeListBuilder.create()
+                        .texOffs(14, 44).addBox(-1.5F, -1.0F, -2.0F, 3.0F, 5.0F, 4.0F)
+                        .texOffs(40, 44).addBox(-1.5F, 4.0F, -1.5F, 3.0F, 6.0F, 3.0F),
+                PartPose.offset(2.6F, 14.0F, 7.0F));
+
+        return LayerDefinition.create(mesh, 64, 64);
+    }
+
+    @Override
+    public ModelPart root() {
+        return this.root;
     }
 
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        // Reset base positions
-        this.bodyFront.y = 11.0F;
-        this.rightFrontLeg.y = 12.0F;
-        this.leftFrontLeg.y = 12.0F;
-        this.rightBackLeg.y = 14.0F;
-        this.leftBackLeg.y = 14.0F;
-        this.neck.y = 0.0F;
-        this.neck.z = 0.0F;
+        this.root.getAllParts().forEach(ModelPart::resetPose);
 
-        if (entity.isInSittingPose()) {
-            this.bodyFront.xRot = -0.4363F;
-            this.bodyFront.y = 14.0F;
+        boolean sitting = entity.isInSittingPose();
+        boolean attacking = !sitting && entity.isAggressive();
+        boolean frenzied = entity.isFrenzied() && !entity.isTame();
 
-            // ANTI-FLICKER: Nudges head forward so neck/chest textures don't Z-fight
-            this.neck.y = -0.5F;
-            this.neck.z = -0.2F;
+        // Looking around: mostly the head, a little from the neck
+        this.neck.yRot = netHeadYaw * Mth.DEG_TO_RAD * 0.2F;
+        this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD * 0.5F;
+        this.head.xRot += headPitch * Mth.DEG_TO_RAD * 0.5F;
 
-            this.rightFrontLeg.xRot = -0.1745F;
-            this.leftFrontLeg.xRot = -0.1745F;
-            this.rightBackLeg.xRot = -(float)Math.PI / 2F;
-            this.leftBackLeg.xRot = -(float)Math.PI / 2F;
-            this.rightBackLeg.y = 22.0F;
-            this.leftBackLeg.y = 22.0F;
+        // Gentle tail swish; tamed hyenas wag happily
+        this.tail.yRot = entity.isTame()
+                ? Mth.sin(ageInTicks * 0.5F) * 0.35F
+                : Mth.sin(ageInTicks * 0.08F) * 0.15F;
+
+        // The lower jaw only shows while attacking or panting
+        this.jaw.visible = false;
+
+        if (sitting) {
+            applySittingPose();
         } else {
-            this.bodyFront.xRot = 0.0F;
-            this.rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-            this.leftFrontLeg.xRot  = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
-            this.rightBackLeg.xRot  = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
-            this.leftBackLeg.xRot   = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+            float swing = Mth.cos(limbSwing * 0.6662F) * 1.2F * limbSwingAmount;
+            this.rightFrontLeg.xRot = swing;
+            this.leftHindLeg.xRot = swing;
+            this.leftFrontLeg.xRot = -swing;
+            this.rightHindLeg.xRot = -swing;
         }
 
-        // Head looking logic (reduced sensitivity for a heavier neck feel)
-        this.head.yRot = netHeadYaw * ((float)Math.PI / 180F) * 0.5F;
-        this.head.xRot = headPitch * ((float)Math.PI / 180F) * 0.5F;
+        // Quick ear twitch every few seconds (offset per hyena so they don't sync)
+        float twitch = (ageInTicks + entity.getId() * 37) % 100.0F;
+        if (twitch >= 0.0F && twitch < 6.0F) {
+            this.rightEar.zRot -= Mth.sin(twitch / 6.0F * Mth.PI) * 0.3F;
+        }
+
+        float maneHeight = 1.0F;
+        if (attacking) {
+            // Head low, mouth open, mane up
+            this.neck.xRot += 0.4F;
+            this.head.xRot -= 0.3F;
+            this.jaw.visible = true;
+            this.jaw.xRot = 0.4F;
+            this.tail.xRot = 0.0F;
+            maneHeight = 1.8F;
+        } else if (frenzied && !sitting) {
+            this.jaw.visible = true;
+            this.jaw.xRot = 0.25F + Mth.sin(ageInTicks * 0.5F) * 0.08F;
+            maneHeight = 1.4F;
+        }
+        this.chestMane.yScale = maneHeight;
+        this.neckMane.yScale = maneHeight;
+
+        // Pups get a slightly bigger head
+        float headSize = this.young ? 1.2F : 1.0F;
+        this.head.xScale = headSize;
+        this.head.yScale = headSize;
+        this.head.zScale = headSize;
+    }
+
+    private void applySittingPose() {
+        // Rear on the ground, chest up
+        this.body.y = 18.5F;
+        this.body.xRot = -0.5F;
+
+        // Keep the face level
+        this.neck.xRot += 0.25F;
+        this.head.xRot += 0.25F;
+        this.tail.xRot = 0.2F;
+
+        // Hind legs folded forward along the ground
+        this.rightHindLeg.setPos(-4.2F, 22.0F, 7.0F);
+        this.leftHindLeg.setPos(4.2F, 22.0F, 7.0F);
+        this.rightHindLeg.xRot = -Mth.HALF_PI;
+        this.leftHindLeg.xRot = -Mth.HALF_PI;
+        this.rightHindLeg.yRot = 0.15F;
+        this.leftHindLeg.yRot = -0.15F;
     }
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
         poseStack.pushPose();
-
-        // SCALING LOGIC
+        // Shrink toward the ground so the paws stay on it
         if (this.young) {
             poseStack.scale(0.45F, 0.45F, 0.45F);
-            poseStack.translate(0.0D, 1.85D, 0.0D);
+            poseStack.translate(0.0D, 1.833D, 0.0D);
         } else {
             poseStack.scale(0.85F, 0.85F, 0.85F);
-            poseStack.translate(0.0D, 0.25D, 0.0D);
+            poseStack.translate(0.0D, 0.265D, 0.0D);
         }
-
-        // RENDERING (Body hierarchy starting from root parents)
-        this.bodyFront.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
-        this.rightFrontLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
-        this.leftFrontLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
-        this.rightBackLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
-        this.leftBackLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
-
+        super.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, color);
         poseStack.popPose();
     }
 }

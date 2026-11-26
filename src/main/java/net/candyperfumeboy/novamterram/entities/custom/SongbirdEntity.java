@@ -2,9 +2,14 @@ package net.candyperfumeboy.novamterram.entities.custom;
 
 import net.candyperfumeboy.novamterram.entities.NTEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
@@ -20,6 +25,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -33,6 +39,10 @@ public class SongbirdEntity extends Parrot {
             Items.BEETROOT_SEEDS, Items.TORCHFLOWER_SEEDS
     );
 
+    // Synced so the client knows which texture to draw
+    private static final EntityDataAccessor<Integer> DATA_COLOR =
+            SynchedEntityData.defineId(SongbirdEntity.class, EntityDataSerializers.INT);
+
     public SongbirdEntity(EntityType<? extends Parrot> type, Level level) {
         super(type, level);
     }
@@ -42,6 +52,45 @@ public class SongbirdEntity extends Parrot {
                 .add(Attributes.MAX_HEALTH, 6.0D)
                 .add(Attributes.FLYING_SPEED, 0.48F)
                 .add(Attributes.MOVEMENT_SPEED, 0.22F);
+    }
+
+    // --- COLOUR ---
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_COLOR, 0);
+    }
+
+    public SongbirdColor getSongbirdColor() {
+        return SongbirdColor.byIndex(this.entityData.get(DATA_COLOR));
+    }
+
+    public void setSongbirdColor(SongbirdColor color) {
+        this.entityData.set(DATA_COLOR, color.ordinal());
+    }
+
+    // Saved by name, so adding or reordering colours later won't repaint existing birds
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putString("SongbirdColor", this.getSongbirdColor().id());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.setSongbirdColor(SongbirdColor.byId(compound.getString("SongbirdColor")));
+    }
+
+    // Natural spawns, spawn eggs and /summon get a random colour
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
+                                        MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
+        SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
+        this.setSongbirdColor(SongbirdColor.random(this.random));
+        return data;
     }
 
     @Override
@@ -93,7 +142,8 @@ public class SongbirdEntity extends Parrot {
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {
         SongbirdEntity baby = NTEntities.SONGBIRD.get().create(level);
         if (baby != null && parent instanceof SongbirdEntity parentBird) {
-            baby.setVariant(this.random.nextBoolean() ? this.getVariant() : parentBird.getVariant());
+            // Chicks take after one of their parents
+            baby.setSongbirdColor(this.random.nextBoolean() ? this.getSongbirdColor() : parentBird.getSongbirdColor());
             if (this.isTame()) {
                 baby.setOwnerUUID(this.getOwnerUUID());
                 baby.setTame(true, true);
