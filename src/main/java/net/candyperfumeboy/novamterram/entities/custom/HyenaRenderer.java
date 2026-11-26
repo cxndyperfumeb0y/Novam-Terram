@@ -11,8 +11,9 @@ public class HyenaRenderer extends MobRenderer<HyenaEntity, HyenaModel<HyenaEnti
             ResourceLocation.fromNamespaceAndPath("novamterram", "textures/entity/hyena.png");
 
     public HyenaRenderer(EntityRendererProvider.Context context) {
-        // Reduced shadow from 0.7f to 0.55f to match the 0.85x model scale
         super(context, new HyenaModel<>(context.bakeLayer(NTModelLayers.HYENA_LAYER)), 0.55f);
+        this.addLayer(new HyenaCollarLayer(this));
+        this.addLayer(new HyenaHeldItemLayer(this, context.getItemInHandRenderer()));
     }
 
     @Override

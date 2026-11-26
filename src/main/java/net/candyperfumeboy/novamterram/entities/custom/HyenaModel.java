@@ -144,7 +144,9 @@ public class HyenaModel<T extends HyenaEntity> extends HierarchicalModel<T> {
         this.root.getAllParts().forEach(ModelPart::resetPose);
 
         boolean sitting = entity.isInSittingPose();
-        boolean attacking = !sitting && entity.isAggressive();
+        boolean resting = !sitting && entity.isResting();
+        boolean stalking = !sitting && !resting && entity.isStalking();
+        boolean attacking = !sitting && !resting && !stalking && entity.isAggressive();
         boolean frenzied = entity.isFrenzied() && !entity.isTame();
 
         // Looking around: mostly the head, a little from the neck
@@ -162,12 +164,22 @@ public class HyenaModel<T extends HyenaEntity> extends HierarchicalModel<T> {
 
         if (sitting) {
             applySittingPose();
+        } else if (resting) {
+            applyRestingPose(ageInTicks);
         } else {
             float swing = Mth.cos(limbSwing * 0.6662F) * 1.2F * limbSwingAmount;
             this.rightFrontLeg.xRot = swing;
             this.leftHindLeg.xRot = swing;
             this.leftFrontLeg.xRot = -swing;
             this.rightHindLeg.xRot = -swing;
+        }
+
+        if (stalking) {
+            // Body low, head down and level
+            this.body.y = 15.0F;
+            this.neck.xRot += 0.5F;
+            this.head.xRot -= 0.45F;
+            this.tail.xRot = 0.1F;
         }
 
         // Quick ear twitch every few seconds (offset per hyena so they don't sync)
@@ -185,10 +197,17 @@ public class HyenaModel<T extends HyenaEntity> extends HierarchicalModel<T> {
             this.jaw.xRot = 0.4F;
             this.tail.xRot = 0.0F;
             maneHeight = 1.8F;
-        } else if (frenzied && !sitting) {
+        } else if (frenzied && !sitting && !resting) {
             this.jaw.visible = true;
             this.jaw.xRot = 0.25F + Mth.sin(ageInTicks * 0.5F) * 0.08F;
             maneHeight = 1.4F;
+        }
+        if (entity.getLaughTicks() > 0) {
+            // Head thrown back, bobbing, jaw going
+            float bob = Mth.sin(ageInTicks * 1.8F);
+            this.head.xRot -= 0.35F + bob * 0.2F;
+            this.jaw.visible = true;
+            this.jaw.xRot = 0.45F + bob * 0.15F;
         }
         this.chestMane.yScale = maneHeight;
         this.neckMane.yScale = maneHeight;
@@ -219,10 +238,47 @@ public class HyenaModel<T extends HyenaEntity> extends HierarchicalModel<T> {
         this.leftHindLeg.yRot = -0.15F;
     }
 
+    private void applyRestingPose(float ageInTicks) {
+        // Lying flat on the belly, legs stretched out, slow breathing
+        this.body.y = 19.8F;
+        this.neck.xRot += 0.35F;
+        this.neck.y += Mth.sin(ageInTicks * 0.05F) * 0.25F;
+        this.head.xRot -= 0.35F;
+        this.head.yRot *= 0.3F;
+        this.neck.yRot *= 0.3F;
+        this.tail.xRot = -0.2F;
+        this.tail.yRot = 0.4F;
+
+        this.rightFrontLeg.setPos(-3.6F, 22.4F, -3.0F);
+        this.leftFrontLeg.setPos(3.6F, 22.4F, -3.0F);
+        this.rightHindLeg.setPos(-4.2F, 22.0F, 7.0F);
+        this.leftHindLeg.setPos(4.2F, 22.0F, 7.0F);
+        this.rightFrontLeg.xRot = -Mth.HALF_PI;
+        this.leftFrontLeg.xRot = -Mth.HALF_PI;
+        this.rightHindLeg.xRot = -Mth.HALF_PI;
+        this.leftHindLeg.xRot = -Mth.HALF_PI;
+        this.rightHindLeg.yRot = 0.15F;
+        this.leftHindLeg.yRot = -0.15F;
+    }
+
+    /** Moves the pose stack to the head, for drawing things held in the mouth. */
+    public void translateToHead(PoseStack poseStack) {
+        applyScale(poseStack);
+        this.body.translateAndRotate(poseStack);
+        this.neck.translateAndRotate(poseStack);
+        this.head.translateAndRotate(poseStack);
+    }
+
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
         poseStack.pushPose();
-        // Shrink toward the ground so the paws stay on it
+        applyScale(poseStack);
+        super.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        poseStack.popPose();
+    }
+
+    // Shrink toward the ground so the paws stay on it
+    private void applyScale(PoseStack poseStack) {
         if (this.young) {
             poseStack.scale(0.45F, 0.45F, 0.45F);
             poseStack.translate(0.0D, 1.833D, 0.0D);
@@ -230,7 +286,5 @@ public class HyenaModel<T extends HyenaEntity> extends HierarchicalModel<T> {
             poseStack.scale(0.85F, 0.85F, 0.85F);
             poseStack.translate(0.0D, 0.265D, 0.0D);
         }
-        super.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, color);
-        poseStack.popPose();
     }
 }
