@@ -7,8 +7,8 @@
   "mixins": [
     "OcelotModelMixin",
     "OcelotMixin",
-    "FoxMixin"
-
+    "FoxMixin",
+    "NTBiomePlacementMixin"
   ],
   "injectors": {
     "defaultRequire": 1

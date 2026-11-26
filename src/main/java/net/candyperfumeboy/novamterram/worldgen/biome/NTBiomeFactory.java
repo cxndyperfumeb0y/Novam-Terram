@@ -68,7 +68,12 @@ public class NTBiomeFactory {
             HolderGetter<ConfiguredWorldCarver<?>> c) {
         BiomeGenerationSettings.Builder gen = new BiomeGenerationSettings.Builder(f, c);
         BiomeDefaultFeatures.addDefaultCarversAndLakes(gen);
+        BiomeDefaultFeatures.addDefaultCrystalFormations(gen);
+        BiomeDefaultFeatures.addDefaultMonsterRoom(gen);
+        BiomeDefaultFeatures.addDefaultUndergroundVariety(gen);
         BiomeDefaultFeatures.addDefaultOres(gen);
+        BiomeDefaultFeatures.addDefaultSprings(gen);
+        BiomeDefaultFeatures.addSurfaceFreezing(gen);
         return gen;
     }
 
@@ -79,7 +84,6 @@ public class NTBiomeFactory {
         MobSpawnSettings.Builder spawns = new MobSpawnSettings.Builder();
         BiomeDefaultFeatures.commonSpawns(spawns);
         BiomeDefaultFeatures.farmAnimals(spawns);
-        BiomeDefaultFeatures.caveSpawns(spawns);
         return spawns;
     }
 
@@ -205,7 +209,7 @@ public class NTBiomeFactory {
 
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.FUNGAL_REACH_VEGETATION_PLACED));
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.FUNGAL_CANOPY_TREE_PLACED));
-      gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.FEN_MUSHROOM_PLACED));
+        gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.FEN_MUSHROOM_PLACED));
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.HUGE_MUSHROOM_COMMON_PLACED));
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.RAINFOREST_MELON));
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.HEATH_WATERLILY));
@@ -280,7 +284,6 @@ public class NTBiomeFactory {
             HolderGetter<ConfiguredWorldCarver<?>> carvers) {
 
         BiomeGenerationSettings.Builder gen = baseGen(features, carvers);
-        BiomeDefaultFeatures.addDefaultCrystalFormations(gen);
         MobSpawnSettings.Builder spawns = baseSpawns();
 
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.ROYAL_TALL_GRASS));
@@ -370,7 +373,7 @@ public class NTBiomeFactory {
         BiomeDefaultFeatures.addDefaultSoftDisks(gen);
         MobSpawnSettings.Builder spawns = baseSpawns();
 
-     gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.BLUE_GROVE_LARGE_FERN));
+        gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.BLUE_GROVE_LARGE_FERN));
         gen.addFeature(GenerationStep.Decoration.LAKES, features.getOrThrow(MiscOverworldPlacements.SPRING_WATER));
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.BLUESPRUCE_TAIGA_PLACED_KEY));
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.MEGA_BLUE_SPRUCE_PLACED_KEY));
@@ -637,8 +640,8 @@ public class NTBiomeFactory {
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.CYPRESS_WATERLILY));
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.CYPRESS_TREE_PLACED));
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.CYPRESS_LILY_PLACED));
-       gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.FEN_MUSHROOM_PLACED));
-       gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.CYPRESS_GRASS_PLACED));
+        gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.FEN_MUSHROOM_PLACED));
+        gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.CYPRESS_GRASS_PLACED));
 
         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.BOGGED, 20, 4, 4));
         spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SLIME, 15, 1, 1));
@@ -678,7 +681,7 @@ public class NTBiomeFactory {
         gen.addFeature(GenerationStep.Decoration.LAKES, features.getOrThrow(NTPlacedFeatures.HEATH_POND_PLACED));
         gen.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, features.getOrThrow(NTPlacedFeatures.SUNKEN_LOG_PLACED));
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.BLUE_GROVE_GRASS_PLACED));
-       gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.BLUE_GROVE_FLOWER_PATCH_PLACED));
+        gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.BLUE_GROVE_FLOWER_PATCH_PLACED));
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.MIRROR_ICE_PLACED));
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.FROSTED_REEDS_PLACED));
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(NTPlacedFeatures.MIRROR_MIRE_TREES));
@@ -691,6 +694,7 @@ public class NTBiomeFactory {
         return new Biome.BiomeBuilder()
                 .hasPrecipitation(true)
                 .temperature(-0.05f)
+                .temperatureAdjustment(Biome.TemperatureModifier.FROZEN)
                 .downfall(1.0f)
                 .specialEffects(new BiomeSpecialEffects.Builder()
                         .waterColor(0x3D5E7A)
@@ -761,8 +765,8 @@ public class NTBiomeFactory {
         MobSpawnSettings.Builder spawns = baseSpawns();
         BiomeDefaultFeatures.desertSpawns(spawns);
 
-        gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(VegetationPlacements.PATCH_DEAD_BUSH_2));
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(VegetationPlacements.TREES_WINDSWEPT_HILLS));
+        gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(VegetationPlacements.PATCH_DEAD_BUSH_2));
 
         return new Biome.BiomeBuilder()
                 .hasPrecipitation(false).temperature(1.2f).downfall(0.0f)
@@ -826,8 +830,8 @@ public class NTBiomeFactory {
         BiomeGenerationSettings.Builder gen = baseGen(features, carvers);
         MobSpawnSettings.Builder spawns = baseSpawns();
 
-        gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(VegetationPlacements.VINES));
         gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(VegetationPlacements.TREES_JUNGLE));
+        gen.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.getOrThrow(VegetationPlacements.VINES));
 
         return new Biome.BiomeBuilder()
                 .hasPrecipitation(true).temperature(0.8f).downfall(1.0f)

@@ -60,6 +60,16 @@ public class NTBiomeTagsProvider extends BiomeTagsProvider {
         // ============================================================
 
         this.tag(BiomeTags.IS_OVERWORLD)
+                .addOptional(NTBiomes.BLUEBELL_WOODS.location())
+                .addOptional(NTBiomes.BLACK_FOREST.location())
+                .addOptional(NTBiomes.SILVER_BIRCH_WETLAND.location())
+                .addOptional(NTBiomes.COASTAL_CHAPARRAL.location())
+                .addOptional(NTBiomes.MANGROVE_LAGOON.location())
+                .addOptional(NTBiomes.LARCH_FOREST.location())
+                .addOptional(NTBiomes.OZARK_FOREST.location())
+                .addOptional(NTBiomes.CLOUD_FOREST.location())
+                .addOptional(NTBiomes.CEDAR_SLOPES.location())
+                .addOptional(NTBiomes.GALLERY_FOREST.location())
                 .addOptional(NTBiomes.BLUE_GROVE.location())
                 .addOptional(NTBiomes.AEGEAN.location())
                 .addOptional(NTBiomes.MAQUIS.location())
@@ -91,15 +101,22 @@ public class NTBiomeTagsProvider extends BiomeTagsProvider {
 
         // --- Taiga-class (coniferous, cold forest) ---
         this.tag(BiomeTags.IS_TAIGA)
+                .addOptional(NTBiomes.LARCH_FOREST.location())
+                .addOptional(NTBiomes.CEDAR_SLOPES.location())
                 .addOptional(NTBiomes.BLUE_GROVE.location())      // cold spruce-like grove
                 .addOptional(NTBiomes.AUTUMNAL_TAIGA.location()); // classic cool forest
 
         // --- Jungle-class ---
         this.tag(BiomeTags.IS_JUNGLE)
+                .addOptional(NTBiomes.CLOUD_FOREST.location())
                 .addOptional(NTBiomes.RAINFOREST.location());     // hot, dense, tropical
 
         // --- Forest-class (deciduous / mixed woodland) ---
         this.tag(BiomeTags.IS_FOREST)
+                .addOptional(NTBiomes.BLUEBELL_WOODS.location())
+                .addOptional(NTBiomes.BLACK_FOREST.location())
+                .addOptional(NTBiomes.OZARK_FOREST.location())
+                .addOptional(NTBiomes.GALLERY_FOREST.location())
                 .addOptional(NTBiomes.ROYAL_FOREST.location())    // dense temperate woodland
                 .addOptional(NTBiomes.AUTUMNAL_TAIGA.location())  // forested, mixed
                 .addOptional(NTBiomes.SAFFRON_GROVE.location());  // open warm grove
@@ -145,6 +162,7 @@ public class NTBiomeTagsProvider extends BiomeTagsProvider {
                 .addOptional(NTBiomes.MIRROR_MIRE.location())
                 .addOptional(NTBiomes.FUNGAL_REACH.location());
         this.tag(Tags.Biomes.IS_SWAMP)
+                .addOptional(NTBiomes.SILVER_BIRCH_WETLAND.location())
                 .addOptional(NTBiomes.CYPRESS_FEN.location())
                 .addOptional(NTBiomes.MIRROR_MIRE.location())
                 .addOptional(NTBiomes.FUNGAL_REACH.location());
@@ -162,6 +180,9 @@ public class NTBiomeTagsProvider extends BiomeTagsProvider {
         // Hot (temp > 0.8): MAQUIS 0.85, RAINFOREST 0.95, SAFFRON_GROVE 0.9,
         //                   AMBER_SANDS 1.5, CALDERA_GROTTO 0.95
         this.tag(Tags.Biomes.IS_HOT_OVERWORLD)
+                .addOptional(NTBiomes.COASTAL_CHAPARRAL.location())
+                .addOptional(NTBiomes.MANGROVE_LAGOON.location())
+                .addOptional(NTBiomes.GALLERY_FOREST.location())
                 .addOptional(NTBiomes.MAQUIS.location())
                 .addOptional(NTBiomes.RAINFOREST.location())
                 .addOptional(NTBiomes.SAFFRON_GROVE.location())
@@ -171,6 +192,11 @@ public class NTBiomeTagsProvider extends BiomeTagsProvider {
         // Temperate (0.5–0.8 incl.): AEGEAN 0.8, HEATH 0.6, CYPRESS_FEN 0.75,
         //                            MYRTLE_FIELDS 0.7, ROYAL_FOREST 0.7
         this.tag(Tags.Biomes.IS_TEMPERATE_OVERWORLD)
+                .addOptional(NTBiomes.BLUEBELL_WOODS.location())
+                .addOptional(NTBiomes.BLACK_FOREST.location())
+                .addOptional(NTBiomes.SILVER_BIRCH_WETLAND.location())
+                .addOptional(NTBiomes.OZARK_FOREST.location())
+                .addOptional(NTBiomes.CLOUD_FOREST.location())
                 .addOptional(NTBiomes.AEGEAN.location())
                 .addOptional(NTBiomes.HEATH.location())
                 .addOptional(NTBiomes.CYPRESS_FEN.location())
@@ -180,6 +206,8 @@ public class NTBiomeTagsProvider extends BiomeTagsProvider {
         // Cold (temp < 0.5): BLUE_GROVE 0.25, ANDEAN_HILLS 0.25,
         //                    MIRROR_MIRE 0.3, AUTUMNAL_TAIGA 0.4, FUNGAL_REACH 0.3
         this.tag(Tags.Biomes.IS_COLD_OVERWORLD)
+                .addOptional(NTBiomes.LARCH_FOREST.location())
+                .addOptional(NTBiomes.CEDAR_SLOPES.location())
                 .addOptional(NTBiomes.BLUE_GROVE.location())
                 .addOptional(NTBiomes.ANDEAN_HILLS.location())
                 .addOptional(NTBiomes.MIRROR_MIRE.location())
@@ -338,6 +366,11 @@ public class NTBiomeTagsProvider extends BiomeTagsProvider {
         // Excluded: Aegean (coastal water), Mirror Mire, Cypress Fen, Fungal Reach
         // (all too waterlogged/swampy for a tower structure to feel right).
         this.tag(BiomeTags.HAS_PILLAGER_OUTPOST)
+                .addOptional(NTBiomes.BLUEBELL_WOODS.location())
+                .addOptional(NTBiomes.BLACK_FOREST.location())
+                .addOptional(NTBiomes.LARCH_FOREST.location())
+                .addOptional(NTBiomes.OZARK_FOREST.location())
+                .addOptional(NTBiomes.CEDAR_SLOPES.location())
                 .addOptional(NTBiomes.BLUE_GROVE.location())
                 .addOptional(NTBiomes.MAQUIS.location())
                 .addOptional(NTBiomes.HEATH.location())

@@ -54,6 +54,12 @@ public class NTSurfaceRules {
     // ========================================================================================
 
     public static SurfaceRules.RuleSource makeRules() {
+        // Only paint the real surface, so these blocks don't show up in caves
+        // or replace the deep layers and bedrock.
+        return SurfaceRules.ifTrue(SurfaceRules.abovePreliminarySurface(), biomeRules());
+    }
+
+    private static SurfaceRules.RuleSource biomeRules() {
         return SurfaceRules.sequence(
 
                 // -----------------------------------------------------------------------
@@ -349,24 +355,25 @@ public class NTSurfaceRules {
         return SurfaceRules.sequence(
                 SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, wrapUnderwaterCalcite(SurfaceRules.sequence(
 
-                        // 1. Water Edges (Priority over land)
-                        SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(-1, 0),
+                        // 1. Beach: only the low ground near sea level
+                        SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.yBlockCheck(VerticalAnchor.absolute(66), 0)),
                                 SurfaceRules.sequence(
                                         SurfaceRules.ifTrue(SurfaceRules.noiseCondition(Noises.PATCH, 0.6D), GRAVEL),
                                         WHITE_SAND
                                 )
                         ),
 
-                        // 2. Calcite/Sand Outcrops (Rarer, higher threshold)
-                        // Increased threshold to 0.7D so it only generates in distinct patches
-                        SurfaceRules.ifTrue(SurfaceRules.noiseCondition(Noises.SURFACE, 0.7D),
+                        // 2. Rocky heights
+                        SurfaceRules.ifTrue(SurfaceRules.yBlockCheck(VerticalAnchor.absolute(84), 0),
                                 SurfaceRules.sequence(
-                                        SurfaceRules.ifTrue(SurfaceRules.noiseCondition(Noises.PATCH, 0.5D), WHITE_SAND),
-                                        CALCITE
+                                        SurfaceRules.ifTrue(SurfaceRules.noiseCondition(Noises.SURFACE, 0.3D), STONE),
+                                        SurfaceRules.ifTrue(SurfaceRules.noiseCondition(Noises.SURFACE, -0.3D), CALCITE),
+                                        GRASS
                                 )
                         ),
 
-                        // 3. Fallback: The intended base (Grass)
+                        // 3. Slopes: grass with calcite outcrops
+                        SurfaceRules.ifTrue(SurfaceRules.noiseCondition(Noises.SURFACE, 0.5D), CALCITE),
                         GRASS
                 ))),
 
@@ -449,7 +456,7 @@ public class NTSurfaceRules {
                 // C. UNDERWATER & UNDERGROUND
                 // FIXED: was waterBlockCheck(-1, 0) — near-edge check, not deep-underwater.
                 //        (0, 0) correctly fires for blocks fully submerged.
-                SurfaceRules.ifTrue(SurfaceRules.waterBlockCheck(0, 0), AMBER_SAND),
+                
                 SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR, AMBER_SANDSTONE)
         );
     }

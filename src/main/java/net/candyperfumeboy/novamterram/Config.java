@@ -136,7 +136,7 @@ public class Config {
 
     public static final ModConfigSpec.IntValue SUB_REGION_WEIGHT = BUILDER
             .comment("The weight of the Novam Terram Subbiome region.")
-            .defineInRange("region.sub_weight", 10, 0, 100);
+            .defineInRange("region.sub_weight", 3, 0, 100);
 
     static final ModConfigSpec SPEC = BUILDER.build();
 }
