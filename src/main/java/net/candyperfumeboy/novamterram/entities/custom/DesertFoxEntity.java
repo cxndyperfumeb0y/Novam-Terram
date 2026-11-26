@@ -50,7 +50,7 @@ public class DesertFoxEntity extends AbstractNTFox {
     protected void addVariantGoals() {
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Silverfish.class, 10, true, false, null));
         this.goalSelector.addGoal(6, new BigEarListeningGoal(this));
-        this.goalSelector.addGoal(7, new CamelScoutGoal(this, 0.8D));
+        this.goalSelector.addGoal(11, new CamelScoutGoal(this, 0.8D));
         this.goalSelector.addGoal(12, new DesertArchaeologyGoal(this));
     }
 

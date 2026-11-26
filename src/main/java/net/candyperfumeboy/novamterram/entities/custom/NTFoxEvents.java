@@ -52,7 +52,7 @@ import java.util.UUID;
 @EventBusSubscriber(modid = NovamTerram.MOD_ID)
 public class NTFoxEvents {
 
-    private static final String NBT_UPGRADED = "NTUpgraded";
+    
 
     // =========================================================================
     // EVENT HANDLERS
@@ -60,7 +60,7 @@ public class NTFoxEvents {
 
     /**
      * Injects NT sit/follow goals into vanilla Fox instances exactly once.
-     * NBT_UPGRADED flag prevents re-injection on world load / dimension transfer.
+     * Runs each time a fox is loaded; goals already present are not added again.
      * AbstractNTFox subclasses are skipped entirely.
      */
     @SubscribeEvent
@@ -68,9 +68,8 @@ public class NTFoxEvents {
         if (event.getLevel().isClientSide()) return;
         if (!(event.getEntity() instanceof Fox fox)) return;
         if (fox instanceof AbstractNTFox) return;
-        if (fox.getPersistentData().getBoolean(NBT_UPGRADED)) return;
-
-        fox.getPersistentData().putBoolean(NBT_UPGRADED, true);
+        // Goals are not saved with the world, so check the fox itself instead of a saved flag.
+        if (fox.goalSelector.getAvailableGoals().stream().anyMatch(w -> w.getGoal() instanceof VanillaFoxSitGoal)) return;
         fox.goalSelector.addGoal(1, new VanillaFoxSitGoal(fox));
         fox.goalSelector.addGoal(2, new VanillaFoxFollowGoal(fox, 1.25D, 8.0F, 3.0F));
 
@@ -124,7 +123,7 @@ public class NTFoxEvents {
 
         if (!baby.level().isClientSide() && baby.level() instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(ParticleTypes.HEART,
-                    baby.getX(), baby.getY() + 0.5D, baby.getZ(),
+                    event.getParentA().getX(), event.getParentA().getY() + 0.5D, event.getParentA().getZ(),
                     8, 0.3D, 0.3D, 0.3D, 0.1D);
         }
     }
@@ -202,13 +201,16 @@ public class NTFoxEvents {
         if (event.getEntity().level().isClientSide()) return;
         if (!(event.getEntity() instanceof Fox fox)) return;
 
-        if (fox.isSleeping() && fox.tickCount % 40 == 0
+        if (fox.isSleeping() && fox.tickCount % 200 == 0
                 && fox.level() instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(ParticleTypes.WHITE_ASH,
-                    fox.getX(), fox.getY() + 0.5D, fox.getZ(), 2, 0.1, 0.1, 0.1, 0.02);
+                    fox.getX(), fox.getY() + 0.5D, fox.getZ(), 1, 0.1, 0.1, 0.1, 0.01);
         }
 
-        if ((fox.tickCount + fox.getId()) % 80 == 0
+        // Group chatter: checked every 30 seconds, with a 1 in 4 chance (about once in 2 minutes per fox).
+        if ((fox.tickCount + fox.getId()) % 600 == 0
+                && fox.getRandom().nextInt(4) == 0
+                && !fox.isSleeping()
                 && !fox.isOnFire()
                 && fox.getTarget() == null
                 && fox.getHealth() >= fox.getMaxHealth() * 0.5F) {
@@ -216,10 +218,10 @@ public class NTFoxEvents {
             if (nearby.size() > 1) {
                 fox.level().playSound(null, fox.getX(), fox.getY(), fox.getZ(),
                         SoundEvents.FOX_AMBIENT, fox.getSoundSource(),
-                        1.0F, 1.4F + fox.getRandom().nextFloat() * 0.4F);
+                        0.35F, 1.4F + fox.getRandom().nextFloat() * 0.4F);
                 if (fox.level() instanceof ServerLevel serverLevel) {
                     serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
-                            fox.getX(), fox.getEyeY(), fox.getZ(), 5, 0.3, 0.3, 0.3, 0.05);
+                            fox.getX(), fox.getEyeY(), fox.getZ(), 1, 0.2, 0.2, 0.2, 0.0);
                 }
             }
         }
@@ -254,6 +256,15 @@ public class NTFoxEvents {
      * FIXED: Sleep transition gated on nt$isOrderedToSit() to prevent desync when
      * the player un-orders sit while the delay timer is counting down.
      */
+    /** Room for the fox, solid ground underneath and no water or lava. */
+    static boolean isSafeSpot(Fox fox, BlockPos pos) {
+        var level = fox.level();
+        var move = net.minecraft.world.phys.Vec3.atBottomCenterOf(pos).subtract(fox.position());
+        return level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), net.minecraft.core.Direction.UP)
+                && level.getFluidState(pos).isEmpty()
+                && level.noCollision(fox, fox.getBoundingBox().move(move));
+    }
+
     public static class VanillaFoxSitGoal extends Goal {
         private final Fox fox;
         private int sleepTickDelay = 0;
@@ -358,7 +369,7 @@ public class NTFoxEvents {
 
         @Override
         public void tick() {
-            if (this.owner == null || fox.isLeashed()) return;
+            if (this.owner == null || fox.isLeashed() || fox.isPassenger()) return;
             fox.getLookControl().setLookAt(this.owner, 10.0F, (float) fox.getMaxHeadXRot());
             if (--recalcTimer > 0) return;
             recalcTimer = 10;
@@ -374,7 +385,7 @@ public class NTFoxEvents {
                         fox.getRandom().nextInt(3) - 1,
                         fox.getRandom().nextInt(2),
                         fox.getRandom().nextInt(3) - 1);
-                if (fox.level().getBlockState(target).isPathfindable(PathComputationType.LAND)) {
+                if (isSafeSpot(fox, target)) {
                     fox.moveTo(target.getX() + 0.5, target.getY(), target.getZ() + 0.5);
                     fox.getNavigation().stop();
                     return;

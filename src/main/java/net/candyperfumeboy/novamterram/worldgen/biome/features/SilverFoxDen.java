@@ -56,14 +56,7 @@ public class SilverFoxDen extends Feature<NoneFeatureConfiguration> {
                 // Keep them from despawning
                 fox.setPersistenceRequired();
 
-                try {
-                    java.lang.reflect.Method setSleepingMethod = net.minecraft.world.entity.animal.Fox.class.getDeclaredMethod("setSleeping", boolean.class);
-                    setSleepingMethod.setAccessible(true);
-                    setSleepingMethod.invoke(fox, true);
-                } catch (Exception e) {
-                    // Fallback using the data index (usually 16 or 17 in 1.20+)
-                    // If 16 fails, the fox just won't be sleeping, but the mod won't crash!
-                }
+                fox.setSleeping(true); // allowed by the access transformer
 
                 level.addFreshEntity(fox);
             }

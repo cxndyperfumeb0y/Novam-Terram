@@ -39,6 +39,10 @@ public class SilverFoxEntity extends AbstractNTFox {
 
     private boolean hasDugThisPounce = false;
 
+    // Villager gifts: at most one per fox AND per villager in this many ticks (24000 = 20 minutes).
+    private static final long GIFT_COOLDOWN = 24000L;
+    private static final String NBT_NEXT_GIFT = "NTNextGift";
+
     public SilverFoxEntity(EntityType<? extends Fox> type, Level level) { super(type, level); }
 
     public static AttributeSupplier.Builder createSilverFoxAttributes() {
@@ -97,7 +101,12 @@ public class SilverFoxEntity extends AbstractNTFox {
                 if (!this.nt$isOrderedToSit()) trySocialize(v);
                 if (this.isSleeping() || this.nt$isOrderedToSit()) {
                     v.addEffect(new MobEffectInstance(MobEffects.HERO_OF_THE_VILLAGE, 300, 0, false, false));
-                    if (this.random.nextFloat() < 0.02F) {
+                    long now = this.level().getGameTime();
+                    if (now >= this.getPersistentData().getLong(NBT_NEXT_GIFT)
+                            && now >= v.getPersistentData().getLong(NBT_NEXT_GIFT)
+                            && this.random.nextFloat() < 0.02F) {
+                        this.getPersistentData().putLong(NBT_NEXT_GIFT, now + GIFT_COOLDOWN);
+                        v.getPersistentData().putLong(NBT_NEXT_GIFT, now + GIFT_COOLDOWN);
                         v.swing(InteractionHand.MAIN_HAND);
                         this.spawnAtLocation(this.random.nextFloat() < 0.1F ? Items.EMERALD : Items.BREAD);
                         this.playSound(SoundEvents.VILLAGER_CELEBRATE, 1.0F, 1.0F);

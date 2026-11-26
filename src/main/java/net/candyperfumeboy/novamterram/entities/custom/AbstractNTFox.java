@@ -46,9 +46,9 @@ public abstract class AbstractNTFox extends Fox implements INTFox {
     private static final EntityDataAccessor<Boolean> DATA_SITTING =
             SynchedEntityData.defineId(AbstractNTFox.class, EntityDataSerializers.BOOLEAN);
 
-    private static final String NBT_EAT_COOLDOWN = "NTEatCooldown";
-    private static final String NBT_TRUSTED_LIST  = "NTTrustedUUIDs";
-    private static final int    EAT_COOLDOWN_TICKS = 1200;
+    
+    
+    
 
     private static final Predicate<Entity> TRUSTED_TARGET_SELECTOR = entity ->
             entity instanceof LivingEntity living
@@ -84,16 +84,16 @@ public abstract class AbstractNTFox extends Fox implements INTFox {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitGoal());
-        this.goalSelector.addGoal(2, new FollowTrustedGoal(1.25D, 10.0F, 2.0F));
+        this.goalSelector.addGoal(4, new FollowTrustedGoal(1.25D, 10.0F, 2.0F));
         this.targetSelector.addGoal(1, new Fox.DefendTrustedTargetGoal(
                 LivingEntity.class, false, false,
                 entity -> TRUSTED_TARGET_SELECTOR.test(entity) && !this.nt$trusts(entity.getUUID())));
         this.goalSelector.addGoal(3, new Fox.FaceplantGoal());
         this.goalSelector.addGoal(5, new AvoidEntityGoal<>(this, PolarBear.class, 8.0F, 1.6D, 1.4D));
-        this.goalSelector.addGoal(6, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(7, new MeleeAttackGoal(this, 1.2D, true));
-        this.goalSelector.addGoal(8, new Fox.StalkPreyGoal());
-        this.goalSelector.addGoal(9, new Fox.FoxPounceGoal());
+        this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(9, new MeleeAttackGoal(this, 1.2D, true));
+        this.goalSelector.addGoal(7, new Fox.StalkPreyGoal());
+        this.goalSelector.addGoal(8, new Fox.FoxPounceGoal());
         this.goalSelector.addGoal(10, new FollowParentGoal(this, 1.1D) {
             @Override public boolean canUse() {
                 if (AbstractNTFox.this.nt$isOrderedToSit()) return false;
@@ -108,7 +108,7 @@ public abstract class AbstractNTFox extends Fox implements INTFox {
                 return !AbstractNTFox.this.nt$isOrderedToSit() && super.canContinueToUse();
             }
         });
-        this.goalSelector.addGoal(11, new PanicGoal(this, 1.5D));
+        this.goalSelector.addGoal(2, new PanicGoal(this, 1.5D));
         this.goalSelector.addGoal(12, new Fox.FoxEatBerriesGoal(1.2D, 12, 1));
         this.goalSelector.addGoal(13, new Fox.FoxSearchForItemsGoal());
         this.goalSelector.addGoal(14, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -177,20 +177,22 @@ public abstract class AbstractNTFox extends Fox implements INTFox {
             this.playSound(SoundEvents.WOLF_SHAKE, 1.0F, 1.0F);
         }
 
-        if (!this.nt$isOrderedToSit() && this.getTarget() == null && !this.isSleeping())
-            if (this.isNocturnal() == this.level().isDay() && this.random.nextFloat() < 0.001F)
-                this.setSleeping(true);
-
-        ItemStack mainHand = this.getItemBySlot(EquipmentSlot.MAINHAND);
-        if (mainHand.has(DataComponents.FOOD)) {
-            int cd = this.getPersistentData().getInt(NBT_EAT_COOLDOWN);
-            if (cd > 0) this.getPersistentData().putInt(NBT_EAT_COOLDOWN, cd - 1);
-            else if (this.random.nextFloat() < 0.005F) {
-                this.eat(this.level(), mainHand);
-                this.playSound(SoundEvents.FOX_EAT, 1.0F, 1.0F);
-                this.getPersistentData().putInt(NBT_EAT_COOLDOWN, EAT_COOLDOWN_TICKS);
-            }
+        // Sleep during this fox's rest time, and wake up when it ends.
+        boolean restTime = this.isNocturnal() == this.level().isDay();
+        if (this.isSleeping()) {
+            if (!restTime) this.setSleeping(false);
+        } else if (restTime && !this.nt$isOrderedToSit() && this.getTarget() == null
+                && this.getNavigation().isDone() && this.random.nextFloat() < 0.001F) {
+            this.setSleeping(true);
         }
+        // Eating held food is already handled by the vanilla Fox in super.aiStep().
+    }
+
+    @Override
+    public boolean hurt(net.minecraft.world.damagesource.DamageSource source, float amount) {
+        boolean hurt = super.hurt(source, amount);
+        if (hurt && !this.level().isClientSide) this.setSleeping(false);
+        return hurt;
     }
 
     @Override
@@ -213,43 +215,32 @@ public abstract class AbstractNTFox extends Fox implements INTFox {
     @Override
     public boolean nt$trusts(UUID uuid) { return uuid != null && this.nt$getTrustedUUIDs().contains(uuid); }
 
+    // Trust must use the vanilla synced slots so the client knows about it too.
     @Override
     public Collection<UUID> nt$getTrustedUUIDs() {
         List<UUID> uuids = new ArrayList<>();
-        CompoundTag pd = this.getPersistentData();
-        if (pd.contains(NBT_TRUSTED_LIST)) {
-            ListTag list = pd.getList(NBT_TRUSTED_LIST, Tag.TAG_INT_ARRAY);
-            for (Tag tag : list) uuids.add(NbtUtils.loadUUID(tag));
-        }
+        this.getEntityData().get(DATA_TRUSTED_ID_0).ifPresent(uuids::add);
+        this.getEntityData().get(DATA_TRUSTED_ID_1).ifPresent(uuids::add);
         return uuids;
     }
 
     @Override
     public void nt$addTrustedUUID(UUID uuid) {
-        if (uuid == null) return;
-        this.addTrustedUUID(uuid); // vanilla slots
-        CompoundTag pd = this.getPersistentData();
-        ListTag list = pd.contains(NBT_TRUSTED_LIST)
-                ? pd.getList(NBT_TRUSTED_LIST, Tag.TAG_INT_ARRAY) : new ListTag();
-        if (list.stream().noneMatch(t -> NbtUtils.loadUUID(t).equals(uuid))) {
-            list.add(NbtUtils.createUUID(uuid));
-            pd.put(NBT_TRUSTED_LIST, list);
-        }
+        if (uuid != null && !this.nt$trusts(uuid)) this.addTrustedUUID(uuid);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("NTSitting", this.nt$isOrderedToSit());
-        compound.putInt(NBT_EAT_COOLDOWN, this.getPersistentData().getInt(NBT_EAT_COOLDOWN));
+        
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.nt$setOrderedToSit(compound.getBoolean("NTSitting"));
-        if (compound.contains(NBT_EAT_COOLDOWN))
-            this.getPersistentData().putInt(NBT_EAT_COOLDOWN, compound.getInt(NBT_EAT_COOLDOWN));
+        
     }
 
     @Override
@@ -298,10 +289,12 @@ public abstract class AbstractNTFox extends Fox implements INTFox {
                     && AbstractNTFox.this.distanceToSqr(owner) > stopDist * stopDist;
         }
 
+        @Override public void start() { AbstractNTFox.this.setSleeping(false); this.recalcTimer = 0; }
         @Override public void stop() { this.owner = null; }
 
         @Override public void tick() {
             AbstractNTFox.this.getLookControl().setLookAt(owner, 10.0F, (float)AbstractNTFox.this.getMaxHeadXRot());
+            if (AbstractNTFox.this.isLeashed() || AbstractNTFox.this.isPassenger()) return;
             if (--recalcTimer > 0) return;
             recalcTimer = 10;
             double dsq = AbstractNTFox.this.distanceToSqr(owner);
@@ -313,7 +306,7 @@ public abstract class AbstractNTFox extends Fox implements INTFox {
             BlockPos base = owner.blockPosition();
             for (int i = 0; i < 10; i++) {
                 BlockPos t = base.offset(AbstractNTFox.this.getRandom().nextInt(3)-1, AbstractNTFox.this.getRandom().nextInt(2), AbstractNTFox.this.getRandom().nextInt(3)-1);
-                if (AbstractNTFox.this.level().getBlockState(t).isPathfindable(PathComputationType.LAND)) {
+                if (NTFoxEvents.isSafeSpot(AbstractNTFox.this, t)) {
                     AbstractNTFox.this.moveTo(t.getX()+0.5, t.getY(), t.getZ()+0.5, AbstractNTFox.this.getYRot(), AbstractNTFox.this.getXRot());
                     AbstractNTFox.this.getNavigation().stop();
                     return;

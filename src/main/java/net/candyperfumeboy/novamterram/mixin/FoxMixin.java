@@ -68,7 +68,9 @@ public abstract class FoxMixin implements INTFox {
     @Override public boolean nt$isOrderedToSit() { return ((Fox)(Object)this).getEntityData().get(NT_SITTING); }
     @Override public void nt$setOrderedToSit(boolean s) { ((Fox)(Object)this).getEntityData().set(NT_SITTING, s); }
     @Override public boolean nt$trusts(UUID uuid) { return this.trusts(uuid); }
-    @Override public void nt$addTrustedUUID(UUID uuid) { this.addTrustedUUID(uuid); }
+    @Override public void nt$addTrustedUUID(UUID uuid) {
+        if (uuid != null && !this.trusts(uuid)) this.addTrustedUUID(uuid);
+    }
 
     @Override
     public Collection<UUID> nt$getTrustedUUIDs() {
