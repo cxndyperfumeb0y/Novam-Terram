@@ -1,0 +1,20 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "minecraft:flower_forest",
+  "features": [],
+  "step": "vegetal_decoration",
+  "effects": {
+    "fog_color": 14067963,
+    "water_color": 4511743,
+    "water_fog_color": 529407,
+    "sky_color": 8035327,
+    "grass_color": 5208878,
+    "foliage_color": 4893988,
+    "ambient_particle": {
+      "probability": 0.015,
+      "options": {
+        "type": "minecraft:spore_blossom_air"
+      }
+    }
+  }
+}
