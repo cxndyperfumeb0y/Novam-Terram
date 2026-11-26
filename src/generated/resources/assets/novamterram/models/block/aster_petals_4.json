@@ -1,0 +1,114 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "neoforge_data": {
+            "ambient_occlusion": false
+          },
+          "texture": "#texture"
+        },
+        "up": {
+          "neoforge_data": {
+            "ambient_occlusion": false
+          },
+          "texture": "#texture"
+        }
+      },
+      "from": [
+        1,
+        0.1,
+        2
+      ],
+      "to": [
+        9,
+        0.1,
+        10
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "neoforge_data": {
+            "ambient_occlusion": false
+          },
+          "texture": "#texture"
+        },
+        "up": {
+          "neoforge_data": {
+            "ambient_occlusion": false
+          },
+          "texture": "#texture"
+        }
+      },
+      "from": [
+        8,
+        0.15,
+        1
+      ],
+      "to": [
+        16,
+        0.15,
+        9
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "neoforge_data": {
+            "ambient_occlusion": false
+          },
+          "texture": "#texture"
+        },
+        "up": {
+          "neoforge_data": {
+            "ambient_occlusion": false
+          },
+          "texture": "#texture"
+        }
+      },
+      "from": [
+        2,
+        0.2,
+        8
+      ],
+      "to": [
+        10,
+        0.2,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "neoforge_data": {
+            "ambient_occlusion": false
+          },
+          "texture": "#texture"
+        },
+        "up": {
+          "neoforge_data": {
+            "ambient_occlusion": false
+          },
+          "texture": "#texture"
+        }
+      },
+      "from": [
+        7,
+        0.25,
+        7
+      ],
+      "to": [
+        15,
+        0.25,
+        15
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "novamterram:block/aster_petals",
+    "texture": "novamterram:block/aster_petals"
+  }
+}

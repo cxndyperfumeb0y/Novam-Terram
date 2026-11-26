@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "novamterram:cloud_forest",
+      "required": false
+    },
+    {
+      "id": "novamterram:rainforest",
+      "required": false
+    }
+  ]
+}

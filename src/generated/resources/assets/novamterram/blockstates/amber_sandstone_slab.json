@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "novamterram:block/amber_sandstone_slab"
+    },
+    "type=double": {
+      "model": "novamterram:block/amber_sandstone"
+    },
+    "type=top": {
+      "model": "novamterram:block/amber_sandstone_slab_top"
+    }
+  }
+}

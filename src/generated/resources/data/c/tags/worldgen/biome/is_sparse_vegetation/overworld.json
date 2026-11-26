@@ -1,0 +1,24 @@
+{
+  "values": [
+    {
+      "id": "novamterram:heath",
+      "required": false
+    },
+    {
+      "id": "novamterram:maquis",
+      "required": false
+    },
+    {
+      "id": "novamterram:andean_hills",
+      "required": false
+    },
+    {
+      "id": "novamterram:saffron_grove",
+      "required": false
+    },
+    {
+      "id": "novamterram:aegean",
+      "required": false
+    }
+  ]
+}

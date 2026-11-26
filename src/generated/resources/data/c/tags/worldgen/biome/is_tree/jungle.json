@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "novamterram:rainforest",
+      "required": false
+    },
+    {
+      "id": "novamterram:caldera_grotto",
+      "required": false
+    }
+  ]
+}

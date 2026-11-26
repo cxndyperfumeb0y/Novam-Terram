@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "group": "kyanite",
+  "ingredient": {
+    "item": "novamterram:raw_kyanite"
+  },
+  "result": {
+    "count": 1,
+    "id": "novamterram:kyanite"
+  }
+}

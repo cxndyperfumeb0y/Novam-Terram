@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:block_column",
+  "config": {
+    "allowed_placement": {
+      "type": "minecraft:matching_blocks",
+      "blocks": [
+        "minecraft:air",
+        "minecraft:water",
+        "minecraft:snow"
+      ]
+    },
+    "direction": "east",
+    "layers": [
+      {
+        "height": {
+          "type": "minecraft:uniform",
+          "max_inclusive": 5,
+          "min_inclusive": 3
+        },
+        "provider": {
+          "type": "minecraft:weighted_state_provider",
+          "entries": [
+            {
+              "data": {
+                "Name": "minecraft:stripped_oak_log",
+                "Properties": {
+                  "axis": "x"
+                }
+              },
+              "weight": 1
+            }
+          ]
+        }
+      }
+    ],
+    "prioritize_tip": true
+  }
+}

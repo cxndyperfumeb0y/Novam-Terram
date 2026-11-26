@@ -1,0 +1,104 @@
+{
+  "values": [
+    {
+      "id": "novamterram:bluebell_woods",
+      "required": false
+    },
+    {
+      "id": "novamterram:black_forest",
+      "required": false
+    },
+    {
+      "id": "novamterram:silver_birch_wetland",
+      "required": false
+    },
+    {
+      "id": "novamterram:coastal_chaparral",
+      "required": false
+    },
+    {
+      "id": "novamterram:mangrove_lagoon",
+      "required": false
+    },
+    {
+      "id": "novamterram:larch_forest",
+      "required": false
+    },
+    {
+      "id": "novamterram:ozark_forest",
+      "required": false
+    },
+    {
+      "id": "novamterram:cloud_forest",
+      "required": false
+    },
+    {
+      "id": "novamterram:cedar_slopes",
+      "required": false
+    },
+    {
+      "id": "novamterram:gallery_forest",
+      "required": false
+    },
+    {
+      "id": "novamterram:blue_grove",
+      "required": false
+    },
+    {
+      "id": "novamterram:aegean",
+      "required": false
+    },
+    {
+      "id": "novamterram:maquis",
+      "required": false
+    },
+    {
+      "id": "novamterram:heath",
+      "required": false
+    },
+    {
+      "id": "novamterram:andean_hills",
+      "required": false
+    },
+    {
+      "id": "novamterram:rainforest",
+      "required": false
+    },
+    {
+      "id": "novamterram:cypress_fen",
+      "required": false
+    },
+    {
+      "id": "novamterram:mirror_mire",
+      "required": false
+    },
+    {
+      "id": "novamterram:autumnal_taiga",
+      "required": false
+    },
+    {
+      "id": "novamterram:myrtle_fields",
+      "required": false
+    },
+    {
+      "id": "novamterram:royal_forest",
+      "required": false
+    },
+    {
+      "id": "novamterram:saffron_grove",
+      "required": false
+    },
+    {
+      "id": "novamterram:amber_sands",
+      "required": false
+    },
+    {
+      "id": "novamterram:fungal_reach",
+      "required": false
+    },
+    {
+      "id": "novamterram:caldera_grotto",
+      "required": false
+    }
+  ]
+}

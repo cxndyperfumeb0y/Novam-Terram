@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "novamterram:block/mahogany_slab"
+    },
+    "type=double": {
+      "model": "novamterram:block/mahogany_planks"
+    },
+    "type=top": {
+      "model": "novamterram:block/mahogany_slab_top"
+    }
+  }
+}

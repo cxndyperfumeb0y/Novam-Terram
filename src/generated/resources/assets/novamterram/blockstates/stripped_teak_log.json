@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "novamterram:block/stripped_teak_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "novamterram:block/stripped_teak_log"
+    },
+    "axis=z": {
+      "model": "novamterram:block/stripped_teak_log_horizontal",
+      "x": 90
+    }
+  }
+}

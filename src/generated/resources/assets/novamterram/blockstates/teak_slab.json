@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "novamterram:block/teak_slab"
+    },
+    "type=double": {
+      "model": "novamterram:block/teak_planks"
+    },
+    "type=top": {
+      "model": "novamterram:block/teak_slab_top"
+    }
+  }
+}

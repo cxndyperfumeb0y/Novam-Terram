@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_stripped_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "novamterram:stripped_aspen_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "novamterram:aspen_hanging_sign"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_stripped_log"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "novamterram:aspen_hanging_sign"
+    ]
+  }
+}

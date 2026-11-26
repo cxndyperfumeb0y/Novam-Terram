@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_stripped_balsa_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "novamterram:stripped_balsa_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "novamterram:balsa_planks_from_stripped_balsa_log"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_stripped_balsa_log"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "novamterram:balsa_planks_from_stripped_balsa_log"
+    ]
+  }
+}

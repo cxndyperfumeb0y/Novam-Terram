@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_rhodochrosite": {
+      "conditions": {
+        "items": [
+          {
+            "items": "novamterram:rhodochrosite"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "novamterram:rhodochrosite_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_rhodochrosite"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "novamterram:rhodochrosite_block"
+    ]
+  }
+}

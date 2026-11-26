@@ -1,0 +1,62 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "neoforge_data": {
+            "ambient_occlusion": false
+          },
+          "texture": "#texture"
+        },
+        "up": {
+          "neoforge_data": {
+            "ambient_occlusion": false
+          },
+          "texture": "#texture"
+        }
+      },
+      "from": [
+        1,
+        0.1,
+        2
+      ],
+      "to": [
+        9,
+        0.1,
+        10
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "neoforge_data": {
+            "ambient_occlusion": false
+          },
+          "texture": "#texture"
+        },
+        "up": {
+          "neoforge_data": {
+            "ambient_occlusion": false
+          },
+          "texture": "#texture"
+        }
+      },
+      "from": [
+        8,
+        0.15,
+        1
+      ],
+      "to": [
+        16,
+        0.15,
+        9
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "novamterram:block/lavender_petals",
+    "texture": "novamterram:block/lavender_petals"
+  }
+}

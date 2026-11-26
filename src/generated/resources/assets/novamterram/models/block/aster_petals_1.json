@@ -1,0 +1,36 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "neoforge_data": {
+            "ambient_occlusion": false
+          },
+          "texture": "#texture"
+        },
+        "up": {
+          "neoforge_data": {
+            "ambient_occlusion": false
+          },
+          "texture": "#texture"
+        }
+      },
+      "from": [
+        1,
+        0.1,
+        2
+      ],
+      "to": [
+        9,
+        0.1,
+        10
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "novamterram:block/aster_petals",
+    "texture": "novamterram:block/aster_petals"
+  }
+}

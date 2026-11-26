@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_raw_kyanite": {
+      "conditions": {
+        "items": [
+          {
+            "items": "novamterram:raw_kyanite"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "novamterram:kyanite_from_smelting_raw_kyanite"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_raw_kyanite"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "novamterram:kyanite_from_smelting_raw_kyanite"
+    ]
+  }
+}

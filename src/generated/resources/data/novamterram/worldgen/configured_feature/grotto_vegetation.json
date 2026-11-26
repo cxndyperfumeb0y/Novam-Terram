@@ -1,0 +1,72 @@
+{
+  "type": "minecraft:random_patch",
+  "config": {
+    "feature": {
+      "feature": {
+        "type": "minecraft:simple_block",
+        "config": {
+          "to_place": {
+            "type": "minecraft:weighted_state_provider",
+            "entries": [
+              {
+                "data": {
+                  "Name": "minecraft:short_grass"
+                },
+                "weight": 50
+              },
+              {
+                "data": {
+                  "Name": "minecraft:fern"
+                },
+                "weight": 30
+              },
+              {
+                "data": {
+                  "Name": "minecraft:large_fern",
+                  "Properties": {
+                    "half": "lower"
+                  }
+                },
+                "weight": 10
+              },
+              {
+                "data": {
+                  "Name": "minecraft:pink_petals",
+                  "Properties": {
+                    "facing": "north",
+                    "flower_amount": "3"
+                  }
+                },
+                "weight": 10
+              },
+              {
+                "data": {
+                  "Name": "minecraft:blue_orchid"
+                },
+                "weight": 5
+              },
+              {
+                "data": {
+                  "Name": "minecraft:spore_blossom"
+                },
+                "weight": 2
+              }
+            ]
+          }
+        }
+      },
+      "placement": [
+        {
+          "type": "minecraft:block_predicate_filter",
+          "predicate": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:air"
+          }
+        }
+      ]
+    },
+    "tries": 96,
+    "xz_spread": 10,
+    "y_spread": 3
+  }
+}

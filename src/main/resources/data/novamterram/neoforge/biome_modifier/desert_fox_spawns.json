@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": ["minecraft:desert", "novamterram:amber_sands"],
+  "spawners": {
+    "type": "novamterram:desert_fox",
+    "weight": 3,
+    "minCount": 1,
+    "maxCount": 3
+  }
+}

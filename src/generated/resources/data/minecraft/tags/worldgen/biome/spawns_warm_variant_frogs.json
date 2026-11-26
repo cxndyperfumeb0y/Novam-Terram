@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "novamterram:cypress_fen",
+      "required": false
+    },
+    {
+      "id": "novamterram:mirror_mire",
+      "required": false
+    },
+    {
+      "id": "novamterram:fungal_reach",
+      "required": false
+    }
+  ]
+}

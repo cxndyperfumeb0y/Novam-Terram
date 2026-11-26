@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "minecraft:old_growth_birch_forest",
+  "features": "novamterram:mossy_boulder_placed",
+  "step": "local_modifications"
+}

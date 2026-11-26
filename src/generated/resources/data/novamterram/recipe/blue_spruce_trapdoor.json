@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "planks",
+  "key": {
+    "#": {
+      "item": "novamterram:blue_spruce_planks"
+    }
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 2,
+    "id": "novamterram:blue_spruce_trapdoor"
+  }
+}

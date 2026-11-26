@@ -1,0 +1,32 @@
+{
+  "values": [
+    {
+      "id": "novamterram:larch_forest",
+      "required": false
+    },
+    {
+      "id": "novamterram:cedar_slopes",
+      "required": false
+    },
+    {
+      "id": "novamterram:blue_grove",
+      "required": false
+    },
+    {
+      "id": "novamterram:andean_hills",
+      "required": false
+    },
+    {
+      "id": "novamterram:mirror_mire",
+      "required": false
+    },
+    {
+      "id": "novamterram:autumnal_taiga",
+      "required": false
+    },
+    {
+      "id": "novamterram:fungal_reach",
+      "required": false
+    }
+  ]
+}

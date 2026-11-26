@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "novamterram:amber_sands",
+      "required": false
+    },
+    {
+      "id": "novamterram:aegean",
+      "required": false
+    }
+  ]
+}

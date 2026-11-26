@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:simple_random_selector",
+  "config": {
+    "features": [
+      {
+        "feature": "novamterram:orange_autumnal_pine",
+        "placement": []
+      },
+      {
+        "feature": "novamterram:yellow_autumnal_pine",
+        "placement": []
+      },
+      {
+        "feature": "minecraft:spruce",
+        "placement": []
+      }
+    ]
+  }
+}

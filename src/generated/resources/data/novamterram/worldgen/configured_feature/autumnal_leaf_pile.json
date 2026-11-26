@@ -1,0 +1,41 @@
+{
+  "type": "minecraft:block_column",
+  "config": {
+    "allowed_placement": {
+      "type": "minecraft:matching_blocks",
+      "blocks": "minecraft:air"
+    },
+    "direction": "down",
+    "layers": [
+      {
+        "height": 1,
+        "provider": {
+          "type": "minecraft:weighted_state_provider",
+          "entries": [
+            {
+              "data": {
+                "Name": "novamterram:orange_autumnal_leaf_carpet",
+                "Properties": {
+                  "facing": "north",
+                  "flower_amount": "1"
+                }
+              },
+              "weight": 1
+            },
+            {
+              "data": {
+                "Name": "novamterram:yellow_autumnal_leaf_carpet",
+                "Properties": {
+                  "facing": "north",
+                  "flower_amount": "1"
+                }
+              },
+              "weight": 1
+            }
+          ]
+        }
+      }
+    ],
+    "prioritize_tip": true
+  }
+}

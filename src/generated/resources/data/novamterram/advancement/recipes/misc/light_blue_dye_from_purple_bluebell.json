@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_purple_bluebell": {
+      "conditions": {
+        "items": [
+          {
+            "items": "novamterram:purple_bluebell"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "novamterram:light_blue_dye_from_purple_bluebell"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_purple_bluebell"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "novamterram:light_blue_dye_from_purple_bluebell"
+    ]
+  }
+}

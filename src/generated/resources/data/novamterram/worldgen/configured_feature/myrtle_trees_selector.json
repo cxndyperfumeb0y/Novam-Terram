@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": {
+      "feature": "novamterram:purple_myrtle_tree",
+      "placement": []
+    },
+    "features": [
+      {
+        "chance": 0.4,
+        "feature": {
+          "feature": "novamterram:white_myrtle_tree",
+          "placement": []
+        }
+      },
+      {
+        "chance": 0.3,
+        "feature": {
+          "feature": "novamterram:red_myrtle_tree",
+          "placement": []
+        }
+      }
+    ]
+  }
+}

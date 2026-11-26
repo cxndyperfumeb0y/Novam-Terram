@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "minecraft:flower_forest",
+  "features": "novamterram:rare_ancient_oak_placed",
+  "step": "vegetal_decoration"
+}

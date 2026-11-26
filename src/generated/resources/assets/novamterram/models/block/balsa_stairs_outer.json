@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "novamterram:block/balsa_planks",
+    "side": "novamterram:block/balsa_planks",
+    "top": "novamterram:block/balsa_planks"
+  }
+}

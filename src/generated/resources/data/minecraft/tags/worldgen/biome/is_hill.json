@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "novamterram:royal_forest",
+      "required": false
+    },
+    {
+      "id": "novamterram:heath",
+      "required": false
+    },
+    {
+      "id": "novamterram:maquis",
+      "required": false
+    }
+  ]
+}

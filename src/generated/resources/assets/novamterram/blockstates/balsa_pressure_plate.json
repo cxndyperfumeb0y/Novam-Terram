@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "novamterram:block/balsa_pressure_plate"
+    },
+    "powered=true": {
+      "model": "novamterram:block/balsa_pressure_plate_down"
+    }
+  }
+}

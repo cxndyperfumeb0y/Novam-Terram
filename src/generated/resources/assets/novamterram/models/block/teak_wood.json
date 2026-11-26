@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "novamterram:block/teak_log",
+    "side": "novamterram:block/teak_log"
+  }
+}

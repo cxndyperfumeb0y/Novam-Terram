@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "novamterram:andean_hills",
+      "required": false
+    },
+    {
+      "id": "novamterram:heath",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "novamterram:royal_forest",
+      "required": false
+    },
+    {
+      "id": "novamterram:autumnal_taiga",
+      "required": false
+    },
+    {
+      "id": "novamterram:myrtle_fields",
+      "required": false
+    }
+  ]
+}

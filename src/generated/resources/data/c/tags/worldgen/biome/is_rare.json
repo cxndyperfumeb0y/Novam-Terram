@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "novamterram:caldera_grotto",
+      "required": false
+    },
+    {
+      "id": "novamterram:blue_grove",
+      "required": false
+    },
+    {
+      "id": "novamterram:fungal_reach",
+      "required": false
+    }
+  ]
+}

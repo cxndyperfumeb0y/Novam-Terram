@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "novamterram:maquis",
+      "required": false
+    },
+    {
+      "id": "novamterram:amber_sands",
+      "required": false
+    }
+  ]
+}

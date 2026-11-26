@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "novamterram:blue_grove",
+      "required": false
+    },
+    {
+      "id": "novamterram:autumnal_taiga",
+      "required": false
+    }
+  ]
+}

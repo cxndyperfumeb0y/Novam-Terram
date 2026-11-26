@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/carpet",
+  "textures": {
+    "particle": "novamterram:block/white_myrtle_leaves",
+    "wool": "novamterram:block/white_myrtle_leaves"
+  }
+}

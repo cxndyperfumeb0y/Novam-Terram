@@ -1,0 +1,13 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:birch_forest",
+    "minecraft:old_growth_birch_forest"
+  ],
+  "features": [
+    "novamterram:silver_forest_flowers_placed",
+    "novamterram:blue_grove_grass_placed",
+    "novamterram:silver_sage_placed"
+  ],
+  "step": "vegetal_decoration"
+}

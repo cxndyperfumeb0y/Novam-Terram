@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "group": "jadeite",
+  "ingredient": {
+    "item": "novamterram:jadeite_ore"
+  },
+  "result": {
+    "count": 1,
+    "id": "novamterram:jadeite"
+  }
+}

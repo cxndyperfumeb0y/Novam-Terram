@@ -1,0 +1,36 @@
+{
+  "values": [
+    {
+      "id": "novamterram:coastal_chaparral",
+      "required": false
+    },
+    {
+      "id": "novamterram:mangrove_lagoon",
+      "required": false
+    },
+    {
+      "id": "novamterram:gallery_forest",
+      "required": false
+    },
+    {
+      "id": "novamterram:maquis",
+      "required": false
+    },
+    {
+      "id": "novamterram:rainforest",
+      "required": false
+    },
+    {
+      "id": "novamterram:saffron_grove",
+      "required": false
+    },
+    {
+      "id": "novamterram:amber_sands",
+      "required": false
+    },
+    {
+      "id": "novamterram:caldera_grotto",
+      "required": false
+    }
+  ]
+}

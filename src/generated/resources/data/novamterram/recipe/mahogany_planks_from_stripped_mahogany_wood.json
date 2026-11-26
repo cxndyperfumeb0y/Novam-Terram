@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "planks",
+  "ingredients": [
+    {
+      "item": "novamterram:stripped_mahogany_wood"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "novamterram:mahogany_planks"
+  }
+}

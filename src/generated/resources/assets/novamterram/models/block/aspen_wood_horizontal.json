@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "novamterram:block/aspen_log",
+    "side": "novamterram:block/aspen_log"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "novamterram:block/iris_bottom"
+    },
+    "half=upper": {
+      "model": "novamterram:block/iris_top"
+    }
+  }
+}

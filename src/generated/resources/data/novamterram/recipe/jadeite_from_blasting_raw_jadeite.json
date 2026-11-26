@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.7,
+  "group": "jadeite",
+  "ingredient": {
+    "item": "novamterram:raw_jadeite"
+  },
+  "result": {
+    "count": 1,
+    "id": "novamterram:jadeite"
+  }
+}

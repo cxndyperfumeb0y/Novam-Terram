@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_orange_autumnal_leaves": {
+      "conditions": {
+        "items": [
+          {
+            "items": "novamterram:orange_autumnal_leaves"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "novamterram:orange_autumnal_leaf_carpet"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_orange_autumnal_leaves"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "novamterram:orange_autumnal_leaf_carpet"
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.7,
+  "group": "rhodochrosite",
+  "ingredient": {
+    "item": "novamterram:raw_rhodochrosite"
+  },
+  "result": {
+    "count": 1,
+    "id": "novamterram:rhodochrosite"
+  }
+}

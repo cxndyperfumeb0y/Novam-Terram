@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "novamterram:block/balsa_slab"
+    },
+    "type=double": {
+      "model": "novamterram:block/balsa_planks"
+    },
+    "type=top": {
+      "model": "novamterram:block/balsa_slab_top"
+    }
+  }
+}

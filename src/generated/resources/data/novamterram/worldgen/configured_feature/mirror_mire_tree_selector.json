@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": {
+      "feature": "novamterram:ghost_cypress",
+      "placement": []
+    },
+    "features": [
+      {
+        "chance": 0.8,
+        "feature": {
+          "feature": "novamterram:cypress_tree",
+          "placement": []
+        }
+      },
+      {
+        "chance": 0.2,
+        "feature": {
+          "feature": "novamterram:ghost_cypress",
+          "placement": []
+        }
+      }
+    ]
+  }
+}

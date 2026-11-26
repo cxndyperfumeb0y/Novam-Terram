@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_heather_petals": {
+      "conditions": {
+        "items": [
+          {
+            "items": "novamterram:heather_petals"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "novamterram:light_blue_dye_from_heather_petals"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_heather_petals"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "novamterram:light_blue_dye_from_heather_petals"
+    ]
+  }
+}

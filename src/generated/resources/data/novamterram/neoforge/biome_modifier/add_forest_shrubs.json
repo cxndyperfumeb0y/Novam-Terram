@@ -1,0 +1,9 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:forest",
+    "minecraft:flower_forest"
+  ],
+  "features": "novamterram:forest_shrubs_placed",
+  "step": "vegetal_decoration"
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "novamterram:bluespruce_taiga_placed",
+    "features": [
+      {
+        "chance": 0.2,
+        "feature": "novamterram:mega_blue_spruce_placed"
+      }
+    ]
+  }
+}

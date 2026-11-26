@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "novamterram:block/amber_sandstone",
+    "side": "novamterram:block/amber_sandstone",
+    "top": "novamterram:block/amber_sandstone"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "novamterram:myrtle_fields",
+      "required": false
+    },
+    {
+      "id": "novamterram:heath",
+      "required": false
+    },
+    {
+      "id": "novamterram:saffron_grove",
+      "required": false
+    }
+  ]
+}

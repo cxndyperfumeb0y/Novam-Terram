@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "novamterram:myrtle_leaf_carpet"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_white_myrtle_leaves": {
+      "conditions": {
+        "items": [
+          {
+            "items": "novamterram:white_myrtle_leaves"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_white_myrtle_leaves"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "novamterram:myrtle_leaf_carpet"
+    ]
+  }
+}

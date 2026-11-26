@@ -1,0 +1,20 @@
+{
+  "values": [
+    {
+      "id": "novamterram:rainforest",
+      "required": false
+    },
+    {
+      "id": "novamterram:royal_forest",
+      "required": false
+    },
+    {
+      "id": "novamterram:fungal_reach",
+      "required": false
+    },
+    {
+      "id": "novamterram:caldera_grotto",
+      "required": false
+    }
+  ]
+}

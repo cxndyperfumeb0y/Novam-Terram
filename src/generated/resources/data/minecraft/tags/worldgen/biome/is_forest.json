@@ -1,0 +1,32 @@
+{
+  "values": [
+    {
+      "id": "novamterram:bluebell_woods",
+      "required": false
+    },
+    {
+      "id": "novamterram:black_forest",
+      "required": false
+    },
+    {
+      "id": "novamterram:ozark_forest",
+      "required": false
+    },
+    {
+      "id": "novamterram:gallery_forest",
+      "required": false
+    },
+    {
+      "id": "novamterram:royal_forest",
+      "required": false
+    },
+    {
+      "id": "novamterram:autumnal_taiga",
+      "required": false
+    },
+    {
+      "id": "novamterram:saffron_grove",
+      "required": false
+    }
+  ]
+}

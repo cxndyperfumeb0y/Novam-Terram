@@ -1,0 +1,20 @@
+{
+  "values": [
+    {
+      "id": "novamterram:royal_forest",
+      "required": false
+    },
+    {
+      "id": "novamterram:autumnal_taiga",
+      "required": false
+    },
+    {
+      "id": "novamterram:rainforest",
+      "required": false
+    },
+    {
+      "id": "novamterram:caldera_grotto",
+      "required": false
+    }
+  ]
+}

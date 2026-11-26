@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "planks",
+  "ingredients": [
+    {
+      "item": "novamterram:teak_planks"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "novamterram:teak_button"
+  }
+}

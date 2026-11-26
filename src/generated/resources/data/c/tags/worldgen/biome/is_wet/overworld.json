@@ -1,0 +1,24 @@
+{
+  "values": [
+    {
+      "id": "novamterram:rainforest",
+      "required": false
+    },
+    {
+      "id": "novamterram:cypress_fen",
+      "required": false
+    },
+    {
+      "id": "novamterram:mirror_mire",
+      "required": false
+    },
+    {
+      "id": "novamterram:fungal_reach",
+      "required": false
+    },
+    {
+      "id": "novamterram:caldera_grotto",
+      "required": false
+    }
+  ]
+}
