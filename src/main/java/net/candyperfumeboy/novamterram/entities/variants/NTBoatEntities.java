@@ -40,7 +40,7 @@ public class NTBoatEntities {
             registerChestBoat("mahogany_chest_boat");
 
 
-    // --- MAHOGANY ---
+    // --- ASPEN ---
     public static final DeferredHolder<EntityType<?>, EntityType<NTBoatEntity>> ASPEN_BOAT =
             registerBoat("aspen_boat");
     public static final DeferredHolder<EntityType<?>, EntityType<NTChestBoatEntity>> ASPEN_CHEST_BOAT =
@@ -65,13 +65,12 @@ public class NTBoatEntities {
 
     private static DeferredHolder<EntityType<?>, EntityType<NTBoatEntity>> registerBoat(String name) {
         return ENTITY_TYPES.register(name, () -> EntityType.Builder.<NTBoatEntity>of(NTBoatEntity::new, MobCategory.MISC)
-                .sized(1.375F, 0.5625F).build(name));
+                .sized(1.375F, 0.5625F).eyeHeight(0.5625F).clientTrackingRange(10).build(name));
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<NTChestBoatEntity>> registerChestBoat(String name) {
-        // Change ::of to ::new here
         return ENTITY_TYPES.register(name, () -> EntityType.Builder.<NTChestBoatEntity>of(NTChestBoatEntity::new, MobCategory.MISC)
-                .sized(1.375F, 0.5625F).build(name));
+                .sized(1.375F, 0.5625F).eyeHeight(0.5625F).clientTrackingRange(10).build(name));
     }
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

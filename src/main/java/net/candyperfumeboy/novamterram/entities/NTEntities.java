@@ -4,51 +4,59 @@ import net.candyperfumeboy.novamterram.NovamTerram;
 import net.candyperfumeboy.novamterram.entities.custom.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.CatVariant;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.function.UnaryOperator;
 
 public class NTEntities {
     // 1. Entity Type Registry
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
             DeferredRegister.create(Registries.ENTITY_TYPE, NovamTerram.MOD_ID);
 
-    // 3. Cat Variant Registry
+    // 2. Cat Variant Registry
     public static final DeferredRegister<CatVariant> CAT_VARIANTS =
             DeferredRegister.create(Registries.CAT_VARIANT, NovamTerram.MOD_ID);
 
     // --- Entities ---
+    // sized = hitbox (width, height), eyeHeight = where the mob sees and suffocates from,
+    // clientTrackingRange = how far away players can see it, in chunks (vanilla animals use 8-10)
+
     public static final DeferredHolder<EntityType<?>, EntityType<SilverFoxEntity>> SILVER_FOX =
-            ENTITY_TYPES.register("silver_fox", () -> EntityType.Builder.of(SilverFoxEntity::new, MobCategory.CREATURE)
-                    .sized(0.6F, 0.7F).build("silver_fox"));
-    // --- Entities ---
-// Locate the HYENA entry in your NTEntities class and update it to this:
-    public static final DeferredHolder<EntityType<?>, EntityType<HyenaEntity>> HYENA =
-            ENTITY_TYPES.register("hyena", () -> EntityType.Builder.of(HyenaEntity::new, MobCategory.CREATURE)
-                    .sized(0.75F, 0.8F) // Hitbox tightened to match the 0.85x scale
-                    .build("hyena"));
+            creature("silver_fox", SilverFoxEntity::new, builder -> builder
+                    .sized(0.6F, 0.7F).eyeHeight(0.4F).clientTrackingRange(8)
+                    .immuneTo(Blocks.SWEET_BERRY_BUSH));
+
     public static final DeferredHolder<EntityType<?>, EntityType<DesertFoxEntity>> DESERT_FOX =
-            ENTITY_TYPES.register("desert_fox", () -> EntityType.Builder.of(DesertFoxEntity::new, MobCategory.CREATURE)
-                    .sized(0.6F, 0.7F).build("desert_fox"));
+            creature("desert_fox", DesertFoxEntity::new, builder -> builder
+                    .sized(0.6F, 0.7F).eyeHeight(0.4F).clientTrackingRange(8)
+                    .immuneTo(Blocks.SWEET_BERRY_BUSH));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<HyenaEntity>> HYENA =
+            creature("hyena", HyenaEntity::new, builder -> builder
+                    .sized(0.75F, 0.95F).eyeHeight(0.8F).clientTrackingRange(10));
 
     public static final DeferredHolder<EntityType<?>, EntityType<FaunEntity>> FAUN =
-            ENTITY_TYPES.register("faun", () -> EntityType.Builder.of(FaunEntity::new, MobCategory.CREATURE)
-                    .sized(0.8F, 1.6F).build("faun"));
+            creature("faun", FaunEntity::new, builder -> builder
+                    .sized(0.8F, 1.9F).eyeHeight(1.8F).clientTrackingRange(10));
 
     public static final DeferredHolder<EntityType<?>, EntityType<SongbirdEntity>> SONGBIRD =
-            ENTITY_TYPES.register("songbird", () -> EntityType.Builder.of(SongbirdEntity::new, MobCategory.CREATURE)
-                    .sized(0.4F, 0.4F).build("songbird"));
+            creature("songbird", SongbirdEntity::new, builder -> builder
+                    .sized(0.4F, 0.5F).eyeHeight(0.35F).clientTrackingRange(8));
 
     public static final DeferredHolder<EntityType<?>, EntityType<SpectacledBearEntity>> SPECTACLED_BEAR =
-            ENTITY_TYPES.register("spectacled_bear", () -> EntityType.Builder.of(SpectacledBearEntity::new, MobCategory.CREATURE)
-                    .sized(1.4F, 1.4F).build("spectacled_bear"));
+            creature("spectacled_bear", SpectacledBearEntity::new, builder -> builder
+                    .sized(1.4F, 1.4F).clientTrackingRange(10));
 
     public static final DeferredHolder<EntityType<?>, EntityType<BrownBearEntity>> BROWN_BEAR =
-            ENTITY_TYPES.register("brown_bear", () -> EntityType.Builder.of(BrownBearEntity::new, MobCategory.CREATURE)
-                    .sized(1.5F, 1.5F).build("brown_bear"));
+            creature("brown_bear", BrownBearEntity::new, builder -> builder
+                    .sized(1.5F, 1.5F).clientTrackingRange(10));
 
     // --- Cat Variants ---
     public static final DeferredHolder<CatVariant, CatVariant> SALEEM =
@@ -59,6 +67,12 @@ public class NTEntities {
             CAT_VARIANTS.register("pickles", () -> new CatVariant(ResourceLocation.fromNamespaceAndPath(NovamTerram.MOD_ID, "textures/entity/cat/pickles.png")));
     public static final DeferredHolder<CatVariant, CatVariant> BULLEIT =
             CAT_VARIANTS.register("bulleit", () -> new CatVariant(ResourceLocation.fromNamespaceAndPath(NovamTerram.MOD_ID, "textures/entity/cat/bulleit.png")));
+
+    private static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> creature(
+            String name, EntityType.EntityFactory<T> factory, UnaryOperator<EntityType.Builder<T>> settings) {
+        return ENTITY_TYPES.register(name,
+                () -> settings.apply(EntityType.Builder.of(factory, MobCategory.CREATURE)).build(name));
+    }
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
