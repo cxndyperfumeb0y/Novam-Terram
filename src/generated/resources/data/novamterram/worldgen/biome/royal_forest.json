@@ -85,7 +85,8 @@
       "novamterram:royal_flower_patch_placed",
       "novamterram:iris_placed",
       "novamterram:bleeding_heart_placed",
-      "novamterram:silver_sage_placed"
+      "novamterram:silver_sage_placed",
+      "novamterram:paulownia_leaf_pile_placed"
     ],
     [
       "minecraft:freeze_top_layer"

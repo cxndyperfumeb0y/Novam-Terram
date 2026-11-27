@@ -1,41 +1,349 @@
 {
-  "type": "minecraft:block_column",
+  "type": "minecraft:random_patch",
   "config": {
-    "allowed_placement": {
-      "type": "minecraft:matching_blocks",
-      "blocks": "minecraft:air"
-    },
-    "direction": "down",
-    "layers": [
-      {
-        "height": 1,
-        "provider": {
-          "type": "minecraft:weighted_state_provider",
-          "entries": [
-            {
-              "data": {
-                "Name": "novamterram:orange_autumnal_leaf_carpet",
-                "Properties": {
-                  "facing": "north",
-                  "flower_amount": "1"
-                }
+    "feature": {
+      "feature": {
+        "type": "minecraft:simple_block",
+        "config": {
+          "to_place": {
+            "type": "minecraft:weighted_state_provider",
+            "entries": [
+              {
+                "data": {
+                  "Name": "novamterram:orange_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "north",
+                    "flower_amount": "1"
+                  }
+                },
+                "weight": 1
               },
-              "weight": 1
-            },
-            {
-              "data": {
-                "Name": "novamterram:yellow_autumnal_leaf_carpet",
-                "Properties": {
-                  "facing": "north",
-                  "flower_amount": "1"
-                }
+              {
+                "data": {
+                  "Name": "novamterram:orange_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "north",
+                    "flower_amount": "2"
+                  }
+                },
+                "weight": 1
               },
-              "weight": 1
-            }
-          ]
+              {
+                "data": {
+                  "Name": "novamterram:orange_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "north",
+                    "flower_amount": "3"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:orange_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "north",
+                    "flower_amount": "4"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:orange_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "east",
+                    "flower_amount": "1"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:orange_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "east",
+                    "flower_amount": "2"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:orange_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "east",
+                    "flower_amount": "3"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:orange_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "east",
+                    "flower_amount": "4"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:orange_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "south",
+                    "flower_amount": "1"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:orange_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "south",
+                    "flower_amount": "2"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:orange_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "south",
+                    "flower_amount": "3"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:orange_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "south",
+                    "flower_amount": "4"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:orange_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "west",
+                    "flower_amount": "1"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:orange_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "west",
+                    "flower_amount": "2"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:orange_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "west",
+                    "flower_amount": "3"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:orange_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "west",
+                    "flower_amount": "4"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:yellow_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "north",
+                    "flower_amount": "1"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:yellow_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "north",
+                    "flower_amount": "2"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:yellow_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "north",
+                    "flower_amount": "3"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:yellow_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "north",
+                    "flower_amount": "4"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:yellow_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "east",
+                    "flower_amount": "1"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:yellow_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "east",
+                    "flower_amount": "2"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:yellow_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "east",
+                    "flower_amount": "3"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:yellow_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "east",
+                    "flower_amount": "4"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:yellow_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "south",
+                    "flower_amount": "1"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:yellow_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "south",
+                    "flower_amount": "2"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:yellow_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "south",
+                    "flower_amount": "3"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:yellow_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "south",
+                    "flower_amount": "4"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:yellow_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "west",
+                    "flower_amount": "1"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:yellow_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "west",
+                    "flower_amount": "2"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:yellow_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "west",
+                    "flower_amount": "3"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "novamterram:yellow_autumnal_leaf_carpet",
+                  "Properties": {
+                    "facing": "west",
+                    "flower_amount": "4"
+                  }
+                },
+                "weight": 1
+              }
+            ]
+          }
         }
-      }
-    ],
-    "prioritize_tip": true
+      },
+      "placement": [
+        {
+          "type": "minecraft:block_predicate_filter",
+          "predicate": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:air"
+          }
+        }
+      ]
+    },
+    "tries": 24,
+    "xz_spread": 4,
+    "y_spread": 2
   }
 }

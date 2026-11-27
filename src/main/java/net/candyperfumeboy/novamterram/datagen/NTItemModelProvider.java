@@ -63,6 +63,7 @@ public class NTItemModelProvider extends ItemModelProvider {
         basicBlockItem(NTBlocks.HEATHER); basicBlockItem(NTBlocks.LAVENDER); basicBlockItem(NTBlocks.ASTER); basicBlockItem(NTBlocks.BLUEBELL); basicBlockItem(NTBlocks.PURPLE_BLUEBELL);
         basicBlockItem(NTBlocks.THISTLE); basicBlockItem(NTBlocks.TRILLIUM); basicBlockItem(NTBlocks.BROMELIAD);
         basicBlockItem(NTBlocks.HEATHER_PETALS); basicBlockItem(NTBlocks.LAVENDER_PETALS); basicBlockItem(NTBlocks.ASTER_PETALS);
+        basicBlockItem(NTBlocks.BLUEBELL_CLUSTER); basicBlockItem(NTBlocks.PURPLE_BLUEBELL_CLUSTER);
         basicBlockItem(NTBlocks.SILVER_SAGE); basicBlockItem(NTBlocks.BLEEDING_HEART);
         irisItem(NTBlocks.IRIS);
     }

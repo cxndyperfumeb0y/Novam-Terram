@@ -1,5 +1,6 @@
 package net.candyperfumeboy.novamterram.datagen;
 
+import java.util.List;
 import net.candyperfumeboy.novamterram.block.NTWoodSet;
 import net.candyperfumeboy.novamterram.NovamTerram;
 import net.candyperfumeboy.novamterram.block.NTBlocks;
@@ -87,6 +88,11 @@ public class NTBlockTagProvider extends BlockTagsProvider {
         // --- FLORA ---
         tag(BlockTags.SMALL_FLOWERS).add(NTBlocks.HEATHER.get(), NTBlocks.PURPLE_BLUEBELL.get(), NTBlocks.BLUEBELL.get(), NTBlocks.LAVENDER.get(), NTBlocks.ASTER.get(), NTBlocks.THISTLE.get(), NTBlocks.BROMELIAD.get(), NTBlocks.TRILLIUM.get(), NTBlocks.SILVER_SAGE.get(), NTBlocks.BLEEDING_HEART.get());
         tag(BlockTags.TALL_FLOWERS).add(NTBlocks.IRIS.get());
+        // Same tags vanilla gives pink petals: bees like them, trees can grow through them
+        for (var tag : List.of(BlockTags.FLOWERS, BlockTags.SWORD_EFFICIENT, BlockTags.INSIDE_STEP_SOUND_BLOCKS,
+                BlockTags.REPLACEABLE_BY_TREES, BlockTags.MINEABLE_WITH_HOE)) {
+            tag(tag).add(NTBlocks.BLUEBELL_CLUSTER.get(), NTBlocks.PURPLE_BLUEBELL_CLUSTER.get());
+        }
         tag(BlockTags.SAPLINGS).add(NTBlocks.ORANGE_AUTUMNAL_PINE_SAPLING.get(), NTBlocks.YELLOW_AUTUMNAL_PINE_SAPLING.get(), NTBlocks.PAULOWNIA_SAPLING.get(), NTBlocks.WHITE_MYRTLE_SAPLING.get(), NTBlocks.RED_MYRTLE_SAPLING.get(), NTBlocks.PURPLE_MYRTLE_SAPLING.get());
         tag(BlockTags.LEAVES).add(NTBlocks.ORANGE_AUTUMNAL_LEAVES.get(), NTBlocks.YELLOW_AUTUMNAL_LEAVES.get(), NTBlocks.PAULOWNIA_LEAVES.get(), NTBlocks.WHITE_MYRTLE_LEAVES.get(), NTBlocks.RED_MYRTLE_LEAVES.get(), NTBlocks.PURPLE_MYRTLE_LEAVES.get(), NTBlocks.OLIVE_LEAVES.get());
         tag(BlockTags.REPLACEABLE).add(NTBlocks.HEATHER_PETALS.get(), NTBlocks.LAVENDER_PETALS.get(), NTBlocks.ASTER_PETALS.get(), NTBlocks.ORANGE_AUTUMNAL_LEAF_CARPET.get(), NTBlocks.YELLOW_AUTUMNAL_LEAF_CARPET.get(), NTBlocks.PAULOWNIA_LEAF_CARPET.get(), NTBlocks.MYRTLE_LEAF_CARPET.get(), NTBlocks.OLIVE_HANGING.get(), NTBlocks.SILVER_SAGE.get(), NTBlocks.BLEEDING_HEART.get(), NTBlocks.IRIS.get());

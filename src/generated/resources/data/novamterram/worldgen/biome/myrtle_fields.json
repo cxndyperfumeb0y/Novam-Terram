@@ -75,7 +75,8 @@
       "novamterram:myrtle_melon",
       "novamterram:myrtle_grass_placed",
       "novamterram:myrtle_flowers_placed",
-      "novamterram:myrtle_trees_placed"
+      "novamterram:myrtle_trees_placed",
+      "novamterram:myrtle_leaf_pile_placed"
     ],
     [
       "minecraft:freeze_top_layer"

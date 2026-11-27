@@ -1,4 +1,4 @@
-// 1.21.1	2026-04-09T13:32:10.52254	Loot Tables
+// 1.21.1	2026-11-26T23:49:23.1110993	Loot Tables
 0114902f6c68b1405e4e5113c9fa7bf31bd070a5 data/novamterram/loot_table/blocks/amber_sand.json
 0665e79093375b916b0cb2d176c61f9383110c0d data/novamterram/loot_table/blocks/amber_sandstone.json
 14e2576e24a369aee8a136508d9811249a7dfcd4 data/novamterram/loot_table/blocks/amber_sandstone_slab.json
@@ -42,6 +42,7 @@ e4fcdc5e3c43f252de0988527f9a3020c41b1d00 data/novamterram/loot_table/blocks/bals
 85f3b742d784c1de955ba9309a5217b8a5032905 data/novamterram/loot_table/blocks/balsa_wood.json
 9fb8b178cbfc457e73ca5dc4b64291b386a84230 data/novamterram/loot_table/blocks/bleeding_heart.json
 a451af9a07535169da0132494d017ed6b1088ce9 data/novamterram/loot_table/blocks/bluebell.json
+d0d7fb324d294501a4ec9a4ea6869acb4ddb2f52 data/novamterram/loot_table/blocks/bluebell_cluster.json
 5d6c2edf2c4b18728c051982b29ad67850b0b56b data/novamterram/loot_table/blocks/blue_podzol.json
 ca49dc735595a1157dd39a0fcbd8d0cf4ee1b20b data/novamterram/loot_table/blocks/blue_spruce_button.json
 34d71a824bd23278fc6015ee9bcfa0f83c4a3bb4 data/novamterram/loot_table/blocks/blue_spruce_door.json
@@ -124,6 +125,7 @@ a91bb2602ae832b7b9717cd9eed46755f0dc6742 data/novamterram/loot_table/blocks/oran
 df4f07238d90dd24ea70af958dec88b921935528 data/novamterram/loot_table/blocks/paulownia_sapling.json
 faddca956345dc1c99b46ddc37fd3dab1c693229 data/novamterram/loot_table/blocks/petrified_cactus.json
 980e259c31603394ee884ee07facb573c8a5ea0a data/novamterram/loot_table/blocks/purple_bluebell.json
+fbac515faee72b2f07d91b0596344e83352783e0 data/novamterram/loot_table/blocks/purple_bluebell_cluster.json
 ed2a0e12eda24f46e02ad6e6f4df30eab6e0f478 data/novamterram/loot_table/blocks/purple_myrtle_leaves.json
 41ac409b70530bbe196f18cee5a09c1653919fba data/novamterram/loot_table/blocks/purple_myrtle_sapling.json
 cc2201534634474521d214abc1dec46483ea8a37 data/novamterram/loot_table/blocks/red_myrtle_leaves.json

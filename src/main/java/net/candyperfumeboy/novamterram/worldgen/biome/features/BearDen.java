@@ -27,6 +27,16 @@ public class BearDen extends Feature<NoneFeatureConfiguration> {
             return false; // Only spawn if there's a mountain wall behind it
         }
 
+        // Needs solid ground, and no water or lava where the room will be
+        if (!level.getBlockState(pos.below()).isSolid()) {
+            return false;
+        }
+        for (BlockPos check : BlockPos.betweenClosed(pos.offset(-1, 0, -2), pos.offset(1, 2, 0))) {
+            if (!level.getFluidState(check).isEmpty()) {
+                return false;
+            }
+        }
+
         // 2. Carve the cave and set the floor to Andesite
         for (int x = -1; x <= 1; x++) {
             for (int y = 0; y <= 2; y++) {

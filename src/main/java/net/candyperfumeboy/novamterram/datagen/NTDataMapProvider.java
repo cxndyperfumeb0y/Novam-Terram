@@ -78,6 +78,8 @@ public class NTDataMapProvider extends DataMapProvider {
 
         composters.add(NTBlocks.ASTER.getId(), new Compostable(0.65F), false);
         composters.add(NTBlocks.ASTER_PETALS.getId(), new Compostable(0.3F), false);
+        composters.add(NTBlocks.BLUEBELL_CLUSTER.getId(), new Compostable(0.3F), false);
+        composters.add(NTBlocks.PURPLE_BLUEBELL_CLUSTER.getId(), new Compostable(0.3F), false);
 
         composters.add(NTBlocks.TRILLIUM.getId(), new Compostable(0.65F), false);
         composters.add(NTBlocks.THISTLE.getId(), new Compostable(0.65F), false);

@@ -159,6 +159,8 @@ public class NTBlockLootTableProvider extends BlockLootSubProvider {
         add(NTBlocks.HEATHER_PETALS.get(), this::createPetalsDrops);
         add(NTBlocks.LAVENDER_PETALS.get(), this::createPetalsDrops);
         add(NTBlocks.ASTER_PETALS.get(), this::createPetalsDrops);
+        add(NTBlocks.BLUEBELL_CLUSTER.get(), this::createPetalsDrops);
+        add(NTBlocks.PURPLE_BLUEBELL_CLUSTER.get(), this::createPetalsDrops);
 
         dropOther(NTBlocks.BLUE_PODZOL.get(), Blocks.DIRT);
         dropSelf(NTBlocks.SILVER_SAGE.get());

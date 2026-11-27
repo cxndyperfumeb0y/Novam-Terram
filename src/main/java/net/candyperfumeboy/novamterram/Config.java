@@ -35,7 +35,7 @@ public class Config {
 
     public static final ModConfigSpec.BooleanValue ENABLE_BLUEBELL_WOODS = BUILDER
             .comment("Should the flower-carpeted Bluebell Woods generate?")
-            .define("biomes.enable_bluebell_woods", false);
+            .define("biomes.enable_bluebell_woods", true);
 
     public static final ModConfigSpec.BooleanValue ENABLE_BLACK_FOREST = BUILDER
             .comment("Should the dense, dark Black Forest generate?")
@@ -122,17 +122,10 @@ public class Config {
             .define("biomes.enable_caldera_grotto", false);
 
     // --- REGION SETTINGS ---
-    public static final ModConfigSpec.IntValue COASTAL_REGION_WEIGHT = BUILDER
-            .comment("The weight of the Novam Terram Coastal regions.")
-            .defineInRange("region.coastal_weight", 10, 0, 100);
 
     public static final ModConfigSpec.IntValue OVERWORLD_REGION_WEIGHT = BUILDER
             .comment("The weight of the Novam Terram Overworld regions.")
             .defineInRange("region.overworld_weight", 10, 0, 100);
-
-    public static final ModConfigSpec.IntValue PEAK_REGION_WEIGHT = BUILDER
-            .comment("The weight of the Novam Terram Peak region.")
-            .defineInRange("region.peak_weight", 10, 0, 100);
 
     public static final ModConfigSpec.IntValue SUB_REGION_WEIGHT = BUILDER
             .comment("The weight of the Novam Terram Subbiome region.")

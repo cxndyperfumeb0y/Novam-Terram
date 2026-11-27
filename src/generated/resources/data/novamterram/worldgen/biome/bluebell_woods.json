@@ -8,18 +8,24 @@
   },
   "downfall": 0.6,
   "effects": {
-    "fog_color": 13425151,
-    "foliage_color": 6142832,
-    "grass_color": 6142832,
+    "fog_color": 12899583,
+    "foliage_color": 9424984,
+    "grass_color": 7323466,
     "music": {
-      "max_delay": 24000,
-      "min_delay": 12000,
-      "replace_current_music": false,
-      "sound": "minecraft:music.overworld.forest"
+      "max_delay": 12000,
+      "min_delay": 6000,
+      "replace_current_music": true,
+      "sound": "minecraft:music.overworld.flower_forest"
     },
-    "sky_color": 7907327,
-    "water_color": 4501493,
-    "water_fog_color": 7485
+    "particle": {
+      "options": {
+        "type": "minecraft:spore_blossom_air"
+      },
+      "probability": 0.002
+    },
+    "sky_color": 9287423,
+    "water_color": 4165604,
+    "water_fog_color": 666186
   },
   "features": [
     [],
@@ -28,7 +34,8 @@
       "minecraft:lake_lava_surface"
     ],
     [
-      "minecraft:amethyst_geode"
+      "minecraft:amethyst_geode",
+      "novamterram:bluebell_boulder_placed"
     ],
     [
       "minecraft:monster_room",
@@ -62,7 +69,10 @@
       "minecraft:ore_lapis",
       "minecraft:ore_lapis_buried",
       "minecraft:ore_copper",
-      "minecraft:underwater_magma"
+      "minecraft:underwater_magma",
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel"
     ],
     [],
     [
@@ -71,11 +81,14 @@
     ],
     [
       "minecraft:glow_lichen",
-      "minecraft:trees_birch_and_oak",
-      "minecraft:patch_tall_grass"
+      "novamterram:great_oak_ring_placed",
+      "novamterram:bluebell_trees_placed",
+      "novamterram:bluebell_shrubs_placed",
+      "novamterram:bluebell_fallen_log_placed"
     ],
     [
-      "minecraft:freeze_top_layer"
+      "minecraft:freeze_top_layer",
+      "novamterram:bluebell_floor_placed"
     ]
   ],
   "has_precipitation": true,
@@ -114,6 +127,30 @@
         "maxCount": 4,
         "minCount": 4,
         "weight": 8
+      },
+      {
+        "type": "novamterram:songbird",
+        "maxCount": 5,
+        "minCount": 2,
+        "weight": 20
+      },
+      {
+        "type": "minecraft:rabbit",
+        "maxCount": 3,
+        "minCount": 2,
+        "weight": 12
+      },
+      {
+        "type": "minecraft:fox",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 6
+      },
+      {
+        "type": "novamterram:faun",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 3
       }
     ],
     "misc": [],

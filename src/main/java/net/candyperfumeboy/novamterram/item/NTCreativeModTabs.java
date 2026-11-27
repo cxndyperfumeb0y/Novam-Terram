@@ -155,6 +155,8 @@ public class NTCreativeModTabs {
                         output.accept(NTBlocks.BLEEDING_HEART.get());
                         output.accept(NTBlocks.BLUEBELL.get());
                         output.accept(NTBlocks.PURPLE_BLUEBELL.get());
+                        output.accept(NTBlocks.BLUEBELL_CLUSTER.get());
+                        output.accept(NTBlocks.PURPLE_BLUEBELL_CLUSTER.get());
 
                         // --- MOB DROPS & SPAWN EGGS ---
                         output.accept(NTItems.BEAR_CLAW.get());

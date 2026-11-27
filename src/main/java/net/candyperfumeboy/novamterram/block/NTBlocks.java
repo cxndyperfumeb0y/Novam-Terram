@@ -2,6 +2,7 @@ package net.candyperfumeboy.novamterram.block;
 
 import net.candyperfumeboy.novamterram.NovamTerram;
 import net.candyperfumeboy.novamterram.block.custom.AuraBlock;
+import net.candyperfumeboy.novamterram.block.custom.BluebellClusterBlock;
 import net.candyperfumeboy.novamterram.block.custom.OliveHangingBlock;
 import net.candyperfumeboy.novamterram.item.NTItems;
 import net.candyperfumeboy.novamterram.worldgen.tree.NTTreeGrowers;
@@ -102,6 +103,8 @@ public class NTBlocks {
             () -> new TallFlowerBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PEONY).noCollission().instabreak()));
     public static final DeferredBlock<Block> BLUEBELL = flower("bluebell", MobEffects.REGENERATION, Blocks.CORNFLOWER);
     public static final DeferredBlock<Block> PURPLE_BLUEBELL = flower("purple_bluebell", MobEffects.REGENERATION, Blocks.CORNFLOWER);
+    public static final DeferredBlock<Block> BLUEBELL_CLUSTER = bluebellCluster("bluebell_cluster", MapColor.COLOR_BLUE);
+    public static final DeferredBlock<Block> PURPLE_BLUEBELL_CLUSTER = bluebellCluster("purple_bluebell_cluster", MapColor.COLOR_PURPLE);
 
 
     // ==========================================
@@ -213,6 +216,10 @@ public class NTBlocks {
 
     private static DeferredBlock<Block> petals(String name, MapColor color) {
         return registerBlock(name, () -> new PinkPetalsBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_PETALS).mapColor(color)));
+    }
+
+    private static DeferredBlock<Block> bluebellCluster(String name, MapColor color) {
+        return registerBlock(name, () -> new BluebellClusterBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_PETALS).mapColor(color)));
     }
 
     private static DeferredBlock<Block> flower(String name, Holder<MobEffect> stewEffect, Block copyFrom) {

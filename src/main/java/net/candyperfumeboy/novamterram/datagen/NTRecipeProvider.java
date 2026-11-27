@@ -35,6 +35,8 @@ public class NTRecipeProvider extends RecipeProvider implements IConditionBuilde
 
         flowerToDye(recipeOutput, NTBlocks.PURPLE_BLUEBELL, Items.LIGHT_BLUE_DYE, "purple_bluebell");
 
+        flowerToDye(recipeOutput, NTBlocks.BLUEBELL_CLUSTER, Items.LIGHT_BLUE_DYE, "bluebell_cluster");
+        flowerToDye(recipeOutput, NTBlocks.PURPLE_BLUEBELL_CLUSTER, Items.PURPLE_DYE, "purple_bluebell_cluster");
         flowerToDye(recipeOutput, NTBlocks.HEATHER_PETALS, Items.LIGHT_BLUE_DYE, "heather_petals");
         flowerToDye(recipeOutput, NTBlocks.LAVENDER, Items.PURPLE_DYE, "lavender");
         flowerToDye(recipeOutput, NTBlocks.LAVENDER_PETALS, Items.PURPLE_DYE, "lavender_petals");

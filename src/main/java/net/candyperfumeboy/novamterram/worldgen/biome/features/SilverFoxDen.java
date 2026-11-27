@@ -24,6 +24,11 @@ public class SilverFoxDen extends Feature<NoneFeatureConfiguration> {
         BlockPos pos = context.origin();
         RandomSource random = context.random();
 
+        // Only build on dry soil (never on water, rock or tree tops)
+        if (!level.getBlockState(pos.below()).is(BlockTags.DIRT) || !level.getFluidState(pos).isEmpty()) {
+            return false;
+        }
+
         // 1. Create the "Den" floor (Podzol/Coarse Dirt)
         for (int x = -2; x <= 2; x++) {
             for (int z = -2; z <= 2; z++) {
@@ -47,12 +52,15 @@ public class SilverFoxDen extends Feature<NoneFeatureConfiguration> {
             level.setBlock(bushPos, berryBush, 2);
         }
         // 2. Spawn the Foxes
+        // Beside the bush if there's room there, otherwise in the middle (so they aren't stuck in a block)
+        BlockPos beside = pos.east();
+        BlockPos foxPos = level.getBlockState(beside).getCollisionShape(level, beside).isEmpty() ? beside : pos;
         int foxCount = 1 + random.nextInt(2);
         for (int i = 0; i < foxCount; i++) {
             SilverFoxEntity fox = NTEntities.SILVER_FOX.get().create(level.getLevel());
             if (fox != null) {
                 // Ensure they spawn on the SURFACE of our new den
-                fox.moveTo(pos.getX() + 1.5, pos.getY(), pos.getZ() + 0.5, random.nextFloat() * 360.0F, 0.0F);
+                fox.moveTo(foxPos.getX() + 0.5, foxPos.getY(), foxPos.getZ() + 0.5, random.nextFloat() * 360.0F, 0.0F);
                 // Keep them from despawning
                 fox.setPersistenceRequired();
 

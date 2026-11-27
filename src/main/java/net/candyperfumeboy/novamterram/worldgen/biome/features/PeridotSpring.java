@@ -3,6 +3,7 @@ package net.candyperfumeboy.novamterram.worldgen.biome.features;
 import com.mojang.serialization.Codec;
 import net.candyperfumeboy.novamterram.block.NTBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -31,6 +32,13 @@ public class PeridotSpring extends Feature<NoneFeatureConfiguration> {
         int baseRadius = 5 + random.nextInt(3);
         int depth = 4;
 
+        // Don't hang the pool off a cliff: the ground must carry on out to the rim on all four sides
+        for (Direction side : Direction.Plane.HORIZONTAL) {
+            if (!level.getBlockState(pos.relative(side, baseRadius - 1).below(2)).isSolid()) {
+                return false;
+            }
+        }
+
         // We iterate in a square, but the math inside defines the circle.
         // Radius + 2 ensures the "rim" doesn't get cut off.
         for (int x = -baseRadius - 2; x <= baseRadius + 2; x++) {
@@ -49,13 +57,6 @@ public class PeridotSpring extends Feature<NoneFeatureConfiguration> {
 
                 for (int y = -depth - 1; y <= 0; y++) {
                     BlockPos target = pos.offset(x, y, z);
-
-                    // Optimization: Only update blocks if they are currently air or common grotto filler.
-                    // This prevents the spring from overwriting important structures or ores.
-                    BlockState currentStage = level.getBlockState(target);
-                    if (y < 0 && !currentStage.isAir() && !currentStage.is(Blocks.STONE) && !currentStage.is(Blocks.TUFF) && !currentStage.is(Blocks.DEEPSLATE)) {
-                        // Optional: continue; // Uncomment to make it respect existing ores
-                    }
 
                     // --- 1. LAVA UNDER-GLOW (Lowest layer) ---
                     if (y == -depth - 1) {

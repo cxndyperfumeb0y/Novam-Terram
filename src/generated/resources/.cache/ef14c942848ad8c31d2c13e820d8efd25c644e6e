@@ -1,4 +1,4 @@
-// 1.21.1	2026-04-09T13:32:10.5421701	Item Models: novamterram
+// 1.21.1	2026-11-26T23:49:23.1388997	Item Models: novamterram
 3eb19c298f23b07560182f3587ffb449cfdb95ec assets/novamterram/models/item/amber_sandstone_wall.json
 627628324c58f48e8c5172b11acc8e0c6a9006e7 assets/novamterram/models/item/aspen_boat.json
 7f0328ea285b57ce5cef0d968a1ad6bc3f7768a4 assets/novamterram/models/item/aspen_button.json
@@ -21,6 +21,7 @@ fa693254f987e3dd4075cfb5f030ccb49dde4b0b assets/novamterram/models/item/balsa_si
 dc3beaf3e420143d35345d0758ba46ec8f93d629 assets/novamterram/models/item/bear_claw.json
 e73ba5e61bb02225b06e0703e0c8c3322ec27653 assets/novamterram/models/item/bleeding_heart.json
 96b3fa144d3b2b3e07b043b40e735ae66fb63d1f assets/novamterram/models/item/bluebell.json
+5d46892ddfafaea18e47dc14edab1930445f7259 assets/novamterram/models/item/bluebell_cluster.json
 41c27b2aab64160fdab08555675f790dff0740bb assets/novamterram/models/item/blue_podzol.json
 f48fe0aa07eb264b40830c0240e73096a35e60ab assets/novamterram/models/item/blue_spruce_boat.json
 9f04b926fcccd966f14c0dacaec9883ec48d793d assets/novamterram/models/item/blue_spruce_button.json
@@ -61,6 +62,7 @@ adb80ecb7e205489d1576d750bae9f1bd618e2db assets/novamterram/models/item/orange_a
 c577e1ae39b6f08b8e067dd4d4f33d592b741d13 assets/novamterram/models/item/paulownia_leaf_carpet.json
 b3e7889f1f6b393663c6bcd40f57df1f3a41b5d6 assets/novamterram/models/item/paulownia_sapling.json
 36e923e86aef4adfa4c2905571a88e7763dbc0c3 assets/novamterram/models/item/purple_bluebell.json
+cecee053fbd0bf34bcdb5ecff6690ce27c38574e assets/novamterram/models/item/purple_bluebell_cluster.json
 dd2b82de70dd3b38a66b1eaf5cc9ccd5b812c6a6 assets/novamterram/models/item/purple_myrtle_sapling.json
 ebe4e332413fea8a0c39a222866e6b06abb0fc5d assets/novamterram/models/item/raw_iolite.json
 cd3666ebf4a5e5a450121d7b03b489e8f6fe4352 assets/novamterram/models/item/raw_jadeite.json

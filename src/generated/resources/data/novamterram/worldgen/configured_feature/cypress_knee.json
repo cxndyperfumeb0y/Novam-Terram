@@ -4,15 +4,8 @@
     "allowed_placement": {
       "type": "minecraft:matching_blocks",
       "blocks": [
-        "minecraft:grass_block",
-        "minecraft:mud",
-        "minecraft:dirt",
-        "minecraft:rooted_dirt"
-      ],
-      "offset": [
-        0,
-        -1,
-        0
+        "minecraft:air",
+        "minecraft:water"
       ]
     },
     "direction": "up",

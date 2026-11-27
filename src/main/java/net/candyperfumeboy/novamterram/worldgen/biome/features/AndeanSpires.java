@@ -45,7 +45,7 @@ public class AndeanSpires extends Feature<NoneFeatureConfiguration> {
                 for (int z = -horizontalRange; z <= horizontalRange; ++z) {
                     if (x * x + z * z <= (taper + 0.5F) * (taper + 0.5F)) {
                         BlockPos currentPos = pos.offset(x, yOffset, z);
-                        this.placeSpireBlock(level, currentPos);
+                        this.placeSpireBlock(level, random, currentPos);
 
                         // Keep track of the very last block placed at the peak
                         if (yOffset == height - 1 && x == 0 && z == 0) {
@@ -74,7 +74,7 @@ public class AndeanSpires extends Feature<NoneFeatureConfiguration> {
             for (int x = -baseRadius; x <= baseRadius; ++x) {
                 for (int z = -baseRadius; z <= baseRadius; ++z) {
                     if (x * x + z * z <= (baseRadius + 0.5F) * (baseRadius + 0.5F)) {
-                        this.placeSpireBlock(level, pos.offset(x, yOffset, z));
+                        this.placeSpireBlock(level, random, pos.offset(x, yOffset, z));
                     }
                 }
             }
@@ -83,8 +83,13 @@ public class AndeanSpires extends Feature<NoneFeatureConfiguration> {
         return true;
     }
 
-    private void placeSpireBlock(WorldGenLevel level, BlockPos pos) {
-        RandomSource random = level.getRandom();
+    private void placeSpireBlock(WorldGenLevel level, RandomSource random, BlockPos pos) {
+        // Check first, so we don't pick a block for spots that stay as they are
+        BlockState existing = level.getBlockState(pos);
+        if (existing.isSolid() && !existing.is(Blocks.GRASS_BLOCK) && !existing.is(Blocks.DIRT)) {
+            return;
+        }
+
         float chance = random.nextFloat();
         BlockState state;
 
@@ -98,9 +103,6 @@ public class AndeanSpires extends Feature<NoneFeatureConfiguration> {
             state = Blocks.STONE.defaultBlockState();
         }
 
-        BlockState existing = level.getBlockState(pos);
-        if (existing.isAir() || existing.is(Blocks.GRASS_BLOCK) || existing.is(Blocks.DIRT) || !existing.isSolid()) {
-            this.setBlock(level, pos, state);
-        }
+        this.setBlock(level, pos, state);
     }
 }

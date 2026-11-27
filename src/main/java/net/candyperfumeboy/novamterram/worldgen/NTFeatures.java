@@ -37,6 +37,12 @@ public class NTFeatures {
             FEATURES.register("bear_den_feature",
                     () -> new BearDen(NoneFeatureConfiguration.CODEC));
 
+    public static final DeferredHolder<Feature<?>, BluebellFloor> BLUEBELL_FLOOR =
+            FEATURES.register("bluebell_floor", () -> new BluebellFloor(NoneFeatureConfiguration.CODEC));
+
+    public static final DeferredHolder<Feature<?>, GreatOakRing> GREAT_OAK_RING =
+            FEATURES.register("great_oak_ring", () -> new GreatOakRing(NoneFeatureConfiguration.CODEC));
+
     public static void register(IEventBus eventBus) {
         FEATURES.register(eventBus);
     }

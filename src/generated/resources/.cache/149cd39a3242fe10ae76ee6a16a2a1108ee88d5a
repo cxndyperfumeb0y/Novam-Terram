@@ -1,4 +1,4 @@
-// 1.21.1	2026-11-26T22:50:04.5546873	Tags for minecraft:block mod id novamterram
+// 1.21.1	2026-11-26T23:49:23.1100995	Tags for minecraft:block mod id novamterram
 71bea1b939bf6e7df1b291a03de2d6b3b75ae163 data/c/tags/block/ores.json
 63505d771a8e73d9c5966fabec08e964eb2f78d0 data/c/tags/block/storage_blocks.json
 c332e27104379b93180538f34d5e673b9fc37ba4 data/minecraft/tags/block/beacon_base_blocks.json
@@ -9,10 +9,12 @@ e90014a35016faccc0efd60464b728f3db41147c data/minecraft/tags/block/camel_sand_st
 df4ef0c70dbd30f1ca9f0e6aa33c43cb2df9064f data/minecraft/tags/block/doors.json
 94e9a40ac1cbd63b2b5afe44acd8b8b62ca7568a data/minecraft/tags/block/fences.json
 d1b2be53ee49ba1c6a8077e555fb5a2bfe897132 data/minecraft/tags/block/fence_gates.json
+7ad6a0052195393c5ac83c022a9e83fd6797a814 data/minecraft/tags/block/flowers.json
+7ad6a0052195393c5ac83c022a9e83fd6797a814 data/minecraft/tags/block/inside_step_sound_blocks.json
 09602d85d6c295366ac2375640cc8f5d4ad2068b data/minecraft/tags/block/leaves.json
 a711f22e25bde110d024e750378bd3b14550f281 data/minecraft/tags/block/logs_that_burn.json
 d4434d5aa05327a4e9a618ee52c389a97a720666 data/minecraft/tags/block/mineable/axe.json
-9f752fee1579a19fec5f9e613b8ab851d697cd07 data/minecraft/tags/block/mineable/hoe.json
+dfc46534e7a4afccab410b8d49b16c8a8b1bc7c3 data/minecraft/tags/block/mineable/hoe.json
 34682478b8ca10a712d7fc32920f2c01e1191076 data/minecraft/tags/block/mineable/pickaxe.json
 0f9a31044ccd969c7b4f688333da4f2e1304e75b data/minecraft/tags/block/mineable/shovel.json
 689ce36a5f4463686174c286850f9383aa45eb15 data/minecraft/tags/block/needs_diamond_tool.json
@@ -20,12 +22,14 @@ d4434d5aa05327a4e9a618ee52c389a97a720666 data/minecraft/tags/block/mineable/axe.
 00fc5de1da486c9f07d6eab351264c5d3e08cbbc data/minecraft/tags/block/planks.json
 9774ac48a2106ed55b0b33decb7ffd51df349448 data/minecraft/tags/block/pressure_plates.json
 32ad9d31fe294fe7513b01c37618bc6e26744f8b data/minecraft/tags/block/replaceable.json
+7ad6a0052195393c5ac83c022a9e83fd6797a814 data/minecraft/tags/block/replaceable_by_trees.json
 e90014a35016faccc0efd60464b728f3db41147c data/minecraft/tags/block/sand.json
 8eb2f1f2ebed234ed2ea78b1c8a64a75643ddc97 data/minecraft/tags/block/saplings.json
 9b3b5e215f535cf94778141be4997471b01ee161 data/minecraft/tags/block/slabs.json
 fcf5c64595d15bb57c9b4774c7a4c920a13d2d96 data/minecraft/tags/block/small_flowers.json
 5462e5f5a2111f5e0d23b5025ed734e0b1a5984a data/minecraft/tags/block/stairs.json
 d31a1a6527f6fc402fcc894860077f0b86742d5c data/minecraft/tags/block/standing_signs.json
+7ad6a0052195393c5ac83c022a9e83fd6797a814 data/minecraft/tags/block/sword_efficient.json
 2d56f25f05018305969f83e14f46efb6d0a816d9 data/minecraft/tags/block/tall_flowers.json
 eceac8522b1ed01a41c9036dcb804e0d1d35a926 data/minecraft/tags/block/trapdoors.json
 e105c88d08245077dd579aeb41a116a30f03db92 data/minecraft/tags/block/walls.json

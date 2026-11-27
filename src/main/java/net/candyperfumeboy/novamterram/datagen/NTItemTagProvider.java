@@ -121,6 +121,11 @@ public class NTItemTagProvider extends ItemTagsProvider {
                 NTBlocks.HEATHER_PETALS.get().asItem()
         );
 
+        this.tag(ItemTags.FLOWERS).add(
+                NTBlocks.BLUEBELL_CLUSTER.get().asItem(),
+                NTBlocks.PURPLE_BLUEBELL_CLUSTER.get().asItem()
+        );
+
         this.tag(Tags.Items.DYES_WHITE).add(
                 NTBlocks.ASTER.get().asItem(),
                 NTBlocks.ASTER_PETALS.get().asItem()

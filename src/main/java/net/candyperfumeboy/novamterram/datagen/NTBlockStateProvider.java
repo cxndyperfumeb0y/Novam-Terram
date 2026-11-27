@@ -167,6 +167,8 @@ public class NTBlockStateProvider extends BlockStateProvider {
         petalBlock(NTBlocks.HEATHER_PETALS.get());
         petalBlock(NTBlocks.LAVENDER_PETALS.get());
         petalBlock(NTBlocks.ASTER_PETALS.get());
+        bluebellClusterBlock(NTBlocks.BLUEBELL_CLUSTER.get());
+        bluebellClusterBlock(NTBlocks.PURPLE_BLUEBELL_CLUSTER.get());
         // --- ROYAL FOREST FLORA ---
         crossBlock(NTBlocks.SILVER_SAGE.get());
         crossBlock(NTBlocks.BLEEDING_HEART.get());
@@ -283,6 +285,41 @@ public class NTBlockStateProvider extends BlockStateProvider {
             if (i >= 3) models[i - 1].element().from(2, 0.2f, 8).to(10, 0.2f, 16).face(Direction.UP).texture("#texture").ao(false).end().face(Direction.DOWN).texture("#texture").ao(false).end().end();
             if (i >= 4) models[i - 1].element().from(7, 0.25f, 7).to(15, 0.25f, 15).face(Direction.UP).texture("#texture").ao(false).end().face(Direction.DOWN).texture("#texture").ao(false).end().end();
         }
+        getVariantBuilder(block).forAllStates(state -> {
+            int amount = state.getValue(PinkPetalsBlock.AMOUNT);
+            int rotation = (int) state.getValue(PinkPetalsBlock.FACING).toYRot();
+            return ConfiguredModel.builder().modelFile(models[amount - 1]).rotationY((rotation + 180) % 360).build();
+        });
+    }
+
+    /** Like petalBlock, but each clump is two crossed upright pictures. */
+    private void bluebellClusterBlock(Block block) {
+        String name = BuiltInRegistries.BLOCK.getKey(block).getPath();
+        ResourceLocation texture = modLoc("block/" + name);
+        float[][] spots = {{4.5f, 5.5f}, {11.5f, 4.5f}, {11f, 11.5f}, {4.5f, 11f}}; // x, z of each clump
+        BlockModelBuilder[] models = new BlockModelBuilder[4];
+
+        for (int amount = 1; amount <= 4; amount++) {
+            BlockModelBuilder model = models().withExistingParent(name + "_" + amount, mcLoc("block/block"))
+                    .texture("particle", texture)
+                    .texture("texture", texture)
+                    .renderType("cutout")
+                    .ao(false);
+            for (int clump = 0; clump < amount; clump++) {
+                float x = spots[clump][0];
+                float z = spots[clump][1];
+                float u = clump % 2 == 0 ? 0 : 8; // the texture holds two different clumps side by side
+                for (float angle : new float[]{45f, -45f}) {
+                    model.element().from(x - 4, 0, z).to(x + 4, 12, z).shade(false)
+                            .rotation().origin(x, 0, z).axis(Direction.Axis.Y).angle(angle).end()
+                            .face(Direction.NORTH).uvs(u, 4, u + 8, 16).texture("#texture").end()
+                            .face(Direction.SOUTH).uvs(u, 4, u + 8, 16).texture("#texture").end()
+                            .end();
+                }
+            }
+            models[amount - 1] = model;
+        }
+
         getVariantBuilder(block).forAllStates(state -> {
             int amount = state.getValue(PinkPetalsBlock.AMOUNT);
             int rotation = (int) state.getValue(PinkPetalsBlock.FACING).toYRot();
