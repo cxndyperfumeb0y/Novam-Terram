@@ -2,7 +2,6 @@ package net.candyperfumeboy.novamterram.block;
 
 import net.candyperfumeboy.novamterram.NovamTerram;
 import net.candyperfumeboy.novamterram.block.custom.AuraBlock;
-import net.candyperfumeboy.novamterram.block.custom.NTWoodTypes;
 import net.candyperfumeboy.novamterram.block.custom.OliveHangingBlock;
 import net.candyperfumeboy.novamterram.item.NTItems;
 import net.candyperfumeboy.novamterram.worldgen.tree.NTTreeGrowers;

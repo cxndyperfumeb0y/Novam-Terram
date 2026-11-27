@@ -1,4 +1,4 @@
-package net.candyperfumeboy.novamterram.block.custom;
+package net.candyperfumeboy.novamterram.block;
 
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;

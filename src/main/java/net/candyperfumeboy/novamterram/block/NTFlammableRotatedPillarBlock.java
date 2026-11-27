@@ -1,4 +1,4 @@
-package net.candyperfumeboy.novamterram.block.custom;
+package net.candyperfumeboy.novamterram.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

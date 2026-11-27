@@ -1,6 +1,5 @@
 package net.candyperfumeboy.novamterram.datagen;
 
-import net.candyperfumeboy.novamterram.block.NTWoodSet;
 import net.candyperfumeboy.novamterram.block.NTBlocks;
 import net.candyperfumeboy.novamterram.item.NTItems;
 import net.minecraft.core.HolderLookup;
@@ -19,7 +18,7 @@ public class NTDataMapProvider extends DataMapProvider {
     }
 
     @Override
-    protected void gather() {
+    protected void gather(HolderLookup.Provider provider) {
         // ==========================================
         // FURNACE FUELS
         // ==========================================

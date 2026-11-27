@@ -1,6 +1,5 @@
 package net.candyperfumeboy.novamterram.datagen;
 
-import net.candyperfumeboy.novamterram.block.NTWoodSet;
 import net.candyperfumeboy.novamterram.NovamTerram;
 import net.candyperfumeboy.novamterram.block.NTBlocks;
 import net.candyperfumeboy.novamterram.block.custom.OliveHangingBlock;

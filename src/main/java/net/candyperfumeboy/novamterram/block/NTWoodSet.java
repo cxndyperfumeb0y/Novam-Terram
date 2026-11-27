@@ -1,6 +1,5 @@
 package net.candyperfumeboy.novamterram.block;
 
-import net.candyperfumeboy.novamterram.block.custom.NTFlammableRotatedPillarBlock;
 import net.candyperfumeboy.novamterram.entities.variants.NTBoatEntities;
 import net.candyperfumeboy.novamterram.entities.variants.NTSignBlock;
 import net.candyperfumeboy.novamterram.item.NTItems;
