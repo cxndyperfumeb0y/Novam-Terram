@@ -7,14 +7,15 @@ import net.minecraft.resources.ResourceLocation;
 
 /**
  * FaunRenderer - Novam Terram 1.21.1
- * Simplified to use a single texture.
- * The Model class handles the visibility of antlers for Bucks/Does.
+ * Adults and fawns have their own textures.
+ * The Model class handles antlers and the flower crown.
  */
 public class FaunRenderer extends MobRenderer<FaunEntity, FaunModel<FaunEntity>> {
 
-    // Points to your single faun texture
     private static final ResourceLocation TEXTURE =
             ResourceLocation.fromNamespaceAndPath("novamterram", "textures/entity/faun.png");
+    private static final ResourceLocation BABY_TEXTURE =
+            ResourceLocation.fromNamespaceAndPath("novamterram", "textures/entity/faun_baby.png");
 
     public FaunRenderer(EntityRendererProvider.Context context) {
         // Shadow size 0.5f is standard for Deer/Wolves
@@ -23,7 +24,6 @@ public class FaunRenderer extends MobRenderer<FaunEntity, FaunModel<FaunEntity>>
 
     @Override
     public ResourceLocation getTextureLocation(FaunEntity entity) {
-        // Returns the same texture for every faun (Buck, Doe, and Baby)
-        return TEXTURE;
+        return entity.isBaby() ? BABY_TEXTURE : TEXTURE;
     }
 }

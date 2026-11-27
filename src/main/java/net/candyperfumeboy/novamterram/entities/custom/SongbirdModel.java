@@ -12,6 +12,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.animal.Parrot;
 
 /**
  * Songbird Model for Novam Terram.
@@ -108,7 +109,10 @@ public class SongbirdModel<T extends Entity> extends HierarchicalModel<T> {
         this.head.xRot = headPitch * Mth.DEG_TO_RAD;
 
         boolean sitting = entity instanceof TamableAnimal pet && pet.isInSittingPose();
-        boolean flying = !sitting && !entity.onGround() && !entity.isPassenger();
+        boolean asleep = entity instanceof SongbirdEntity songbird && songbird.isRoosting();
+        boolean onHead = entity instanceof SongbirdEntity perched && perched.isOnHead();
+        boolean settled = sitting || asleep || onHead;
+        boolean flying = !settled && !entity.onGround() && !entity.isPassenger();
         // Offset per bird so a flock doesn't move in sync
         float time = ageInTicks + entity.getId() * 17;
 
@@ -136,19 +140,44 @@ public class SongbirdModel<T extends Entity> extends HierarchicalModel<T> {
             }
 
             // Hopping (not while riding something)
-            if (!sitting && !entity.isPassenger() && limbSwingAmount > 0.1F) {
+            if (!settled && !entity.isPassenger() && limbSwingAmount > 0.1F) {
                 float hop = Mth.abs(Mth.cos(limbSwing * 2.5F)) * Math.min(limbSwingAmount, 1.0F);
                 this.root.y -= hop * 1.5F;
                 this.body.xRot = 0.25F;
             }
         }
 
-        if (sitting) {
+        // Dance near a playing jukebox
+        if (!flying && !settled && entity instanceof Parrot parrot && parrot.isPartyParrot()) {
+            float beat = Mth.sin(time * 0.5F);
+            this.root.y -= Mth.abs(beat) * 1.2F;
+            this.body.zRot = beat * 0.2F;
+            this.head.zRot = -beat * 0.35F;
+            this.tail.yRot = beat * 0.4F;
+            this.wingLeft.zRot = Mth.abs(beat) * 0.8F;
+            this.wingRight.zRot = -Mth.abs(beat) * 0.8F;
+        }
+
+        // Head up while singing
+        if (entity instanceof SongbirdEntity bird && bird.getSingTicks() > 0) {
+            this.head.xRot -= 0.5F + Mth.sin(ageInTicks * 2.0F) * 0.15F;
+        }
+
+        if (settled) {
             // Settle down onto the belly
             this.root.y = 25.4F;
         }
-        this.legLeft.visible = !sitting;
-        this.legRight.visible = !sitting;
+        this.legLeft.visible = !settled;
+        this.legRight.visible = !settled;
+
+        if (asleep) {
+            // Head turned back and tucked down, with slow breathing
+            this.head.yRot = 2.6F;
+            this.head.xRot = 0.25F;
+            this.head.zRot = 0.0F;
+            this.head.y += 0.6F + Mth.sin(time * 0.08F) * 0.15F;
+            this.head.z += 1.2F; // back over the shoulders
+        }
 
         // Fledglings get a slightly bigger head
         float headSize = this.young ? 1.2F : 1.0F;
