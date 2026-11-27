@@ -1,15 +1,7 @@
 {
   "values": [
-    "novamterram:amber_sandstone_slab",
-    "novamterram:white_sandstone_slab",
-    "novamterram:olivine_sandstone_slab",
     "novamterram:olivine_sandstone_slab",
     "novamterram:amber_sandstone_slab",
-    "novamterram:white_sandstone_slab",
-    "novamterram:blue_spruce_slab",
-    "novamterram:teak_slab",
-    "novamterram:balsa_slab",
-    "novamterram:mahogany_slab",
-    "novamterram:aspen_slab"
+    "novamterram:white_sandstone_slab"
   ]
 }

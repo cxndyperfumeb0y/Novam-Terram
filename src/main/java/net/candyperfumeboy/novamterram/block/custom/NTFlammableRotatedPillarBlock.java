@@ -1,20 +1,30 @@
 package net.candyperfumeboy.novamterram.block.custom;
 
-import net.candyperfumeboy.novamterram.NovamTerram;
-import net.candyperfumeboy.novamterram.block.NTBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 
 import javax.annotation.Nullable;
+import java.util.function.Supplier;
 
+/** A log or wood block that burns and, if given a stripped version, can be stripped with an axe. */
 public class NTFlammableRotatedPillarBlock extends RotatedPillarBlock {
+    @Nullable
+    private final Supplier<? extends Block> stripped;
+
     public NTFlammableRotatedPillarBlock(Properties properties) {
+        this(properties, null);
+    }
+
+    public NTFlammableRotatedPillarBlock(Properties properties, @Nullable Supplier<? extends Block> stripped) {
         super(properties);
+        this.stripped = stripped;
     }
 
     @Override
@@ -35,20 +45,9 @@ public class NTFlammableRotatedPillarBlock extends RotatedPillarBlock {
     @Override
     public @Nullable BlockState getToolModifiedState(BlockState state, UseOnContext context,
                                                      ItemAbility itemAbility, boolean simulate) {
-        // Only trigger if an Axe is used for "Stripping"
-        if (itemAbility == net.neoforged.neoforge.common.ItemAbilities.AXE_STRIP) {
-            String currentPath = state.getBlock().asItem().toString().replace(NovamTerram.MOD_ID + ":", "");
-
-            // Logic: if current block is "blue_spruce_log", look for "stripped_blue_spruce_log"
-            String strippedPath = "stripped_" + currentPath;
-
-            return NTBlocks.BLOCKS.getEntries().stream()
-                    .filter(e -> e.getId().getPath().equals(strippedPath))
-                    .findFirst()
-                    .map(holder -> holder.get().defaultBlockState().setValue(AXIS, state.getValue(AXIS)))
-                    .orElse(super.getToolModifiedState(state, context, itemAbility, simulate));
+        if (itemAbility == ItemAbilities.AXE_STRIP && this.stripped != null) {
+            return this.stripped.get().defaultBlockState().setValue(AXIS, state.getValue(AXIS));
         }
-
         return super.getToolModifiedState(state, context, itemAbility, simulate);
     }
 }

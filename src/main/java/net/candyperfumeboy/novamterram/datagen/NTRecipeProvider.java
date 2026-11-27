@@ -1,5 +1,6 @@
 package net.candyperfumeboy.novamterram.datagen;
 
+import net.candyperfumeboy.novamterram.block.NTWoodSet;
 import net.candyperfumeboy.novamterram.NovamTerram;
 import net.candyperfumeboy.novamterram.block.NTBlocks;
 import net.candyperfumeboy.novamterram.item.NTItems;
@@ -72,8 +73,8 @@ public class NTRecipeProvider extends RecipeProvider implements IConditionBuilde
         List<ItemLike> JADEITE_SMELTABLES = List.of(NTItems.RAW_JADEITE, NTBlocks.JADEITE_ORE);
         List<ItemLike> RHODOCHROSITE_SMELTABLES = List.of(NTItems.RAW_RHODOCHROSITE, NTBlocks.RHODOCHROSITE_ORE);
         List<ItemLike> IOLITE_SMELTABLES = List.of(NTItems.RAW_IOLITE, NTBlocks.IOLITE_ORE);
-        List<ItemLike> LIGNITE_SMELTABLES = List.of(NTItems.LIGNITE_COAL, NTBlocks.LIGNITE_ORE, NTBlocks.DEEPSLATE_LIGNITE_ORE, NTBlocks.LIGNITE_NETHER_ORE, NTBlocks.LIGNITE_END_ORE);
-        List<ItemLike> GLASS_SMELTABLES = List.of(Blocks.GLASS, NTBlocks.OLIVINE_SAND);
+        List<ItemLike> LIGNITE_SMELTABLES = List.of(NTBlocks.LIGNITE_ORE, NTBlocks.DEEPSLATE_LIGNITE_ORE, NTBlocks.LIGNITE_NETHER_ORE, NTBlocks.LIGNITE_END_ORE);
+        List<ItemLike> GLASS_SMELTABLES = List.of(NTBlocks.OLIVINE_SAND, NTBlocks.AMBER_SAND, NTBlocks.WHITE_SAND);
 
         oreSmelting(recipeOutput, OPAL_SMELTABLES, RecipeCategory.MISC, NTItems.OPAL.get(), 0.7f, 200, "opal");
         oreSmelting(recipeOutput, KYANITE_SMELTABLES, RecipeCategory.MISC, NTItems.KYANITE.get(), 0.7f, 200, "kyanite");
@@ -108,60 +109,56 @@ public class NTRecipeProvider extends RecipeProvider implements IConditionBuilde
         // SANDSTONE SETS
         // ==========================================
 
-        registerSandstoneRecipes(recipeOutput, NTBlocks.OLIVINE_SAND, NTBlocks.OLIVINE_SANDSTONE, NTBlocks.OLIVINE_SANDSTONE_STAIRS, NTBlocks.OLIVINE_SANDSTONE_SLAB, null, null, null, null, NTBlocks.OLIVINE_SANDSTONE_WALL, null, null, NTBlocks.CUT_OLIVINE_SANDSTONE, NTBlocks.CHISELED_OLIVINE_SANDSTONE);
+        registerSandstoneRecipes(recipeOutput, NTBlocks.OLIVINE_SAND, NTBlocks.OLIVINE_SANDSTONE, NTBlocks.OLIVINE_SANDSTONE_STAIRS, NTBlocks.OLIVINE_SANDSTONE_SLAB, NTBlocks.OLIVINE_SANDSTONE_BUTTON, NTBlocks.OLIVINE_SANDSTONE_PRESSURE_PLATE, NTBlocks.OLIVINE_SANDSTONE_FENCE, NTBlocks.OLIVINE_SANDSTONE_FENCE_GATE, NTBlocks.OLIVINE_SANDSTONE_WALL, NTBlocks.OLIVINE_SANDSTONE_DOOR, NTBlocks.OLIVINE_SANDSTONE_TRAP_DOOR, NTBlocks.CUT_OLIVINE_SANDSTONE, NTBlocks.CHISELED_OLIVINE_SANDSTONE);
         registerSandstoneRecipes(recipeOutput, NTBlocks.AMBER_SAND, NTBlocks.AMBER_SANDSTONE, NTBlocks.AMBER_SANDSTONE_STAIRS, NTBlocks.AMBER_SANDSTONE_SLAB, null, null, null, null, NTBlocks.AMBER_SANDSTONE_WALL, null, null, NTBlocks.CUT_AMBER_SANDSTONE, NTBlocks.CHISELED_AMBER_SANDSTONE);
         registerSandstoneRecipes(recipeOutput, NTBlocks.WHITE_SAND, NTBlocks.WHITE_SANDSTONE, NTBlocks.WHITE_SANDSTONE_STAIRS, NTBlocks.WHITE_SANDSTONE_SLAB, null, null, null, null, NTBlocks.WHITE_SANDSTONE_WALL, null, null, NTBlocks.CUT_WHITE_SANDSTONE, NTBlocks.CHISELED_WHITE_SANDSTONE);
 
         // ==========================================
         // THE WOOD LOOP
         // ==========================================
-        String[] woodNames = {"blue_spruce", "teak", "balsa", "mahogany", "aspen"};
+        for (NTWoodSet set : NTBlocks.WOOD_SETS) {
+            Block log = set.log.get();
+            Block strippedLog = set.strippedLog.get();
+            Block planks = set.planks.get();
 
-        for (String wood : woodNames) {
-            Block log = getBlock(wood + "_log");
-            Block woodBlock = getBlock(wood + "_wood");
-            Block strippedLog = getBlock("stripped_" + wood + "_log");
-            Block strippedWood = getBlock("stripped_" + wood + "_wood");
-            Block planks = getBlock(wood + "_planks");
+            planksFromLogs(recipeOutput, planks, log, 4);
+            planksFromLogs(recipeOutput, planks, set.wood.get(), 4);
+            planksFromLogs(recipeOutput, planks, strippedLog, 4);
+            planksFromLogs(recipeOutput, planks, set.strippedWood.get(), 4);
 
-            planksFromLogs(recipeOutput, planks, getBlock(wood + "_log"), 4);
-            planksFromLogs(recipeOutput, planks, getBlock(wood + "_wood"), 4);
-            planksFromLogs(recipeOutput, planks, getBlock("stripped_" + wood + "_log"), 4);
-            planksFromLogs(recipeOutput, planks, getBlock("stripped_" + wood + "_wood"), 4);
+            woodFromLogs(recipeOutput, set.wood.get(), log);
+            woodFromLogs(recipeOutput, set.strippedWood.get(), strippedLog);
 
-            woodFromLogs(recipeOutput, woodBlock, log);
-            woodFromLogs(recipeOutput, strippedWood, strippedLog);
-
-            stairBuilder(getBlock(wood + "_stairs"), Ingredient.of(planks)).group("planks")
+            stairBuilder(set.stairs.get(), Ingredient.of(planks)).group("planks")
                     .unlockedBy("has_planks", has(planks)).save(recipeOutput);
-            slab(recipeOutput, RecipeCategory.BUILDING_BLOCKS, getBlock(wood + "_slab"), planks);
-            buttonBuilder(getBlock(wood + "_button"), Ingredient.of(planks)).group("planks")
+            slab(recipeOutput, RecipeCategory.BUILDING_BLOCKS, set.slab.get(), planks);
+            buttonBuilder(set.button.get(), Ingredient.of(planks)).group("planks")
                     .unlockedBy("has_planks", has(planks)).save(recipeOutput);
-            pressurePlate(recipeOutput, getBlock(wood + "_pressure_plate"), planks);
-            fenceBuilder(getBlock(wood + "_fence"), Ingredient.of(planks)).group("planks")
+            pressurePlate(recipeOutput, set.pressurePlate.get(), planks);
+            fenceBuilder(set.fence.get(), Ingredient.of(planks)).group("planks")
                     .unlockedBy("has_planks", has(planks)).save(recipeOutput);
-            fenceGateBuilder(getBlock(wood + "_fence_gate"), Ingredient.of(planks)).group("planks")
+            fenceGateBuilder(set.fenceGate.get(), Ingredient.of(planks)).group("planks")
                     .unlockedBy("has_planks", has(planks)).save(recipeOutput);
-            doorBuilder(getBlock(wood + "_door"), Ingredient.of(planks)).group("planks")
+            doorBuilder(set.door.get(), Ingredient.of(planks)).group("planks")
                     .unlockedBy("has_planks", has(planks)).save(recipeOutput);
-            trapdoorBuilder(getBlock(wood + "_trapdoor"), Ingredient.of(planks)).group("planks")
+            trapdoorBuilder(set.trapdoor.get(), Ingredient.of(planks)).group("planks")
                     .unlockedBy("has_planks", has(planks)).save(recipeOutput);
 
-            signBuilder(getItem(wood + "_sign"), Ingredient.of(planks))
+            signBuilder(set.signItem.get(), Ingredient.of(planks))
                     .unlockedBy("has_planks", has(planks)).save(recipeOutput);
 
-            ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, getItem(wood + "_hanging_sign"), 6)
+            ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, set.hangingSignItem.get(), 6)
                     .pattern("C C").pattern("SSS").pattern("SSS")
                     .define('C', Items.CHAIN).define('S', strippedLog)
                     .unlockedBy("has_stripped_log", has(strippedLog)).save(recipeOutput);
 
-            Item boat = getItem(wood + "_boat");
+            Item boat = set.boat.get();
             ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, boat)
                     .pattern("P P").pattern("PPP")
                     .define('P', planks).group("boat")
                     .unlockedBy("in_water", insideOf(Blocks.WATER)).save(recipeOutput);
 
-            ShapelessRecipeBuilder.shapeless(RecipeCategory.TRANSPORTATION, getItem(wood + "_chest_boat"))
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.TRANSPORTATION, set.chestBoat.get())
                     .requires(boat).requires(Blocks.CHEST).group("chest_boat")
                     .unlockedBy("has_boat", has(boat)).save(recipeOutput);
         }
@@ -194,15 +191,20 @@ public class NTRecipeProvider extends RecipeProvider implements IConditionBuilde
 
         slab(out, RecipeCategory.BUILDING_BLOCKS, slab.get(), stone.get());
 
-        if(btn != null) buttonBuilder(btn.get(), Ingredient.of(stone.get())).save(out);
+        if(btn != null) buttonBuilder(btn.get(), Ingredient.of(stone.get()))
+                .unlockedBy("has_stone", has(stone.get())).save(out);
         if(plate != null) pressurePlate(out, plate.get(), stone.get());
-        if(fence != null) fenceBuilder(fence.get(), Ingredient.of(stone.get())).save(out);
-        if(gate != null) fenceGateBuilder(gate.get(), Ingredient.of(stone.get())).save(out);
+        if(fence != null) fenceBuilder(fence.get(), Ingredient.of(stone.get()))
+                .unlockedBy("has_stone", has(stone.get())).save(out);
+        if(gate != null) fenceGateBuilder(gate.get(), Ingredient.of(stone.get()))
+                .unlockedBy("has_stone", has(stone.get())).save(out);
 
         wall(out, RecipeCategory.BUILDING_BLOCKS, wall.get(), stone.get());
 
-        if(door != null) doorBuilder(door.get(), Ingredient.of(stone.get())).save(out);
-        if(trap != null) trapdoorBuilder(trap.get(), Ingredient.of(stone.get())).save(out);
+        if(door != null) doorBuilder(door.get(), Ingredient.of(stone.get()))
+                .unlockedBy("has_stone", has(stone.get())).save(out);
+        if(trap != null) trapdoorBuilder(trap.get(), Ingredient.of(stone.get()))
+                .unlockedBy("has_stone", has(stone.get())).save(out);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, cut.get(), 4)
                 .pattern("SS").pattern("SS")
@@ -241,20 +243,6 @@ public class NTRecipeProvider extends RecipeProvider implements IConditionBuilde
                 .requires(block)
                 .unlockedBy("has_" + name + "_block", has(block))
                 .save(recipeOutput, NovamTerram.MOD_ID + ":" + name + "_from_block");
-    }
-
-    private Block getBlock(String name) {
-        return NTBlocks.BLOCKS.getEntries().stream()
-                .filter(e -> e.getId().getPath().equals(name))
-                .findFirst().map(DeferredHolder::get)
-                .orElseThrow(() -> new RuntimeException("Block not found for RecipeGen: " + name));
-    }
-
-    private Item getItem(String name) {
-        return NTItems.ITEMS.getEntries().stream()
-                .filter(e -> e.getId().getPath().equals(name))
-                .findFirst().map(DeferredHolder::get)
-                .orElseThrow(() -> new RuntimeException("Item not found for RecipeGen: " + name));
     }
 
     protected static void planksFromLogs(RecipeOutput recipeOutput, ItemLike pPlanks, Block pLog, int pAmount) {

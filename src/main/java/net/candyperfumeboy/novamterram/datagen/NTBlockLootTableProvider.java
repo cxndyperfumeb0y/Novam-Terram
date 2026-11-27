@@ -1,5 +1,6 @@
 package net.candyperfumeboy.novamterram.datagen;
 
+import net.candyperfumeboy.novamterram.block.NTWoodSet;
 import net.candyperfumeboy.novamterram.block.NTBlocks;
 import net.candyperfumeboy.novamterram.block.custom.OliveHangingBlock;
 import net.candyperfumeboy.novamterram.item.NTItems;
@@ -97,27 +98,26 @@ public class NTBlockLootTableProvider extends BlockLootSubProvider {
         // ==========================================
         // WOODS & FLORA
         // ==========================================
-        String[] woodNames = {"blue_spruce", "teak", "balsa", "mahogany", "aspen"};
-        for (String wood : woodNames) {
-            dropSelf(getBlock(wood + "_log"));
-            dropSelf(getBlock(wood + "_wood"));
-            dropSelf(getBlock("stripped_" + wood + "_log"));
-            dropSelf(getBlock("stripped_" + wood + "_wood"));
-            dropSelf(getBlock(wood + "_planks"));
-            dropSelf(getBlock(wood + "_sapling"));
-            dropSelf(getBlock(wood + "_stairs"));
-            dropSelf(getBlock(wood + "_button"));
-            dropSelf(getBlock(wood + "_trapdoor"));
-            dropSelf(getBlock(wood + "_fence"));
-            dropSelf(getBlock(wood + "_fence_gate"));
-            dropSelf(getBlock(wood + "_pressure_plate"));
-            add(getBlock(wood + "_slab"), this::createSlabItemTable);
-            add(getBlock(wood + "_door"), this::createDoorTable);
-            add(getBlock(wood + "_leaves"), block -> createLeavesDrops(block, getBlock(wood + "_sapling"), NORMAL_LEAVES_SAPLING_CHANCES));
-            add(getBlock(wood + "_sign"), block -> createSignTable(block, getItem(wood + "_sign")));
-            add(getBlock(wood + "_wall_sign"), block -> createSignTable(getBlock(wood + "_sign"), getItem(wood + "_sign")));
-            add(getBlock(wood + "_hanging_sign"), block -> createSignTable(block, getItem(wood + "_hanging_sign")));
-            add(getBlock(wood + "_wall_hanging_sign"), block -> createSignTable(getBlock(wood + "_hanging_sign"), getItem(wood + "_hanging_sign")));
+        for (NTWoodSet set : NTBlocks.WOOD_SETS) {
+            dropSelf(set.log.get());
+            dropSelf(set.wood.get());
+            dropSelf(set.strippedLog.get());
+            dropSelf(set.strippedWood.get());
+            dropSelf(set.planks.get());
+            dropSelf(set.sapling.get());
+            dropSelf(set.stairs.get());
+            dropSelf(set.button.get());
+            dropSelf(set.trapdoor.get());
+            dropSelf(set.fence.get());
+            dropSelf(set.fenceGate.get());
+            dropSelf(set.pressurePlate.get());
+            add(set.slab.get(), this::createSlabItemTable);
+            add(set.door.get(), this::createDoorTable);
+            add(set.leaves.get(), block -> createLeavesDrops(block, set.sapling.get(), NORMAL_LEAVES_SAPLING_CHANCES));
+            add(set.sign.get(), block -> createSingleItemTable(set.signItem.get()));
+            add(set.wallSign.get(), block -> createSingleItemTable(set.signItem.get()));
+            add(set.hangingSign.get(), block -> createSingleItemTable(set.hangingSignItem.get()));
+            add(set.wallHangingSign.get(), block -> createSingleItemTable(set.hangingSignItem.get()));
         }
 
         add(NTBlocks.OLIVE_LEAVES.get(), block -> createLeavesDrops(block, Blocks.OAK_SAPLING, NORMAL_LEAVES_SAPLING_CHANCES));
@@ -174,14 +174,6 @@ public class NTBlockLootTableProvider extends BlockLootSubProvider {
         return builder;
     }
 
-    private Block getBlock(String name) {
-        return NTBlocks.BLOCKS.getEntries().stream().filter(e -> e.getId().getPath().equals(name)).findFirst().map(Holder::value).orElseThrow(() -> new RuntimeException("Could not find block: " + name));
-    }
-
-    private Item getItem(String name) {
-        return NTItems.ITEMS.getEntries().stream().filter(e -> e.getId().getPath().equals(name)).findFirst().map(Holder::value).orElseThrow(() -> new RuntimeException("Could not find item: " + name));
-    }
-
     protected LootTable.Builder createMultipleOreDrops(Block pBlock, Item item, float minDrops, float maxDrops) {
         HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
         return this.createSilkTouchDispatchTable(pBlock, this.applyExplosionDecay(pBlock, LootItem.lootTableItem(item).apply(SetItemCountFunction.setCount(UniformGenerator.between(minDrops, maxDrops))).apply(ApplyBonusCount.addOreBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE)))));
@@ -190,9 +182,5 @@ public class NTBlockLootTableProvider extends BlockLootSubProvider {
     @Override
     protected Iterable<Block> getKnownBlocks() {
         return NTBlocks.BLOCKS.getEntries().stream().map(Holder::value)::iterator;
-    }
-
-    protected LootTable.Builder createSignTable(Block pBlock, Item pItem) {
-        return createSingleItemTable(pItem);
     }
 }

@@ -1,5 +1,6 @@
 package net.candyperfumeboy.novamterram.datagen;
 
+import net.candyperfumeboy.novamterram.block.NTWoodSet;
 import net.candyperfumeboy.novamterram.NovamTerram;
 import net.candyperfumeboy.novamterram.block.NTBlocks;
 import net.candyperfumeboy.novamterram.item.NTItems;
@@ -12,7 +13,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -39,7 +39,13 @@ public class NTItemTagProvider extends ItemTagsProvider {
         copy(BlockTags.SMALL_FLOWERS, ItemTags.SMALL_FLOWERS);
         copy(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
         copy(BlockTags.LEAVES, ItemTags.LEAVES);
-        copy(BlockTags.PRESSURE_PLATES, ItemTags.WOODEN_PRESSURE_PLATES);
+        copy(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES);
+        copy(BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS);
+        copy(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS);
+        copy(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS);
+        copy(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS);
+        copy(BlockTags.WOODEN_PRESSURE_PLATES, ItemTags.WOODEN_PRESSURE_PLATES);
+        copy(BlockTags.WOODEN_BUTTONS, ItemTags.WOODEN_BUTTONS);
 
         // ==========================================
         // AEGEAN ITEMS (Olive)
@@ -78,21 +84,15 @@ public class NTItemTagProvider extends ItemTagsProvider {
         // ==========================================
         // THE WOOD LOOP
         // ==========================================
-        String[] woodNames = {"blue_spruce", "teak", "balsa", "mahogany", "aspen"};
-
-        for (String wood : woodNames) {
+        for (NTWoodSet set : NTBlocks.WOOD_SETS) {
             this.tag(ItemTags.LOGS_THAT_BURN).add(
-                    getBlock(wood + "_log").asItem(),
-                    getBlock(wood + "_wood").asItem(),
-                    getBlock("stripped_" + wood + "_log").asItem(),
-                    getBlock("stripped_" + wood + "_wood").asItem()
-            );
+                    set.log.asItem(), set.wood.asItem(), set.strippedLog.asItem(), set.strippedWood.asItem());
 
-            this.tag(ItemTags.PLANKS).add(getBlock(wood + "_planks").asItem());
-            this.tag(ItemTags.SIGNS).add(getItem(wood + "_sign"));
-            this.tag(ItemTags.HANGING_SIGNS).add(getItem(wood + "_hanging_sign"));
-            this.tag(ItemTags.BOATS).add(getItem(wood + "_boat"));
-            this.tag(ItemTags.CHEST_BOATS).add(getItem(wood + "_chest_boat"));
+            this.tag(ItemTags.PLANKS).add(set.planks.asItem());
+            this.tag(ItemTags.SIGNS).add(set.signItem.get());
+            this.tag(ItemTags.HANGING_SIGNS).add(set.hangingSignItem.get());
+            this.tag(ItemTags.BOATS).add(set.boat.get());
+            this.tag(ItemTags.CHEST_BOATS).add(set.chestBoat.get());
         }
 
         // ==========================================
@@ -141,34 +141,9 @@ public class NTItemTagProvider extends ItemTagsProvider {
         this.tag(ItemTags.PIGLIN_FOOD).add(NTBlocks.LAVENDER.get().asItem());
 
         // --- NEW BLOCKS ---
-        this.tag(ItemTags.DIRT).add(NTBlocks.SAFFRON_MOSS.get().asItem()); // NEW
-        this.tag(ItemTags.SAND).add(NTBlocks.AMBER_SAND.get().asItem()); // NEW
-        this.tag(ItemTags.STAIRS).add(NTBlocks.AMBER_SANDSTONE_STAIRS.get().asItem()); // NEW
-        this.tag(ItemTags.SLABS).add(NTBlocks.AMBER_SANDSTONE_SLAB.get().asItem()); // NEW
-        this.tag(ItemTags.WALLS).add(NTBlocks.AMBER_SANDSTONE_WALL.get().asItem()); // NEW
+        this.tag(ItemTags.DIRT).add(NTBlocks.SAFFRON_MOSS.get().asItem());
+        this.tag(ItemTags.SAND).add(NTBlocks.AMBER_SAND.get().asItem());
         this.tag(ItemTags.SAND).add(NTBlocks.WHITE_SAND.get().asItem());
-        this.tag(ItemTags.STAIRS).add(NTBlocks.WHITE_SANDSTONE_STAIRS.get().asItem());
-        this.tag(ItemTags.SLABS).add(NTBlocks.WHITE_SANDSTONE_SLAB.get().asItem());
-        this.tag(ItemTags.WALLS).add(NTBlocks.WHITE_SANDSTONE_WALL.get().asItem());
         this.tag(ItemTags.SAND).add(NTBlocks.OLIVINE_SAND.get().asItem());
-        this.tag(ItemTags.STAIRS).add(NTBlocks.OLIVINE_SANDSTONE_STAIRS.get().asItem());
-        this.tag(ItemTags.SLABS).add(NTBlocks.OLIVINE_SANDSTONE_SLAB.get().asItem());
-        this.tag(ItemTags.WALLS).add(NTBlocks.OLIVINE_SANDSTONE_WALL.get().asItem());
-    }
-
-    private Item getItem(String name) {
-        return NTItems.ITEMS.getEntries().stream()
-                .filter(e -> e.getId().getPath().equals(name))
-                .findFirst()
-                .map(DeferredHolder::get)
-                .orElseThrow(() -> new RuntimeException("Item not found for ItemTagGen: " + name));
-    }
-
-    private Block getBlock(String name) {
-        return NTBlocks.BLOCKS.getEntries().stream()
-                .filter(e -> e.getId().getPath().equals(name))
-                .findFirst()
-                .map(DeferredHolder::get)
-                .orElseThrow(() -> new RuntimeException("Block not found for ItemTagGen: " + name));
     }
 }

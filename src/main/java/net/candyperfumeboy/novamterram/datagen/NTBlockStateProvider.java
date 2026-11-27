@@ -1,5 +1,6 @@
 package net.candyperfumeboy.novamterram.datagen;
 
+import net.candyperfumeboy.novamterram.block.NTWoodSet;
 import net.candyperfumeboy.novamterram.NovamTerram;
 import net.candyperfumeboy.novamterram.block.NTBlocks;
 import net.candyperfumeboy.novamterram.block.custom.OliveHangingBlock;
@@ -15,7 +16,6 @@ import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class NTBlockStateProvider extends BlockStateProvider {
     public NTBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
@@ -88,72 +88,68 @@ public class NTBlockStateProvider extends BlockStateProvider {
         petrifiedCactusBlock(NTBlocks.PETRIFIED_CACTUS.get());
 
         // --- WOOD LOOP (Full Sets) ---
-        String[] woodNames = {"blue_spruce", "teak", "balsa", "mahogany", "aspen"};
-        for (String wood : woodNames) {
-            Block log = getBlock(wood + "_log");
-            Block woodBlock = getBlock(wood + "_wood");
-            Block strippedLog = getBlock("stripped_" + wood + "_log");
-            Block strippedWood = getBlock("stripped_" + wood + "_wood");
-            Block planks = getBlock(wood + "_planks");
+        for (NTWoodSet set : NTBlocks.WOOD_SETS) {
+            Block log = set.log.get();
+            Block planks = set.planks.get();
 
-            logBlock((RotatedPillarBlock) log);
-            axisBlock((RotatedPillarBlock) woodBlock, blockTexture(log), blockTexture(log));
-            logBlock((RotatedPillarBlock) strippedLog);
-            axisBlock((RotatedPillarBlock) strippedWood, blockTexture(strippedLog), blockTexture(strippedLog));
+            logBlock(set.log.get());
+            axisBlock(set.wood.get(), blockTexture(log), blockTexture(log));
+            logBlock(set.strippedLog.get());
+            axisBlock(set.strippedWood.get(), blockTexture(set.strippedLog.get()), blockTexture(set.strippedLog.get()));
 
-            simpleBlockItem(log, models().getExistingFile(modLoc("block/" + wood + "_log")));
-            simpleBlockItem(woodBlock, models().getExistingFile(modLoc("block/" + wood + "_wood")));
-            simpleBlockItem(strippedLog, models().getExistingFile(modLoc("block/stripped_" + wood + "_log")));
-            simpleBlockItem(strippedWood, models().getExistingFile(modLoc("block/stripped_" + wood + "_wood")));
+            blockItem(set.log);
+            blockItem(set.wood);
+            blockItem(set.strippedLog);
+            blockItem(set.strippedWood);
 
             simpleBlockWithItem(planks, cubeAll(planks));
-            leavesBlock(wood + "_leaves");
-            saplingBlock(wood + "_sapling");
+            leavesBlock(set.leaves.get());
+            saplingBlock(set.sapling.get());
 
-            stairsBlock((StairBlock) getBlock(wood + "_stairs"), blockTexture(planks));
-            slabBlock((SlabBlock) getBlock(wood + "_slab"), blockTexture(planks), blockTexture(planks));
-            buttonBlock((ButtonBlock) getBlock(wood + "_button"), blockTexture(planks));
-            pressurePlateBlock((PressurePlateBlock) getBlock(wood + "_pressure_plate"), blockTexture(planks));
-            fenceBlock((FenceBlock) getBlock(wood + "_fence"), blockTexture(planks));
-            fenceGateBlock((FenceGateBlock) getBlock(wood + "_fence_gate"), blockTexture(planks));
+            stairsBlock(set.stairs.get(), blockTexture(planks));
+            slabBlock(set.slab.get(), blockTexture(planks), blockTexture(planks));
+            buttonBlock(set.button.get(), blockTexture(planks));
+            pressurePlateBlock(set.pressurePlate.get(), blockTexture(planks));
+            fenceBlock(set.fence.get(), blockTexture(planks));
+            fenceGateBlock(set.fenceGate.get(), blockTexture(planks));
 
-            doorBlockWithRenderType((DoorBlock) getBlock(wood + "_door"), modLoc("block/" + wood + "_door_bottom"), modLoc("block/" + wood + "_door_top"), "cutout");
-            trapdoorBlockWithRenderType((TrapDoorBlock) getBlock(wood + "_trapdoor"), modLoc("block/" + wood + "_trapdoor"), true, "cutout");
+            doorBlockWithRenderType(set.door.get(), modLoc("block/" + set.name + "_door_bottom"), modLoc("block/" + set.name + "_door_top"), "cutout");
+            trapdoorBlockWithRenderType(set.trapdoor.get(), modLoc("block/" + set.name + "_trapdoor"), true, "cutout");
 
-            simpleBlockItem(getBlock(wood + "_stairs"), models().getExistingFile(modLoc("block/" + wood + "_stairs")));
-            simpleBlockItem(getBlock(wood + "_slab"), models().getExistingFile(modLoc("block/" + wood + "_slab")));
-            simpleBlockItem(getBlock(wood + "_pressure_plate"), models().getExistingFile(modLoc("block/" + wood + "_pressure_plate")));
-            simpleBlockItem(getBlock(wood + "_fence_gate"), models().getExistingFile(modLoc("block/" + wood + "_fence_gate")));
-            simpleBlockItem(getBlock(wood + "_trapdoor"), models().getExistingFile(modLoc("block/" + wood + "_trapdoor_bottom")));
+            blockItem(set.stairs);
+            blockItem(set.slab);
+            blockItem(set.pressurePlate);
+            blockItem(set.fenceGate);
+            blockItem(set.trapdoor, "_bottom");
 
-            signBlock((StandingSignBlock) getBlock(wood + "_sign"), (WallSignBlock) getBlock(wood + "_wall_sign"), blockTexture(planks));
-            hangingSignBlock((CeilingHangingSignBlock) getBlock(wood + "_hanging_sign"), (WallHangingSignBlock) getBlock(wood + "_wall_hanging_sign"), blockTexture(planks));
+            signBlock(set.sign.get(), set.wallSign.get(), blockTexture(planks));
+            hangingSignBlock(set.hangingSign.get(), set.wallHangingSign.get(), blockTexture(planks));
         }
 
         // --- AEGEAN FLORA (Olive & Shrubbery) ---
-        leavesBlock("olive_leaves");
+        leavesBlock(NTBlocks.OLIVE_LEAVES.get());
         hangingFruitBlock(NTBlocks.OLIVE_HANGING.get(), "olive_stage");
 
         // --- HIGHLANDS & STANDALONE FLORA ---
-        leavesBlock("orange_autumnal_leaves");
-        saplingBlock("orange_autumnal_pine_sapling");
-        leafCarpetBlock(NTBlocks.ORANGE_AUTUMNAL_LEAF_CARPET.get(), getBlock("orange_autumnal_leaves"));
+        leavesBlock(NTBlocks.ORANGE_AUTUMNAL_LEAVES.get());
+        saplingBlock(NTBlocks.ORANGE_AUTUMNAL_PINE_SAPLING.get());
+        leafCarpetBlock(NTBlocks.ORANGE_AUTUMNAL_LEAF_CARPET.get(), NTBlocks.ORANGE_AUTUMNAL_LEAVES.get());
 
-        leavesBlock("yellow_autumnal_leaves");
-        saplingBlock("yellow_autumnal_pine_sapling");
-        leafCarpetBlock(NTBlocks.YELLOW_AUTUMNAL_LEAF_CARPET.get(), getBlock("yellow_autumnal_leaves"));
+        leavesBlock(NTBlocks.YELLOW_AUTUMNAL_LEAVES.get());
+        saplingBlock(NTBlocks.YELLOW_AUTUMNAL_PINE_SAPLING.get());
+        leafCarpetBlock(NTBlocks.YELLOW_AUTUMNAL_LEAF_CARPET.get(), NTBlocks.YELLOW_AUTUMNAL_LEAVES.get());
 
-        leavesBlock("paulownia_leaves");
-        saplingBlock("paulownia_sapling");
-        leafCarpetBlock(NTBlocks.PAULOWNIA_LEAF_CARPET.get(), getBlock("paulownia_leaves"));
+        leavesBlock(NTBlocks.PAULOWNIA_LEAVES.get());
+        saplingBlock(NTBlocks.PAULOWNIA_SAPLING.get());
+        leafCarpetBlock(NTBlocks.PAULOWNIA_LEAF_CARPET.get(), NTBlocks.PAULOWNIA_LEAVES.get());
 
-        leavesBlock("white_myrtle_leaves");
-        saplingBlock("white_myrtle_sapling");
-        leavesBlock("red_myrtle_leaves");
-        saplingBlock("red_myrtle_sapling");
-        leavesBlock("purple_myrtle_leaves");
-        saplingBlock("purple_myrtle_sapling");
-        leafCarpetBlock(NTBlocks.MYRTLE_LEAF_CARPET.get(), getBlock("white_myrtle_leaves"));
+        leavesBlock(NTBlocks.WHITE_MYRTLE_LEAVES.get());
+        saplingBlock(NTBlocks.WHITE_MYRTLE_SAPLING.get());
+        leavesBlock(NTBlocks.RED_MYRTLE_LEAVES.get());
+        saplingBlock(NTBlocks.RED_MYRTLE_SAPLING.get());
+        leavesBlock(NTBlocks.PURPLE_MYRTLE_LEAVES.get());
+        saplingBlock(NTBlocks.PURPLE_MYRTLE_SAPLING.get());
+        leafCarpetBlock(NTBlocks.MYRTLE_LEAF_CARPET.get(), NTBlocks.WHITE_MYRTLE_LEAVES.get());
 
         // --- SPECIALS & FLOWERS ---
         podzolVariant(NTBlocks.BLUE_PODZOL.get(), "blue_podzol");
@@ -167,7 +163,6 @@ public class NTBlockStateProvider extends BlockStateProvider {
         crossBlock(NTBlocks.BLUEBELL.get());
 
         crossBlock(NTBlocks.PURPLE_BLUEBELL.get());
-
 
         petalBlock(NTBlocks.HEATHER_PETALS.get());
         petalBlock(NTBlocks.LAVENDER_PETALS.get());
@@ -247,21 +242,13 @@ public class NTBlockStateProvider extends BlockStateProvider {
         simpleBlockItem(carpetBlock, model);
     }
 
-    private Block getBlock(String name) {
-        return NTBlocks.BLOCKS.getEntries().stream()
-                .filter(e -> e.getId().getPath().equals(name))
-                .findFirst()
-                .map(DeferredHolder::get)
-                .orElseThrow(() -> new RuntimeException("Block not found: " + name));
-    }
-
-    private void saplingBlock(String name) {
-        Block block = getBlock(name);
+    private void saplingBlock(Block block) {
+        String name = BuiltInRegistries.BLOCK.getKey(block).getPath();
         simpleBlock(block, models().cross(name, blockTexture(block)).renderType("cutout"));
     }
 
-    private void leavesBlock(String name) {
-        Block block = getBlock(name);
+    private void leavesBlock(Block block) {
+        String name = BuiltInRegistries.BLOCK.getKey(block).getPath();
         simpleBlockWithItem(block, models().singleTexture(name, mcLoc("block/leaves"), "all", blockTexture(block)).renderType("cutout"));
     }
 

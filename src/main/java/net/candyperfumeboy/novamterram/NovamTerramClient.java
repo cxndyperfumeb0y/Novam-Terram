@@ -1,57 +1,39 @@
 package net.candyperfumeboy.novamterram;
 
+import net.candyperfumeboy.novamterram.block.NTWoodSet;
 import net.candyperfumeboy.novamterram.block.NTBlocks;
 import net.candyperfumeboy.novamterram.block.NTParticles;
-import net.candyperfumeboy.novamterram.block.custom.NTWoodTypes;
 import net.candyperfumeboy.novamterram.entities.NTEntities;
 import net.candyperfumeboy.novamterram.entities.NTModelLayers;
 import net.candyperfumeboy.novamterram.entities.custom.*;
 import net.candyperfumeboy.novamterram.entities.enhancements.NTOcelotRenderer;
 import net.candyperfumeboy.novamterram.entities.variants.NTBoatEntities;
-import net.candyperfumeboy.novamterram.entities.variants.NTBoatEntity;
 import net.candyperfumeboy.novamterram.entities.variants.NTBoatRenderer;
 import net.candyperfumeboy.novamterram.entities.variants.NTSignBlockEntities;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.ChestBoatModel;
 import net.minecraft.client.model.FoxModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.renderer.BiomeColors;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.FoliageColor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
-import net.neoforged.neoforge.registries.DeferredHolder;
 
 @EventBusSubscriber(modid = NovamTerram.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public class NovamTerramClient {
 
-    private static final String[] WOODS = {"blue_spruce", "teak", "balsa", "mahogany", "aspen"};
-
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            Sheets.addWoodType(NTWoodTypes.BLUE_SPRUCE);
-            Sheets.addWoodType(NTWoodTypes.TEAK);
-            Sheets.addWoodType(NTWoodTypes.BALSA);
-            Sheets.addWoodType(NTWoodTypes.MAHOGANY);
-            Sheets.addWoodType(NTWoodTypes.ASPEN);
-
-            for (String wood : WOODS) {
-                setLeafRender(wood + "_leaves");
+            for (NTWoodSet wood : NTBlocks.WOOD_SETS) {
+                Sheets.addWoodType(wood.woodType);
             }
         });
     }
@@ -71,12 +53,12 @@ public class NovamTerramClient {
         event.registerEntityRenderer(NTEntities.SONGBIRD.get(), SongbirdRenderer::new);
         event.registerEntityRenderer(NTEntities.FAUN.get(), FaunRenderer::new);
         // --- Boats ---
-        for (String wood : WOODS) {
-            final String woodType = wood;
-            event.registerEntityRenderer(getBoatEntity(woodType + "_boat"),
-                    context -> new NTBoatRenderer(context, false, getBoatLayer(woodType, false), woodType));
-            event.registerEntityRenderer(getBoatEntity(woodType + "_chest_boat"),
-                    context -> new NTBoatRenderer(context, true, getBoatLayer(woodType, true), woodType));
+        for (NTWoodSet wood : NTBlocks.WOOD_SETS) {
+            String name = wood.name;
+            event.registerEntityRenderer(NTBoatEntities.getBoatEntity(name, false).get(),
+                    context -> new NTBoatRenderer(context, false, getBoatLayer(name, false), name));
+            event.registerEntityRenderer(NTBoatEntities.getBoatEntity(name, true).get(),
+                    context -> new NTBoatRenderer(context, true, getBoatLayer(name, true), name));
         }
 
         event.registerBlockEntityRenderer(NTSignBlockEntities.SIGN.get(), SignRenderer::new);
@@ -86,7 +68,7 @@ public class NovamTerramClient {
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(NTModelLayers.SILVER_FOX_LAYER, FoxModel::createBodyLayer);
-       event.registerLayerDefinition(NTModelLayers.DESERT_FOX_LAYER, FoxModel::createBodyLayer);
+        event.registerLayerDefinition(NTModelLayers.DESERT_FOX_LAYER, FoxModel::createBodyLayer);
         event.registerLayerDefinition(NTModelLayers.SONGBIRD_LAYER, SongbirdModel::createBodyLayer);
         event.registerLayerDefinition(NTModelLayers.FAUN_LAYER, FaunModel::createBodyLayer);
         event.registerLayerDefinition(NTModelLayers.BROWN_BEAR_LAYER, NTBearModel::createBodyLayer);
@@ -94,35 +76,16 @@ public class NovamTerramClient {
         event.registerLayerDefinition(NTModelLayers.HYENA_LAYER, HyenaModel::createBodyLayer);
 
         // --- Boats ---
-        for (String wood : WOODS) {
-            event.registerLayerDefinition(getBoatLayer(wood, false), BoatModel::createBodyModel);
-            event.registerLayerDefinition(getBoatLayer(wood, true), ChestBoatModel::createBodyModel);
+        for (NTWoodSet wood : NTBlocks.WOOD_SETS) {
+            event.registerLayerDefinition(getBoatLayer(wood.name, false), BoatModel::createBodyModel);
+            event.registerLayerDefinition(getBoatLayer(wood.name, true), ChestBoatModel::createBodyModel);
         }
     }
 
     // --- Helpers ---
 
-    private static void setLeafRender(String leafName) {
-        Block leafBlock = NTBlocks.BLOCKS.getEntries().stream()
-                .filter(e -> e.getId().getPath().equals(leafName))
-                .map(DeferredHolder::get)
-                .findFirst()
-                .orElse(null);
-        if (leafBlock != null) {
-            ItemBlockRenderTypes.setRenderLayer(leafBlock, RenderType.cutoutMipped());
-        }
-    }
-
     public static ModelLayerLocation getBoatLayer(String wood, boolean chest) {
         return new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(NovamTerram.MOD_ID, (chest ? "chest_boat/" : "boat/") + wood), "main");
-    }
-
-    private static EntityType<? extends NTBoatEntity> getBoatEntity(String name) {
-        return (EntityType<? extends NTBoatEntity>) NTBoatEntities.ENTITY_TYPES.getEntries().stream()
-                .filter(e -> e.getId().getPath().equals(name))
-                .findFirst()
-                .map(DeferredHolder::get)
-                .orElseThrow(() -> new RuntimeException("Could not find Boat Entity: " + name));
     }
 
     @SubscribeEvent

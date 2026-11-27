@@ -5,6 +5,9 @@
     "novamterram:kyanite_ore",
     "novamterram:jadeite_ore",
     "novamterram:rhodochrosite_ore",
-    "novamterram:lignite_ore"
+    "novamterram:lignite_ore",
+    "novamterram:deepslate_lignite_ore",
+    "novamterram:lignite_nether_ore",
+    "novamterram:lignite_end_ore"
   ]
 }

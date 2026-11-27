@@ -33,6 +33,12 @@
     "novamterram:chiseled_white_sandstone",
     "novamterram:white_sandstone_stairs",
     "novamterram:white_sandstone_slab",
-    "novamterram:white_sandstone_wall"
+    "novamterram:white_sandstone_wall",
+    "novamterram:olivine_sandstone_fence",
+    "novamterram:olivine_sandstone_gate",
+    "novamterram:olivine_sandstone_door",
+    "novamterram:olivine_sandstone_trap_door",
+    "novamterram:olivine_sandstone_pressure_plate",
+    "novamterram:olivine_sandstone_button"
   ]
 }

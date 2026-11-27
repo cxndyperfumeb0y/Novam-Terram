@@ -1,5 +1,6 @@
 package net.candyperfumeboy.novamterram.item;
 
+import net.candyperfumeboy.novamterram.block.NTWoodSet;
 import net.candyperfumeboy.novamterram.NovamTerram;
 import net.candyperfumeboy.novamterram.block.NTBlocks;
 import net.minecraft.core.registries.Registries;
@@ -93,27 +94,26 @@ public class NTCreativeModTabs {
                         output.accept(NTBlocks.WHITE_SANDSTONE_WALL.get());
 
                         // --- WOOD SETS ---
-                        String[] woodNames = {"blue_spruce", "teak", "balsa", "mahogany", "aspen"};
-                        for (String wood : woodNames) {
-                            acceptBlock(output, wood + "_log");
-                            acceptBlock(output, wood + "_wood");
-                            acceptBlock(output, "stripped_" + wood + "_log");
-                            acceptBlock(output, "stripped_" + wood + "_wood");
-                            acceptBlock(output, wood + "_planks");
-                            acceptBlock(output, wood + "_stairs");
-                            acceptBlock(output, wood + "_slab");
-                            acceptBlock(output, wood + "_fence");
-                            acceptBlock(output, wood + "_fence_gate");
-                            acceptBlock(output, wood + "_door");
-                            acceptBlock(output, wood + "_trapdoor");
-                            acceptBlock(output, wood + "_pressure_plate");
-                            acceptBlock(output, wood + "_button");
-                            acceptBlock(output, wood + "_leaves");
-                            acceptBlock(output, wood + "_sapling");
-                            acceptItem(output, wood + "_sign");
-                            acceptItem(output, wood + "_hanging_sign");
-                            acceptItem(output, wood + "_boat");
-                            acceptItem(output, wood + "_chest_boat");
+                        for (NTWoodSet wood : NTBlocks.WOOD_SETS) {
+                            output.accept(wood.log);
+                            output.accept(wood.wood);
+                            output.accept(wood.strippedLog);
+                            output.accept(wood.strippedWood);
+                            output.accept(wood.planks);
+                            output.accept(wood.stairs);
+                            output.accept(wood.slab);
+                            output.accept(wood.fence);
+                            output.accept(wood.fenceGate);
+                            output.accept(wood.door);
+                            output.accept(wood.trapdoor);
+                            output.accept(wood.pressurePlate);
+                            output.accept(wood.button);
+                            output.accept(wood.leaves);
+                            output.accept(wood.sapling);
+                            output.accept(wood.signItem);
+                            output.accept(wood.hangingSignItem);
+                            output.accept(wood.boat);
+                            output.accept(wood.chestBoat);
                         }
 
                         // --- SPECIAL TREES ---
@@ -169,18 +169,6 @@ public class NTCreativeModTabs {
 
 
                     }).build());
-
-    private static void acceptBlock(CreativeModeTab.Output output, String name) {
-        NTBlocks.BLOCKS.getEntries().stream()
-                .filter(e -> e.getId().getPath().equals(name))
-                .findFirst().ifPresent(holder -> output.accept(holder.get()));
-    }
-
-    private static void acceptItem(CreativeModeTab.Output output, String name) {
-        NTItems.ITEMS.getEntries().stream()
-                .filter(e -> e.getId().getPath().equals(name))
-                .findFirst().ifPresent(holder -> output.accept(holder.get()));
-    }
 
     public static void register(IEventBus eventBus) {
         CREATIVE_MODE_TABS.register(eventBus);

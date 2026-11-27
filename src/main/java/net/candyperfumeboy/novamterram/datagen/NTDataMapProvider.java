@@ -1,10 +1,10 @@
 package net.candyperfumeboy.novamterram.datagen;
 
+import net.candyperfumeboy.novamterram.block.NTWoodSet;
 import net.candyperfumeboy.novamterram.block.NTBlocks;
 import net.candyperfumeboy.novamterram.item.NTItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.data.DataMapProvider;
 import net.neoforged.neoforge.registries.datamaps.builtin.Compostable;
 import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel;
@@ -12,7 +12,6 @@ import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 
 import java.util.concurrent.CompletableFuture;
 
-import static org.apache.commons.lang3.ArrayUtils.add;
 
 public class NTDataMapProvider extends DataMapProvider {
     protected NTDataMapProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
@@ -33,16 +32,14 @@ public class NTDataMapProvider extends DataMapProvider {
         var composters = this.builder(NeoForgeDataMaps.COMPOSTABLES);
 
         // --- Standard Wood Sets Loop ---
-        String[] woodNames = {"blue_spruce", "teak", "balsa", "mahogany", "aspen"};
-        for (String wood : woodNames) {
-            composters.add(getId(wood + "_sapling"), new Compostable(0.3F), false);
-            composters.add(getId(wood + "_leaves"), new Compostable(0.3F), false);
+        for (NTWoodSet set : NTBlocks.WOOD_SETS) {
+            composters.add(set.sapling.getId(), new Compostable(0.3F), false);
+            composters.add(set.leaves.getId(), new Compostable(0.3F), false);
         }
 
         // --- Aegean Flora (Olive) ---
         composters.add(NTItems.OLIVE.getId(), new Compostable(0.65F), false);
         composters.add(NTBlocks.OLIVE_LEAVES.getId(), new Compostable(0.3F), false);
-        composters.add(NTBlocks.OLIVE_HANGING.getId(), new Compostable(0.5F), false);
 
         // --- Autumnal Pine (Orange & Yellow) ---
         composters.add(NTBlocks.ORANGE_AUTUMNAL_PINE_SAPLING.getId(), new Compostable(0.3F), false);
@@ -89,16 +86,5 @@ public class NTDataMapProvider extends DataMapProvider {
         composters.add(NTBlocks.SILVER_SAGE.getId(), new Compostable(0.65F), false);
         composters.add(NTBlocks.BLEEDING_HEART.getId(), new Compostable(0.65F), false);
         composters.add(NTBlocks.IRIS.getId(), new Compostable(0.65F), false);
-    }
-
-    /**
-     * Helper to get the ResourceLocation ID of a block from your registry by name.
-     */
-    private ResourceLocation getId(String name) {
-        return NTBlocks.BLOCKS.getEntries().stream()
-                .filter(e -> e.getId().getPath().equals(name))
-                .findFirst()
-                .map(holder -> holder.getId())
-                .orElseThrow(() -> new RuntimeException("Could not find block ID for DataMap: " + name));
     }
 }

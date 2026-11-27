@@ -1,17 +1,16 @@
 package net.candyperfumeboy.novamterram.datagen;
 
+import net.candyperfumeboy.novamterram.block.NTWoodSet;
 import net.candyperfumeboy.novamterram.NovamTerram;
 import net.candyperfumeboy.novamterram.block.NTBlocks;
 import net.candyperfumeboy.novamterram.item.NTItems;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class NTItemModelProvider extends ItemModelProvider {
     public NTItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
@@ -43,16 +42,15 @@ public class NTItemModelProvider extends ItemModelProvider {
 
 
         // --- WOOD LOOP ---
-        String[] woodNames = {"blue_spruce", "teak", "balsa", "mahogany", "aspen"};
-        for (String wood : woodNames) {
-            buttonItem(wood + "_button", wood + "_planks");
-            fenceItem(wood + "_fence", wood + "_planks");
-            basicItem(getItem(wood + "_boat"));
-            basicItem(getItem(wood + "_chest_boat"));
-            basicItem(getItem(wood + "_sign"));
-            basicItem(getItem(wood + "_hanging_sign"));
-            basicItem(getBlock(wood + "_door").asItem());
-            saplingItemModel(wood + "_sapling");
+        for (NTWoodSet set : NTBlocks.WOOD_SETS) {
+            buttonItem(set.button, set.planks);
+            fenceItem(set.fence, set.planks);
+            basicItem(set.boat.get());
+            basicItem(set.chestBoat.get());
+            basicItem(set.signItem.get());
+            basicItem(set.hangingSignItem.get());
+            basicItem(set.door.asItem());
+            saplingItemModel(set.sapling.getId().getPath());
         }
 
         // --- FLORA ---
@@ -72,8 +70,6 @@ public class NTItemModelProvider extends ItemModelProvider {
     // --- HELPERS ---
     public void irisItem(DeferredBlock<Block> block) { String name = block.getId().getPath(); withExistingParent(name, mcLoc("item/generated")).texture("layer0", modLoc("item/" + name)); }
     public void basicBlockItem(DeferredBlock<Block> block) { String name = block.getId().getPath(); withExistingParent(name, mcLoc("item/generated")).texture("layer0", modLoc("block/" + name)); }
-    private Item getItem(String name) { return NTItems.ITEMS.getEntries().stream().filter(e -> e.getId().getPath().equals(name)).findFirst().map(DeferredHolder::get).orElseThrow(() -> new RuntimeException("Item not found: " + name)); }
-    private Block getBlock(String name) { return NTBlocks.BLOCKS.getEntries().stream().filter(e -> e.getId().getPath().equals(name)).findFirst().map(DeferredHolder::get).orElseThrow(() -> new RuntimeException("Block not found: " + name)); }
     private ItemModelBuilder saplingItemModel(String name) { return withExistingParent(name, mcLoc("item/generated")).texture("layer0", modLoc("block/" + name)); }
     private ItemModelBuilder saplingItem(DeferredBlock<Block> item) { return saplingItemModel(item.getId().getPath()); }
     public void buttonItem(String name, String baseBlockName) { this.withExistingParent(name, mcLoc("block/button_inventory")).texture("texture", modLoc("block/" + baseBlockName)); }
