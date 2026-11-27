@@ -1,5 +1,6 @@
 package net.candyperfumeboy.novamterram;
 
+import net.candyperfumeboy.novamterram.block.NTWoodSet;
 import net.candyperfumeboy.novamterram.block.NTBlocks;
 import net.candyperfumeboy.novamterram.block.NTParticles;
 import net.candyperfumeboy.novamterram.entities.NTEntities;

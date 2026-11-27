@@ -1,5 +1,6 @@
 package net.candyperfumeboy.novamterram.item;
 
+import net.candyperfumeboy.novamterram.block.NTWoodSet;
 import net.candyperfumeboy.novamterram.NovamTerram;
 import net.candyperfumeboy.novamterram.block.NTBlocks;
 import net.minecraft.core.registries.Registries;
