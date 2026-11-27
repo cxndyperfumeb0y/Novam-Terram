@@ -36,7 +36,7 @@ public class NTEntities {
 
     public static final DeferredHolder<EntityType<?>, EntityType<FaunEntity>> FAUN =
             ENTITY_TYPES.register("faun", () -> EntityType.Builder.of(FaunEntity::new, MobCategory.CREATURE)
-                    .sized(0.6F, 1.2F).build("faun"));
+                    .sized(0.8F, 1.6F).build("faun"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<SongbirdEntity>> SONGBIRD =
             ENTITY_TYPES.register("songbird", () -> EntityType.Builder.of(SongbirdEntity::new, MobCategory.CREATURE)

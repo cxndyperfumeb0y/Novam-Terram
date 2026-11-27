@@ -231,6 +231,14 @@ public class FaunModel<T extends FaunEntity> extends EntityModel<T> {
             this.head.yRot = 0.0F;
         }
 
+        // Striking out with the front legs
+        float kick = entity.getKickAmount();
+        if (kick > 0.0F) {
+            this.legFr.xRot = -1.3F * kick;
+            this.legFl.xRot = -1.0F * kick;
+            this.neck.xRot -= 0.25F * kick;
+        }
+
         // Head down to graze, with a small chewing motion
         if (graze > 0.0F) {
             this.body.xRot += 0.18F * graze;

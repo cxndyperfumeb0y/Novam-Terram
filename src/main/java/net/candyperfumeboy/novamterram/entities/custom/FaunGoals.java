@@ -1,14 +1,18 @@
 package net.candyperfumeboy.novamterram.entities.custom;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -307,7 +311,7 @@ public final class FaunGoals {
         @Override
         protected boolean isValidTarget(LevelReader level, BlockPos pos) {
             BlockState state = level.getBlockState(pos);
-            return state.is(BlockTags.SMALL_FLOWERS) || state.is(Blocks.MOSS_BLOCK) || state.is(Blocks.RAW_IRON_BLOCK);
+            return FaunFlowers.isTasty(state) || state.is(Blocks.MOSS_BLOCK) || state.is(Blocks.RAW_IRON_BLOCK);
         }
 
         @Override
@@ -317,11 +321,11 @@ public final class FaunGoals {
             this.done = true;
 
             BlockState state = this.faun.level().getBlockState(this.blockPos);
-            if (state.is(BlockTags.SMALL_FLOWERS)) {
+            if (FaunFlowers.isTasty(state)) {
                 // Leaves gardens alone when mobGriefing is off
                 if (this.faun.isFloral() || !EventHooks.canEntityGrief(this.faun.level(), this.faun)) return;
                 this.faun.level().destroyBlock(this.blockPos, false);
-                this.faun.eatFlower();
+                this.faun.eatFlower(state);
                 this.faun.playSound(SoundEvents.PANDA_EAT, 1.0F, 1.0F);
             } else {
                 this.faun.heal(4.0F);
@@ -375,7 +379,8 @@ public final class FaunGoals {
 
         private boolean calm() {
             return this.faun.level().isNight() && this.faun.onGround() && !this.faun.isSpooked()
-                    && !this.faun.isInWater() && !this.faun.isLeashed() && !this.faun.isInLove();
+                    && !this.faun.isInWater() && !this.faun.isLeashed() && !this.faun.isInLove()
+                    && this.faun.guideTarget() == null;
         }
 
         @Override
@@ -406,7 +411,7 @@ public final class FaunGoals {
         }
     }
 
-    /** Fauns that have wandered apart drift back together. */
+    /** The herd follows a leading buck. Without one, wanderers just drift back together. */
     static class HerdGoal extends Goal {
         private final FaunEntity faun;
         private FaunEntity other;
@@ -417,13 +422,36 @@ public final class FaunGoals {
             this.setFlags(EnumSet.of(Goal.Flag.MOVE));
         }
 
+        // Every faun picks the same one: a white stag first, then a fixed order by id
+        private static boolean outranks(FaunEntity a, FaunEntity b) {
+            boolean aWhite = a.getCoat() == FaunCoat.WHITE;
+            boolean bWhite = b.getCoat() == FaunCoat.WHITE;
+            if (aWhite != bWhite) return aWhite;
+            return a.getUUID().compareTo(b.getUUID()) < 0;
+        }
+
         @Override
         public boolean canUse() {
             if (this.faun.tickCount < this.nextCheck) return false;
-            this.nextCheck = this.faun.tickCount + 100 + this.faun.getRandom().nextInt(100);
+            this.nextCheck = this.faun.tickCount + 60 + this.faun.getRandom().nextInt(60);
+            if (this.faun.isBaby()) return false; // fawns follow their parents
+
             List<FaunEntity> herd = this.faun.nearbyFauns(24.0D);
-            // Stay put if anyone is already close
-            if (herd.isEmpty() || herd.stream().anyMatch(f -> this.faun.distanceToSqr(f) < 64.0D)) return false;
+            if (herd.isEmpty()) return false;
+
+            FaunEntity leader = this.faun.isBuck() ? this.faun : null;
+            for (FaunEntity member : herd) {
+                if (member.isBuck() && !member.isBaby() && (leader == null || outranks(member, leader))) {
+                    leader = member;
+                }
+            }
+
+            if (leader != null) {
+                if (leader == this.faun || this.faun.distanceToSqr(leader) < 64.0D) return false;
+                this.other = leader;
+                return true;
+            }
+            if (herd.stream().anyMatch(f -> this.faun.distanceToSqr(f) < 64.0D)) return false;
             this.other = herd.get(this.faun.getRandom().nextInt(herd.size()));
             return true;
         }
@@ -442,6 +470,161 @@ public final class FaunGoals {
         @Override
         public void stop() {
             this.faun.getNavigation().stop();
+        }
+    }
+
+    /** A doe puts herself between a nearby fawn and danger, and kicks what gets too close. */
+    static class ProtectFawnGoal extends Goal {
+        private final FaunEntity faun;
+        private FaunEntity fawn;
+        private Mob threat;
+        private int nextCheck;
+        private int nextKick;
+        private int repath;
+
+        ProtectFawnGoal(FaunEntity faun) {
+            this.faun = faun;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        }
+
+        private boolean canFight() {
+            return !this.faun.isBaby() && !this.faun.isBuck() && !this.faun.isOnFire()
+                    && this.faun.getHealth() > this.faun.getMaxHealth() * 0.5F;
+        }
+
+        // Creepers would explode and anything huge is hopeless, so those she runs from
+        private static boolean worthFighting(Mob mob) {
+            return mob.isAlive() && !(mob instanceof Creeper) && mob.getMaxHealth() <= 60.0F
+                    && (FaunEntity.isThreat(mob) || mob.getTarget() instanceof FaunEntity);
+        }
+
+        @Override
+        public boolean canUse() {
+            if (this.faun.tickCount < this.nextCheck) return false;
+            this.nextCheck = this.faun.tickCount + 10;
+            if (!canFight()) return false;
+
+            for (FaunEntity young : this.faun.nearbyFauns(10.0D)) {
+                if (!young.isBaby()) continue;
+                List<Mob> threats = this.faun.level().getEntitiesOfClass(Mob.class, young.getBoundingBox().inflate(8.0D),
+                        mob -> worthFighting(mob) && this.faun.hasLineOfSight(mob));
+                if (!threats.isEmpty()) {
+                    this.fawn = young;
+                    this.threat = threats.get(0);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return canFight() && this.fawn.isAlive() && worthFighting(this.threat)
+                    && this.fawn.distanceToSqr(this.threat) < 144.0D;
+        }
+
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+
+        @Override
+        public void start() {
+            this.repath = 0;
+        }
+
+        @Override
+        public void stop() {
+            this.faun.getNavigation().stop();
+        }
+
+        @Override
+        public void tick() {
+            this.faun.getLookControl().setLookAt(this.threat, 30.0F, 30.0F);
+            if (this.faun.distanceToSqr(this.threat) < 6.25D) {
+                if (this.faun.tickCount >= this.nextKick) {
+                    this.nextKick = this.faun.tickCount + 30;
+                    this.faun.lookAt(this.threat, 90.0F, 30.0F);
+                    this.faun.kick(this.threat);
+                }
+                return;
+            }
+            if (--this.repath > 0) return;
+            this.repath = 10;
+            // Two blocks from the fawn, on the side the danger is coming from
+            Vec3 toThreat = this.threat.position().subtract(this.fawn.position()).normalize();
+            Vec3 spot = this.fawn.position().add(toThreat.scale(2.0D));
+            this.faun.getNavigation().moveTo(spot.x, spot.y, spot.z, 1.5D);
+        }
+    }
+
+    /** Leads a friend to something worth seeing, waiting whenever they fall behind. */
+    static class GuideGoal extends Goal {
+        private final FaunEntity faun;
+        private int timeLeft;
+
+        GuideGoal(FaunEntity faun) {
+            this.faun = faun;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            return this.faun.guideTarget() != null;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            Player friend = this.faun.guideFollower();
+            return this.timeLeft > 0 && this.faun.guideTarget() != null && friend != null && friend.isAlive()
+                    && this.faun.distanceToSqr(friend) < 1024.0D;
+        }
+
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+
+        @Override
+        public void start() {
+            this.timeLeft = 1800; // 90 seconds
+        }
+
+        // Also runs if something scares it off halfway
+        @Override
+        public void stop() {
+            Player friend = this.faun.guideFollower();
+            if (this.faun.guideTarget() != null && friend != null) {
+                friend.displayClientMessage(Component.translatable("message.novamterram.faun.guide_lost"), true);
+            }
+            this.faun.stopGuiding();
+            this.faun.getNavigation().stop();
+        }
+
+        @Override
+        public void tick() {
+            this.timeLeft--;
+            BlockPos target = this.faun.guideTarget();
+            Player friend = this.faun.guideFollower();
+            if (target == null || friend == null) return;
+
+            double dx = target.getX() + 0.5D - this.faun.getX();
+            double dz = target.getZ() + 0.5D - this.faun.getZ();
+            if (dx * dx + dz * dz < 9.0D) { // height ignored: hives hang out of reach
+                friend.displayClientMessage(Component.translatable("message.novamterram.faun.guide_done"), true);
+                if (this.faun.level() instanceof ServerLevel server) {
+                    server.sendParticles(ParticleTypes.HAPPY_VILLAGER, target.getX() + 0.5D, target.getY() + 0.5D,
+                            target.getZ() + 0.5D, 25, 0.5D, 0.5D, 0.5D, 0.0D);
+                }
+                this.faun.stopGuiding();
+                return;
+            }
+            if (this.faun.distanceToSqr(friend) > 49.0D) {
+                this.faun.getNavigation().stop();
+                this.faun.getLookControl().setLookAt(friend, 30.0F, 30.0F);
+            } else if (this.faun.getNavigation().isDone() || this.timeLeft % 20 == 0) {
+                this.faun.getNavigation().moveTo(target.getX() + 0.5D, target.getY(), target.getZ() + 0.5D, 1.1D);
+            }
         }
     }
 }

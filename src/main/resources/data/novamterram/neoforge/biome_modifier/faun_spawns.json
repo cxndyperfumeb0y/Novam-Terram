@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#novamterram:has_fauns",
+  "spawners": {
+    "type": "novamterram:faun",
+    "weight": 6,
+    "minCount": 2,
+    "maxCount": 4
+  }
+}
