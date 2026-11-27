@@ -8,10 +8,16 @@ import net.minecraft.world.level.biome.Biome;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NTBiomes {
 
         public static final DeferredRegister<Biome> BIOMES =
                 DeferredRegister.create(Registries.BIOME, NovamTerram.MOD_ID);
+
+        /** Every biome key made with registerKey, used for the automatic names. Must stay above the keys. */
+        public static final List<ResourceKey<Biome>> ALL = new ArrayList<>();
 
         // =========================================================================
         // EXISTING BIOMES
@@ -33,7 +39,7 @@ public class NTBiomes {
         public static final ResourceKey<Biome> CALDERA_GROTTO = registerKey("caldera_grotto");
         public static final ResourceKey<Biome> SNOWBLOSSOM_GROVE = registerKey("snowblossom_grove");
         public static final ResourceKey<Biome> SILVER_BIRCH_VELD = registerKey("silver_birch_veld");
-public static final ResourceKey<Biome> BLUEBELL_WOODS = registerKey("bluebell_woods");
+        public static final ResourceKey<Biome> BLUEBELL_WOODS = registerKey("bluebell_woods");
         public static final ResourceKey<Biome> BLACK_FOREST = registerKey("black_forest");
         public static final ResourceKey<Biome> SILVER_BIRCH_WETLAND = registerKey("silver_birch_wetland");
         public static final ResourceKey<Biome> COASTAL_CHAPARRAL = registerKey("coastal_chaparral");
@@ -46,7 +52,9 @@ public static final ResourceKey<Biome> BLUEBELL_WOODS = registerKey("bluebell_wo
 
         // Helper method to create keys
         private static ResourceKey<Biome> registerKey(String name) {
-                return ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(NovamTerram.MOD_ID, name));
+                ResourceKey<Biome> key = ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(NovamTerram.MOD_ID, name));
+                ALL.add(key);
+                return key;
         }
 
         // Register method to be called in your Main Mod Class constructor

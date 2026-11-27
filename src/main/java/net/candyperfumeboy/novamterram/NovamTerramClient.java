@@ -26,6 +26,8 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 
+import java.util.List;
+
 @EventBusSubscriber(modid = NovamTerram.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public class NovamTerramClient {
 
@@ -90,20 +92,25 @@ public class NovamTerramClient {
 
     @SubscribeEvent
     public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
-        event.registerSpriteSet(NTParticles.BLUE_SPRUCE_LEAF.get(), BlueLeafProvider::new);
-    }
-
-    private static class BlueLeafProvider implements net.minecraft.client.particle.ParticleProvider<net.minecraft.core.particles.SimpleParticleType> {
-        private final net.minecraft.client.particle.SpriteSet sprites;
-        public BlueLeafProvider(net.minecraft.client.particle.SpriteSet sprites) { this.sprites = sprites; }
-        @Override
-        public net.minecraft.client.particle.Particle createParticle(net.minecraft.core.particles.SimpleParticleType type, net.minecraft.client.multiplayer.ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
-            return new BlueLeafParticle(level, x, y, z, this.sprites);
+        // Every falling leaf drifts the same way as vanilla cherry petals, only the picture differs
+        for (var particle : List.of(NTParticles.BLUE_SPRUCE_LEAF, NTParticles.ORANGE_LEAF, NTParticles.YELLOW_LEAF,
+                NTParticles.PAULOWNIA_LEAF, NTParticles.MYRTLE_LEAF, NTParticles.RED_MYRTLE_LEAF,
+                NTParticles.PURPLE_MYRTLE_LEAF)) {
+            event.registerSpriteSet(particle.get(), FallingLeafProvider::new);
         }
     }
 
-    private static class BlueLeafParticle extends net.minecraft.client.particle.CherryParticle {
-        protected BlueLeafParticle(net.minecraft.client.multiplayer.ClientLevel level, double x, double y, double z, net.minecraft.client.particle.SpriteSet sprites) {
+    private static class FallingLeafProvider implements net.minecraft.client.particle.ParticleProvider<net.minecraft.core.particles.SimpleParticleType> {
+        private final net.minecraft.client.particle.SpriteSet sprites;
+        public FallingLeafProvider(net.minecraft.client.particle.SpriteSet sprites) { this.sprites = sprites; }
+        @Override
+        public net.minecraft.client.particle.Particle createParticle(net.minecraft.core.particles.SimpleParticleType type, net.minecraft.client.multiplayer.ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
+            return new FallingLeafParticle(level, x, y, z, this.sprites);
+        }
+    }
+
+    private static class FallingLeafParticle extends net.minecraft.client.particle.CherryParticle {
+        protected FallingLeafParticle(net.minecraft.client.multiplayer.ClientLevel level, double x, double y, double z, net.minecraft.client.particle.SpriteSet sprites) {
             super(level, x, y, z, sprites);
         }
     }

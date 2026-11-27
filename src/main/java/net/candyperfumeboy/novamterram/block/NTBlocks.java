@@ -73,9 +73,9 @@ public class NTBlocks {
     // Myrtle
     public static final DeferredBlock<Block> WHITE_MYRTLE_LEAVES = leaves("white_myrtle_leaves", Blocks.CHERRY_LEAVES, NTParticles.MYRTLE_LEAF);
     public static final DeferredBlock<Block> WHITE_MYRTLE_SAPLING = sapling("white_myrtle_sapling", NTTreeGrowers.WHITE_MYRTLE, Blocks.OAK_SAPLING);
-    public static final DeferredBlock<Block> RED_MYRTLE_LEAVES = leaves("red_myrtle_leaves", Blocks.CHERRY_LEAVES, NTParticles.MYRTLE_LEAF);
+    public static final DeferredBlock<Block> RED_MYRTLE_LEAVES = leaves("red_myrtle_leaves", Blocks.CHERRY_LEAVES, NTParticles.RED_MYRTLE_LEAF);
     public static final DeferredBlock<Block> RED_MYRTLE_SAPLING = sapling("red_myrtle_sapling", NTTreeGrowers.RED_MYRTLE, Blocks.OAK_SAPLING);
-    public static final DeferredBlock<Block> PURPLE_MYRTLE_LEAVES = leaves("purple_myrtle_leaves", Blocks.CHERRY_LEAVES, NTParticles.MYRTLE_LEAF);
+    public static final DeferredBlock<Block> PURPLE_MYRTLE_LEAVES = leaves("purple_myrtle_leaves", Blocks.CHERRY_LEAVES, NTParticles.PURPLE_MYRTLE_LEAF);
     public static final DeferredBlock<Block> PURPLE_MYRTLE_SAPLING = sapling("purple_myrtle_sapling", NTTreeGrowers.PURPLE_MYRTLE, Blocks.OAK_SAPLING);
     public static final DeferredBlock<Block> MYRTLE_LEAF_CARPET = petals("myrtle_leaf_carpet", MapColor.PLANT);
 

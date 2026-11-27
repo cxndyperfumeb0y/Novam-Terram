@@ -27,9 +27,15 @@ public class NTParticles {
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> PAULOWNIA_LEAF =
             PARTICLE_TYPES.register("paulownia_leaf", () -> new SimpleParticleType(false));
 
-    // Myrtle
+    // Myrtle (white, red, purple)
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> MYRTLE_LEAF =
             PARTICLE_TYPES.register("myrtle_leaf", () -> new SimpleParticleType(false));
+
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> RED_MYRTLE_LEAF =
+            PARTICLE_TYPES.register("red_myrtle_leaf", () -> new SimpleParticleType(false));
+
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> PURPLE_MYRTLE_LEAF =
+            PARTICLE_TYPES.register("purple_myrtle_leaf", () -> new SimpleParticleType(false));
 
 
     public static void register(IEventBus eventBus) {

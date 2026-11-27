@@ -53,8 +53,9 @@ public class DataGenerators {
             generator.addProvider(true, new NTItemModelProvider(packOutput, existingFileHelper));
             generator.addProvider(true, new NTBlockStateProvider(packOutput, existingFileHelper));
 
-            // Helpful Tip: Add a LanguageProvider here if you haven't yet!
-            // generator.addProvider(true, new NTLanguageProvider(packOutput, "en_us"));
+
+            // Names for blocks, items, entities and biomes
+            generator.addProvider(true, new NTLanguageProvider(packOutput));
         }
     }
 }
